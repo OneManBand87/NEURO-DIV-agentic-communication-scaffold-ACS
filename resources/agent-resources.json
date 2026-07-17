@@ -2,16 +2,31 @@
   "schemaVersion": 1,
   "lastVerified": "2026-07-16",
   "canonicalBrief": {
-    "name": "Agent Coordination - Shared Agent Brief - Current",
+    "name": "NEURO-DIV - Agentic Communication Scaffold (ACS) - Shared Agent Brief - Current",
     "url": "https://docs.google.com/document/d/1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q/edit",
     "documentId": "1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q",
     "role": "source-of-truth"
   },
   "repository": {
-    "url": "https://github.com/OneManBand87/agent-coordination-system",
+    "humanTitle": "NEURO-DIV - agentic communication scaffold (ACS)",
+    "url": "https://github.com/OneManBand87/NEURO-DIV-agentic-communication-scaffold-ACS",
     "visibility": "public",
     "defaultBranch": "main",
     "legacyArchiveBranch": "archive/neuro-div-bolt-prototype-2026-07-16"
+  },
+  "architectureRole": {
+    "type": "cross-layer-communications-subsystem",
+    "parentArchitectureName": "NEURO-DIV Core Foundation Document v1",
+    "parentArchitectureUrl": "https://docs.google.com/document/d/1DRlYOnp6AGBwRWOYgfh03gxNWxn6kaWSjmkddPa7gdY/edit",
+    "parentArchitectureStatus": "incomplete-requires-multi-version-reconstruction",
+    "responsibilities": [
+      "agent-to-agent-handoffs",
+      "shared-state-synchronization",
+      "narrative-and-cognitive-feedback-routing",
+      "context-continuity",
+      "verification-routing",
+      "common-tool-access"
+    ]
   },
   "mcpServers": {
     "zapier": {
