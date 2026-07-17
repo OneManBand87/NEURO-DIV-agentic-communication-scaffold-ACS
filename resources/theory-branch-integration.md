@@ -2,7 +2,7 @@
 
 Status: Canonical crosswalk snapshot
 
-Last verified: 2026-07-16
+Last verified: 2026-07-17
 
 This document records how the WIPED behavioral model, branch-structured reasoning, the Cryptographic Branch Addressing Layer (CBAL), the Agentic Communication Scaffold (ACS), the distributed worker plane, and the structural-integrity control plane fit into the larger NEURO-DIV architecture.
 
@@ -31,6 +31,43 @@ The NDV Architecture Ontology & Axial Framework v2 defines three interacting org
 - Persistence: context memory, symbolic encoding, governance, recoverability, lineage, and contextual integrity.
 
 Cross-axis systems include ACS communication, distributed cognition, integrity verification, garbage collection, consolidation, artifact governance, and recursive optimization.
+
+## QTU understanding and execution gate
+
+The Quantitative Theory of Understanding defines:
+
+```text
+U(M) = A_OOD(M) * A_CF(M) / L(M)
+```
+
+`A_OOD` measures predictive validity under distributional shift, `A_CF` measures causal or counterfactual intervention accuracy, and `L(M)` measures description length or representational complexity. The raw functional is not automatically a probability. The operational execution score is therefore normalized as:
+
+```text
+U_norm(M) = A_OOD(M) * A_CF(M) * (L_min / L(M))
+```
+
+The task class must define `L_min` and its evaluation protocol before scoring. All terms are bounded so `U_norm` lies in `[0,1]`.
+
+No AI agent may execute a state-changing directive unless:
+
+```text
+QTU-LCB90(U_norm) >= 0.90
+```
+
+`QTU-LCB90` is the one-sided 90% lower confidence bound, calculated using a declared reproducible method such as a bootstrap confidence bound or Bayesian lower credible bound. A point estimate of `0.90` does not pass when its lower bound is below `0.90`. Missing evidence is `QTU_UNESTABLISHED`, never an invitation to guess. Model fluency, consensus, and self-reported confidence do not count as evidence.
+
+Before authorization, agents may perform only non-state-changing epistemic work needed to establish the bound: read-only retrieval, inspection, clarification, calculation, comparison, threat analysis, simulation, validation, and non-mutating dry runs. State-changing file edits, commits, pushes, external messages, workflow activation, permission changes, purchases, destructive commands, and similar actions remain blocked.
+
+Every directive record must preserve: directive identity; target and scope; `A_OOD`; `A_CF`; `L(M)`; predefined `L_min`; `U_norm`; interval method; `QTU-LCB90`; evidence references; unresolved assumptions; evaluator; timestamp; evidence expiry or target-state version; gate status; and post-execution verification requirement.
+
+Gate states are:
+
+```text
+QTU_UNESTABLISHED -> QTU_VERIFYING -> QTU_AUTHORIZED
+                               `--> QTU_BLOCKED
+```
+
+Material changes to the directive, evidence, scope, target state, or security conditions invalidate authorization. Passing QTU is necessary but does not override security, privacy, authentication, external-communication approval, user scope, or platform policy.
 
 ## Integrated hierarchy
 
@@ -189,6 +226,7 @@ DNA, epigenetic inheritance, emotion, hormonal modulation, telomere attrition, a
 ## Canonical sources
 
 - [NEURO-DIV Core Foundation Document v1](https://docs.google.com/document/d/1DRlYOnp6AGBwRWOYgfh03gxNWxn6kaWSjmkddPa7gdY/edit)
+- [A Quantitative Theory of Understanding rev1](https://drive.google.com/file/d/1MOxQjpZ59JzOOZs9EsFEuq49DKN3TkjW)
 - [WIPED Model for Human Decision-Making and ADHD](https://docs.google.com/document/d/1Pi_qvpV6L3ME12W18gHl8rOZfUTc6AR6VNUYJcSAtiE)
 - [Branch-Structured AI Reasoning](https://drive.google.com/file/d/1gDpdnOqq93A8YPmUKO8lRpNXCmPXISQr)
 - [NDV Architecture Ontology & Axial Framework v2](https://drive.google.com/file/d/1nOU3l02RZSxRhKisC-r7eBoRn5fFMBJG)

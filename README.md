@@ -12,6 +12,8 @@ Start with [AGENTS.md](AGENTS.md). The current capability matrix and synchroniza
 
 The integrated theory and branch hierarchy lives in [resources/theory-branch-integration.md](resources/theory-branch-integration.md). It connects WIPED behavioral adaptation, branch-structured reasoning, CBAL branch identity, ACS communication, distributed worker execution, and the integrity and garbage-collection control plane.
 
+All participating agents are subject to the QTU pre-execution gate documented there: state-changing directives require a directive-specific one-sided 90% lower confidence bound of at least `0.90` on the normalized QTU score.
+
 Run the local validation with:
 
 ```sh

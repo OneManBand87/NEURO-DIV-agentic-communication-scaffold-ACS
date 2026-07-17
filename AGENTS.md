@@ -6,9 +6,10 @@ These instructions apply to every AI agent working in this repository.
 
 1. Read [resources/agent-coordination.md](resources/agent-coordination.md).
 2. Read [resources/agent-resources.json](resources/agent-resources.json) for machine-readable endpoints, capabilities, and status.
-3. Treat the canonical Google Doc as the source of truth when the authenticated client can access it:
+3. Read [resources/theory-branch-integration.md](resources/theory-branch-integration.md), including the mandatory QTU execution gate.
+4. Treat the canonical Google Doc as the source of truth when the authenticated client can access it:
    [NEURO-DIV - Agentic Communication Scaffold (ACS) - Shared Agent Brief - Current](https://docs.google.com/document/d/1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q/edit).
-4. Use the repository snapshot when the canonical document is unavailable, and state that limitation.
+5. Use the repository snapshot when the canonical document is unavailable, and state that limitation.
 
 ## Shared architecture
 
@@ -22,6 +23,7 @@ These instructions apply to every AI agent working in this repository.
 
 ## Operating rules
 
+- Mandatory QTU gate: no AI agent may execute a state-changing directive unless the directive-specific normalized Quantitative Theory of Understanding score has a one-sided 90% lower confidence bound of at least `0.90` (`QTU-LCB90 >= 0.90`). Missing evidence is `QTU_UNESTABLISHED` and blocks execution. Model self-confidence is not evidence. Before authorization, agents may perform only non-state-changing investigation, clarification, calculation, simulation, dry runs, and verification needed to establish the bound. Security, privacy, scope, authentication, external-communication approval, and platform policy remain independent hard gates.
 - Do not create a competing source of truth. Update the canonical brief and then refresh the repository snapshot.
 - Do not claim that a connector works unless a real read-only call has been verified.
 - Never commit OAuth tokens, API keys, cookies, callback codes, credential files, or exported browser data.

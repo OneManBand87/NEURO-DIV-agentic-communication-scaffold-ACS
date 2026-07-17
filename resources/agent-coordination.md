@@ -1,6 +1,6 @@
 # NEURO-DIV - agentic communication scaffold (ACS) - Repository Snapshot
 
-Last verified: 2026-07-16
+Last verified: 2026-07-17
 
 Canonical source: [NEURO-DIV - Agentic Communication Scaffold (ACS) - Shared Agent Brief - Current](https://docs.google.com/document/d/1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q/edit)
 
@@ -13,6 +13,8 @@ ACS is the communications subsystem of the larger NEURO-DIV systematic architect
 ACS is not the whole NEURO-DIV framework. The Core Foundation Document is the current parent spine, but it is incomplete and contains transcription contamination. A separate architecture reconstruction must compare the surviving versions, identify missing components, resolve contradictions, and integrate ACS at every applicable layer.
 
 The current theory-to-system crosswalk is documented in [theory-branch-integration.md](theory-branch-integration.md). Its controlling chain is: WIPED behavioral state -> adaptive branch parameters -> branch-structured reasoning -> CBAL identity and lineage -> ACS routing and synchronization -> distributed-worker execution -> verification, convergence, consolidation, and garbage collection. WIPED is a provisional behavioral-adaptation model, not the whole NEURO-DIV theory or a clinically validated universal equation.
+
+QTU is the mandatory epistemic execution gate for that chain. The normalized score is `U_norm = A_OOD * A_CF * (L_min / L(M))`. ACS may route a directive into state-changing execution only when its one-sided 90% lower confidence bound satisfies `QTU-LCB90 >= 0.90`. A point estimate alone is insufficient; missing, stale, or non-reproducible evidence blocks execution. The canonical source is [A Quantitative Theory of Understanding rev1](https://drive.google.com/file/d/1MOxQjpZ59JzOOZs9EsFEuq49DKN3TkjW).
 
 ## Capability matrix
 
@@ -34,6 +36,7 @@ The current theory-to-system crosswalk is documented in [theory-branch-integrati
 - Portable repository instructions for generic agents, Claude, Gemini, and GitHub Copilot.
 - Machine-readable resource and capability manifest.
 - WIPED, branch-structured reasoning, CBAL, ACS, worker-plane, and integrity-plane crosswalk.
+- Mandatory QTU 90% lower-confidence-bound execution gate and directive-envelope schema.
 - Project-scoped MCP configuration for VS Code and Claude Code.
 - Zapier SDK and durable-workflow skills under `.agents/skills`.
 - A local verifier that checks required files, JSON syntax, endpoint consistency, and obvious secret-bearing files.

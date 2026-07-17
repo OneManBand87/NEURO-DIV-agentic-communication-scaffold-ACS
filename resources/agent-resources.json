@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastVerified": "2026-07-16",
+  "lastVerified": "2026-07-17",
   "canonicalBrief": {
     "name": "NEURO-DIV - Agentic Communication Scaffold (ACS) - Shared Agent Brief - Current",
     "url": "https://docs.google.com/document/d/1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q/edit",
@@ -41,12 +41,51 @@
       "consolidation-archival-and-garbage-collection"
     ],
     "canonicalSources": {
+      "quantitativeTheoryOfUnderstanding": "https://drive.google.com/file/d/1MOxQjpZ59JzOOZs9EsFEuq49DKN3TkjW",
       "wipedModel": "https://docs.google.com/document/d/1Pi_qvpV6L3ME12W18gHl8rOZfUTc6AR6VNUYJcSAtiE",
       "branchStructuredReasoning": "https://drive.google.com/file/d/1gDpdnOqq93A8YPmUKO8lRpNXCmPXISQr",
       "architectureOntologyV2": "https://drive.google.com/file/d/1nOU3l02RZSxRhKisC-r7eBoRn5fFMBJG",
       "cryptographicBranchAddressing": "https://drive.google.com/file/d/1tURDxNJgb7UFWo5sYCzbdVt0d94dHuG4"
     },
     "validationBoundary": "WIPED is a provisional simulation-based behavioral-adaptation model requiring independent empirical validation."
+  },
+  "qtuExecutionGate": {
+    "status": "mandatory",
+    "appliesTo": "all-state-changing-directives-by-all-participating-agents",
+    "rawFunctional": "U(M) = A_OOD(M) * A_CF(M) / L(M)",
+    "normalizedScore": "U_norm(M) = A_OOD(M) * A_CF(M) * (L_min / L(M))",
+    "interval": {
+      "type": "one-sided-lower-confidence-bound",
+      "confidenceLevel": 0.9,
+      "minimumLowerBoundForExecution": 0.9,
+      "field": "QTU-LCB90"
+    },
+    "authorizedStatus": "QTU_AUTHORIZED",
+    "blockedStatuses": [
+      "QTU_UNESTABLISHED",
+      "QTU_VERIFYING",
+      "QTU_BLOCKED"
+    ],
+    "selfReportedModelConfidenceAccepted": false,
+    "preAuthorizationOperations": [
+      "read-only-retrieval",
+      "inspection",
+      "clarification",
+      "calculation",
+      "comparison",
+      "threat-analysis",
+      "simulation",
+      "validation",
+      "non-mutating-dry-run"
+    ],
+    "independentHardGates": [
+      "security",
+      "privacy",
+      "authentication",
+      "scope",
+      "external-communication-approval",
+      "platform-policy"
+    ]
   },
   "mcpServers": {
     "zapier": {

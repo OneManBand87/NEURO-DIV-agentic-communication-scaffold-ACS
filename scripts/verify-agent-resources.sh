@@ -15,6 +15,7 @@ GEMINI.md
 .github/instructions/agent-coordination.instructions.md
 resources/agent-coordination.md
 resources/agent-resources.json
+resources/theory-branch-integration.md
 skills-lock.json'
 
 missing=0
@@ -22,6 +23,13 @@ for file in $required_files; do
   if [ ! -f "$file" ]; then
     printf 'missing: %s\n' "$file" >&2
     missing=1
+  fi
+done
+
+for qtu_file in AGENTS.md CLAUDE.md GEMINI.md .github/copilot-instructions.md .github/instructions/agent-coordination.instructions.md resources/agent-coordination.md resources/agent-resources.json resources/theory-branch-integration.md; do
+  if ! rg -Fq 'QTU-LCB90' "$qtu_file"; then
+    printf 'QTU execution gate missing: %s\n' "$qtu_file" >&2
+    exit 1
   fi
 done
 
