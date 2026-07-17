@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "lastVerified": "2026-07-16",
+  "canonicalBrief": {
+    "name": "Agent Coordination - Shared Agent Brief - Current",
+    "url": "https://docs.google.com/document/d/1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q/edit",
+    "documentId": "1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q",
+    "role": "source-of-truth"
+  },
+  "mcpServers": {
+    "zapier": {
+      "transport": "http",
+      "url": "https://mcp.zapier.com/api/v1/connect",
+      "authentication": "local-oauth-not-versioned"
+    }
+  },
+  "instructionFiles": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    "GEMINI.md",
+    ".github/copilot-instructions.md",
+    ".github/instructions/agent-coordination.instructions.md"
+  ],
+  "mcpConfigurationFiles": [
+    ".mcp.json",
+    ".vscode/mcp.json"
+  ],
+  "skillResources": {
+    "lockFile": "skills-lock.json",
+    "directory": ".agents/skills",
+    "providers": [
+      "zapier/agent-skills",
+      "zapier/sdk"
+    ]
+  },
+  "clients": {
+    "codex": {
+      "context": "repository",
+      "zapier": "operational"
+    },
+    "claudeCode": {
+      "context": "repository",
+      "zapier": "operational-user-scope-project-config-present"
+    },
+    "githubCopilotVsCode": {
+      "context": "repository-configured",
+      "zapier": "operational-authenticated"
+    },
+    "geminiCli": {
+      "context": "repository-configured",
+      "zapier": "onboarding-blocked-by-provider-migration"
+    },
+    "antigravity": {
+      "context": "repository-configured",
+      "zapier": "authenticated-protocol-error"
+    },
+    "perplexity": {
+      "context": "persistent-instructions-verified",
+      "zapier": "unavailable-on-current-account"
+    }
+  },
+  "security": {
+    "credentialsCommitted": false,
+    "prohibitedPatterns": [
+      ".env",
+      "*token*",
+      "*credential*",
+      "cookies*"
+    ]
+  }
+}
