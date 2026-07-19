@@ -8,7 +8,7 @@ Read [AGENTS.md](../../AGENTS.md) and [resources/agent-resources.json](../../res
 
 Enforce the mandatory QTU execution gate: state-changing work within QTU scope requires a directive-specific `QTU-LCB90 >= 0.90`. Missing or stale evidence blocks in-scope execution.
 
-Apply [resources/qtu-administrative-logistical-safe-harbor.md](../../resources/qtu-administrative-logistical-safe-harbor.md) before classifying routine state changes. Only non-substantive, precisely bounded, readily reversible administrative or logistical actions qualify. Artifact-related documents, memos, narratives, manifests, skills, controls, code, production configuration, governance, evidence, security, and external actions remain in QTU scope. Examples are illustrative and non-exhaustive; uncertainty returns the action to QTU.
+Apply [resources/qtu-administrative-logistical-safe-harbor.md](../../resources/qtu-administrative-logistical-safe-harbor.md) before classifying an action outside QTU. Only local personal desktop/browser presentation and convenience settings can qualify. Work products, documentation of every extension, skills, controls, code, methodology, workflow or project configuration, tests, evidence, security, external, canonical, and destructive actions remain in scope. Examples are illustrative and do not represent all possibilities; uncertainty returns the action to QTU.
 
 Enforce [resources/integrity-materiality-control.md](../../resources/integrity-materiality-control.md): material claims require evidence classification, contradiction handling, environment/counterpart awareness, commitment tracking, and read-back before completion.
 

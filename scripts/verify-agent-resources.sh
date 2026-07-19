@@ -57,20 +57,22 @@ done
 
 if ! rg -Fq 'not comprehensive, exhaustive, exclusive, or automatic precedents' resources/qtu-administrative-logistical-safe-harbor.md ||
    ! rg -Fq 'Artifact-related documentation remains in scope' resources/qtu-administrative-logistical-safe-harbor.md ||
-   ! rg -Fq 'QTU-LCB90`: `0.927285' resources/qtu-administrative-logistical-safe-harbor.md; then
+   ! rg -Fq 'do not represent every possible activity, setting, environment, purpose, dependency, or downstream effect' resources/qtu-administrative-logistical-safe-harbor.md ||
+   ! rg -Fq 'QTU-LCB90`: `0.927284744' resources/qtu-administrative-logistical-safe-harbor.md; then
   printf 'QTU safe-harbor invariants missing\n' >&2
   exit 1
 fi
 
 safe_example_count=$(awk '/^### Illustrative examples where QTU does not apply/{active=1; next} /^### Illustrative examples where QTU applies/{active=0} active && /^- /{count++} END{print count+0}' resources/qtu-administrative-logistical-safe-harbor.md)
-qtu_example_count=$(awk '/^### Illustrative examples where QTU applies/{active=1; next} /^## Boundary examples/{active=0} active && /^- /{count++} END{print count+0}' resources/qtu-administrative-logistical-safe-harbor.md)
-if [ "$safe_example_count" -ne 30 ] || [ "$qtu_example_count" -ne 30 ]; then
-  printf 'QTU safe-harbor reperformance catalogue mismatch: safe=%s qtu=%s\n' "$safe_example_count" "$qtu_example_count" >&2
+qtu_example_count=$(awk '/^### Illustrative examples where QTU applies/{active=1; next} /^## Questionable and borderline determinations/{active=0} active && /^- /{count++} END{print count+0}' resources/qtu-administrative-logistical-safe-harbor.md)
+borderline_example_count=$(awk '/^## Questionable and borderline determinations/{active=1; next} /^## Decision procedure/{active=0} active && /^- /{count++} END{print count+0}' resources/qtu-administrative-logistical-safe-harbor.md)
+if [ "$safe_example_count" -ne 30 ] || [ "$qtu_example_count" -ne 30 ] || [ "$borderline_example_count" -ne 15 ]; then
+  printf 'QTU safe-harbor example catalogue mismatch: safe=%s qtu=%s borderline=%s\n' "$safe_example_count" "$qtu_example_count" "$borderline_example_count" >&2
   exit 1
 fi
 
-if ! jq -e '.qtuExecutionGate.administrativeLogisticalSafeHarbor.protectedDimensions | length == 9' resources/agent-resources.json >/dev/null; then
-  printf 'QTU safe-harbor protected-dimension count mismatch\n' >&2
+if ! jq -e '.qtuExecutionGate.administrativeLogisticalSafeHarbor.decisionFactors | length == 10' resources/agent-resources.json >/dev/null; then
+  printf 'QTU safe-harbor decision-factor count mismatch\n' >&2
   exit 1
 fi
 

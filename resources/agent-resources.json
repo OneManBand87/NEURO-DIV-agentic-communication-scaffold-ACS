@@ -70,7 +70,20 @@
     "administrativeLogisticalSafeHarbor": {
       "status": "mandatory-scope-amendment",
       "repositoryControl": "resources/qtu-administrative-logistical-safe-harbor.md",
-      "decisionRule": "safe-harbor-only-when-all-protected-dimensions-are-absent-and-all-safe-harbor-conditions-pass",
+      "decisionRule": "safe-harbor-only-for-local-personal-desktop-or-browser-presentation-and-convenience-settings-when-all-protected-dimensions-are-absent-and-all-safe-harbor-conditions-pass",
+      "eligibleDomain": "local-personal-desktop-or-browser-presentation-accessibility-input-window-tab-or-reading-convenience-only",
+      "decisionFactors": [
+        "eligible-local-personal-desktop-or-browser-setting",
+        "substantive-content",
+        "work-product-or-artifact-relationship",
+        "documentation-governance-policy-instruction-skill-template-methodology-or-status",
+        "software-code-extension-dependency-configuration-automation-testing-or-workflow",
+        "security-privacy-credentials-authentication-permissions-sharing-sync-or-site-access",
+        "external-communication-publication-deployment-purchase-or-external-state",
+        "destructive-or-not-readily-reversible",
+        "canonical-shared-committed-pushed-uploaded-or-published-state",
+        "evidence-provenance-verification-validation-reproduction-approval-or-completion-status"
+      ],
       "protectedDimensions": [
         "substantive-content",
         "artifact-relationship",
@@ -83,17 +96,17 @@
         "evidence-provenance-verification-or-completion-status"
       ],
       "artifactRelatedDocumentationRemainsInScope": true,
-      "examplesAre": "illustrative-non-comprehensive-non-exhaustive-non-exclusive",
+      "examplesAre": "illustrative-non-comprehensive-non-exhaustive-non-exclusive-and-not-representative-of-all-possible-activities-settings-purposes-dependencies-or-effects",
       "uncertaintyRule": "qtu-applies",
       "authorization": {
-        "directiveId": "NDV-QTU-SH-2026-07-19-A",
-        "directiveHash": "e5bff6940282f4bc6c9632ca43476bdb45e6a4fbba0e135bd869a7a3c53c5f17",
+        "directiveId": "NDV-QTU-SH-2026-07-19-B",
+        "directiveHash": "d04934858c5e5a0dc776d6b643174e55641657368ccc77accc46826754ae035d",
         "intervalMethod": "Beta(1,1) component posteriors; conservative product of one-sided 90% lower credible bounds",
         "oodTests": "60/60",
         "counterfactualTests": "60/60",
         "complexityRatio": 1.0,
-        "qtuLcb90": 0.927285,
-        "scope": "reversible safe-harbor control installation and synchronization only; not production-effectiveness evidence"
+        "qtuLcb90": 0.927284744,
+        "scope": "reversible desktop-browser-only safe-harbor refinement and canonical-repository synchronization only; not production-effectiveness evidence"
       }
     },
     "preAuthorizationOperations": [
