@@ -30,6 +30,27 @@ test("universal intake is device-authenticated, bounded, and deduplicated", asyn
   assert.match(database, /duplicate: true/);
 });
 
+test("browser intake supports bounded private attachments backed by R2", async () => {
+  const [component, uploadRoute, downloadRoute, database, hosting] = await Promise.all([
+    readFile(new URL("../app/CommandCenter.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/attachments/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/attachments/[id]/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../db/command-center.ts", import.meta.url), "utf8"),
+    readFile(new URL("../.openai/hosting.json", import.meta.url), "utf8"),
+  ]);
+  assert.match(component, /type="file" multiple/);
+  assert.match(component, /\+ Add attachment/);
+  assert.match(component, /captureAttachments/);
+  assert.match(uploadRoute, /MAX_FILES = 5/);
+  assert.match(uploadRoute, /MAX_FILE_BYTES = 20 \* 1024 \* 1024/);
+  assert.match(uploadRoute, /Cross-origin attachments are not allowed/);
+  assert.match(uploadRoute, /ATTACHMENTS\.put/);
+  assert.match(downloadRoute, /Content-Disposition/);
+  assert.match(downloadRoute, /Content-Security-Policy/);
+  assert.match(database, /CREATE TABLE IF NOT EXISTS intake_attachments/);
+  assert.match(hosting, /"r2": "ATTACHMENTS"/);
+});
+
 test("keeps the product and safety controls explicit", async () => {
   const [component, css, page, layout, packageJson] = await Promise.all([
     readFile(new URL("../app/CommandCenter.tsx", import.meta.url), "utf8"),

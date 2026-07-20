@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { ApprovalRecord, CommandCenterState, CommunicationRecord, IntakeItemRecord, WorkItemRecord } from "../lib/types";
 
 type SpeechRecognitionEventLike = { results: ArrayLike<{ 0: { transcript: string } }> };
@@ -49,9 +49,11 @@ function recruiterUrgency(message: CommunicationRecord) {
 export function CommandCenter({ initialState }: { initialState: CommandCenterState }) {
   const [state, setState] = useState(initialState);
   const [capture, setCapture] = useState("");
+  const [captureAttachments, setCaptureAttachments] = useState<File[]>([]);
   const [listening, setListening] = useState(false);
   const [busy, setBusy] = useState<string | null>(null);
   const [notice, setNotice] = useState("Live data is loading.");
+  const attachmentInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -131,9 +133,52 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
 
   async function submitCapture() {
     const text = capture.trim();
-    if (!text) return;
+    if (!text && captureAttachments.length === 0) return;
+    if (captureAttachments.length > 0) {
+      setBusy("Intake capture");
+      try {
+        const body = new FormData();
+        body.append("text", text);
+        for (const file of captureAttachments) body.append("attachments", file, file.name);
+        const response = await fetch("/api/attachments", { method: "POST", body });
+        const next = await response.json() as CommandCenterState & { error?: string };
+        if (!response.ok) throw new Error(next.error ?? "Attachment intake failed");
+        setState(next);
+        setCapture("");
+        setCaptureAttachments([]);
+        if (attachmentInput.current) attachmentInput.current.value = "";
+        setNotice("Message and attachments captured together.");
+      } catch (error) {
+        setNotice(error instanceof Error ? error.message : "The attachments could not be captured.");
+      } finally {
+        setBusy(null);
+      }
+      return;
+    }
     await mutate({ action: "capture", text }, "Idea capture");
     setCapture("");
+  }
+
+  function addAttachments(files: FileList | null) {
+    if (!files) return;
+    const candidates = Array.from(files);
+    const oversized = candidates.find((file) => file.size > 20 * 1024 * 1024);
+    if (oversized) {
+      setNotice(`${oversized.name} exceeds the 20 MB per-file limit.`);
+      return;
+    }
+    setCaptureAttachments((current) => {
+      const combined = [...current, ...candidates].slice(0, 5);
+      const totalBytes = combined.reduce((total, file) => total + file.size, 0);
+      if (totalBytes > 40 * 1024 * 1024) {
+        setNotice("Combined attachments must stay within 40 MB.");
+        return current;
+      }
+      if (current.length + candidates.length > 5) setNotice("You can attach up to five files at once.");
+      else setNotice(`${combined.length} attachment${combined.length === 1 ? "" : "s"} ready with this capture.`);
+      return combined;
+    });
+    if (attachmentInput.current) attachmentInput.current.value = "";
   }
 
   return (
@@ -166,15 +211,24 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
         <div className="capture-copy">
           <span className="section-kicker">VOICE INBOX</span>
           <h2 id="capture-title">Say it now. Routing comes later.</h2>
-          <p>Your exact thought is preserved. Codex can classify and connect it without interrupting capture.</p>
+          <p>Your exact thought and supporting files stay together so Codex has the context needed to respond and route the request.</p>
         </div>
         <div className="capture-controls">
           <label className="sr-only" htmlFor="quick-capture">Quick capture</label>
           <textarea id="quick-capture" value={capture} onChange={(event) => setCapture(event.target.value)} placeholder="Speak or type an idea, task, reminder, or issue…" rows={3} />
+          <input ref={attachmentInput} className="sr-only" id="capture-attachments" type="file" multiple onChange={(event) => addAttachments(event.target.files)} />
+          {captureAttachments.length > 0 ? <div className="attachment-chips" aria-label="Selected attachments">
+            {captureAttachments.map((file, index) => <span className="attachment-chip" key={`${file.name}-${file.size}-${file.lastModified}-${index}`}>
+              <span><strong>{file.name}</strong><small>{formatBytes(file.size)}</small></span>
+              <button type="button" aria-label={`Remove ${file.name}`} onClick={() => setCaptureAttachments((current) => current.filter((_, itemIndex) => itemIndex !== index))}>×</button>
+            </span>)}
+          </div> : null}
           <div className="button-row">
             <button className="button secondary" type="button" onClick={startVoiceCapture} aria-pressed={listening}>{listening ? "Listening…" : "Use microphone"}</button>
-            <button className="button primary" type="button" onClick={submitCapture} disabled={!capture.trim() || busy !== null}>{busy === "Idea capture" ? "Saving…" : "Capture"}</button>
+            <button className="button secondary attachment-button" type="button" onClick={() => attachmentInput.current?.click()} disabled={busy !== null}>+ Add attachment</button>
+            <button className="button primary" type="button" onClick={submitCapture} disabled={(!capture.trim() && captureAttachments.length === 0) || busy !== null}>{busy === "Idea capture" || busy === "Intake capture" ? "Saving…" : "Capture"}</button>
           </div>
+          <small className="attachment-limits">Up to 5 files · 20 MB each · 40 MB combined</small>
         </div>
       </section>
 
@@ -297,7 +351,7 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
         </button>
       </section>
 
-      <footer className="page-footer"><strong>ACS Command Center v0.3</strong><span>Observed facts, sourced facts, proposals, and unknowns remain explicitly separated.</span></footer>
+      <footer className="page-footer"><strong>ACS Command Center v0.4</strong><span>Observed facts, sourced facts, proposals, and unknowns remain explicitly separated.</span></footer>
     </main>
   );
 }
@@ -307,10 +361,15 @@ function IntakeCard({ item }: { item: IntakeItemRecord }) {
   return (
     <article className="intake-card">
       <div className="intake-kind" aria-hidden="true">{item.kind === "url" ? "↗" : item.kind === "text" ? "T" : item.kind.includes("recording") ? "▶" : "▣"}</div>
-      <div className="intake-main"><div className="meta-row"><span className="priority normal">{item.kind.replace("-", " ")}</span><span>{item.source} · {item.device}</span></div><h3>{item.title}</h3><p>{item.capturedText ?? item.originalFilename ?? item.sourceUrl ?? "Canonical source preserved in Drive."}</p><small>{formatDate(item.occurredAt)}{size ? ` · ${size}` : ""}</small></div>
+      <div className="intake-main"><div className="meta-row"><span className="priority normal">{item.kind.replace("-", " ")}</span><span>{item.source} · {item.device}</span></div><h3>{item.title}</h3><p>{item.capturedText ?? item.originalFilename ?? item.sourceUrl ?? "Canonical source preserved in Drive."}</p>{item.attachments.length > 0 ? <div className="intake-attachments">{item.attachments.map((attachment) => <a href={attachment.downloadUrl} key={attachment.id} download><span aria-hidden="true">↧</span>{attachment.originalFilename}<small>{formatBytes(attachment.sizeBytes)}</small></a>)}</div> : null}<small>{formatDate(item.occurredAt)}{size ? ` · ${size}` : ""}</small></div>
       <div className="intake-status"><strong>{item.status.replace("-", " ")}</strong>{item.sourceUrl ? <a href={item.sourceUrl} target="_blank" rel="noreferrer">Open source</a> : null}</div>
     </article>
   );
+}
+
+function formatBytes(bytes: number) {
+  if (bytes < 1_000_000) return `${Math.max(1, Math.round(bytes / 1000))} KB`;
+  return `${(bytes / 1_000_000).toFixed(1)} MB`;
 }
 
 function ApprovalCard({ approval, busy, onDecision }: { approval: ApprovalRecord; busy: string | null; onDecision: (payload: Record<string, unknown>, label: string) => Promise<void> }) {

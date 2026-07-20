@@ -50,6 +50,15 @@ h1 { margin-bottom: 10px; font-size: clamp(2.3rem, 6vw, 4.9rem); max-width: 760p
 .capture-card p { margin: 0; color: #bdc9c4; line-height: 1.5; }
 .capture-controls textarea { width: 100%; resize: vertical; min-height: 92px; padding: 15px 16px; color: var(--ink); background: #fffdf8; border: 2px solid transparent; border-radius: 15px; outline: none; line-height: 1.45; }
 .capture-controls textarea:focus { border-color: #8cc6aa; box-shadow: 0 0 0 4px rgba(140,198,170,.18); }
+.attachment-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.attachment-chip { display: flex; align-items: center; gap: 8px; max-width: 100%; padding: 8px 8px 8px 11px; color: var(--ink); background: #eef4ef; border: 1px solid #b8cfc1; border-radius: 12px; }
+.attachment-chip > span { display: flex; min-width: 0; flex-direction: column; gap: 1px; }
+.attachment-chip strong { max-width: 230px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .76rem; }
+.attachment-chip small, .attachment-limits { color: #74847c; font-size: .66rem; }
+.attachment-chip button { display: grid; place-items: center; width: 26px; height: 26px; padding: 0; color: #456255; background: transparent; border: 0; border-radius: 8px; cursor: pointer; font-size: 1.15rem; }
+.attachment-chip button:hover, .attachment-chip button:focus-visible { color: var(--red); background: var(--red-soft); outline: none; }
+.attachment-button { border-color: #87aa99; }
+.attachment-limits { display: block; margin-top: 8px; color: #aebdb6; }
 .section-intro { max-width: 780px; color: var(--muted); line-height: 1.55; }
 .intake-list { display: grid; gap: 10px; }
 .intake-card { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 15px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
@@ -57,6 +66,10 @@ h1 { margin-bottom: 10px; font-size: clamp(2.3rem, 6vw, 4.9rem); max-width: 760p
 .intake-main h3 { margin: 6px 0 4px; font-size: 1rem; }
 .intake-main p { margin: 0 0 5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .intake-main small { color: var(--muted); }
+.intake-attachments { display: flex; flex-wrap: wrap; gap: 7px; margin: 9px 0; }
+.intake-attachments a { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; padding: 7px 9px; text-decoration: none; color: var(--green); background: var(--green-soft); border-radius: 9px; font-size: .74rem; font-weight: 750; }
+.intake-attachments a:hover, .intake-attachments a:focus-visible { box-shadow: 0 0 0 3px rgba(30,91,70,.18); outline: none; }
+.intake-attachments a small { color: var(--muted); font-weight: 600; }
 .intake-status { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; text-transform: capitalize; font-size: .78rem; }
 .intake-status a { color: var(--green); font-weight: 750; }
 .button-row { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 9px; margin-top: 10px; }

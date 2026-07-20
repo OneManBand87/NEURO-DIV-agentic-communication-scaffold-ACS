@@ -1,4 +1,4 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const projects = sqliteTable("projects", {
   id: text("id").primaryKey(),
@@ -117,3 +117,19 @@ export const intakeItems = sqliteTable("intake_items", {
   receivedAt: text("received_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
+
+export const intakeAttachments = sqliteTable(
+  "intake_attachments",
+  {
+    id: text("id").primaryKey(),
+    intakeItemId: text("intake_item_id").notNull(),
+    objectKey: text("object_key").notNull().unique(),
+    originalFilename: text("original_filename").notNull(),
+    contentType: text("content_type").notNull(),
+    sizeBytes: integer("size_bytes").notNull(),
+    sha256: text("sha256").notNull(),
+    uploadedBy: text("uploaded_by"),
+    createdAt: text("created_at").notNull(),
+  },
+  (table) => [index("intake_attachments_item_idx").on(table.intakeItemId, table.createdAt)],
+);

@@ -51,10 +51,16 @@ const schemaStatements = [
     status TEXT NOT NULL, occurred_at TEXT NOT NULL, received_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
   )`,
+  `CREATE TABLE IF NOT EXISTS intake_attachments (
+    id TEXT PRIMARY KEY, intake_item_id TEXT NOT NULL, object_key TEXT NOT NULL UNIQUE,
+    original_filename TEXT NOT NULL, content_type TEXT NOT NULL, size_bytes INTEGER NOT NULL,
+    sha256 TEXT NOT NULL, uploaded_by TEXT, created_at TEXT NOT NULL
+  )`,
   "CREATE INDEX IF NOT EXISTS work_items_lane_idx ON work_items(attention_lane, priority)",
   "CREATE INDEX IF NOT EXISTS communications_status_idx ON communications(status, response_target_at)",
   "CREATE INDEX IF NOT EXISTS approvals_status_idx ON approvals(status, deadline)",
   "CREATE INDEX IF NOT EXISTS intake_status_idx ON intake_items(status, received_at)",
+  "CREATE INDEX IF NOT EXISTS intake_attachments_item_idx ON intake_attachments(intake_item_id, created_at)",
 ];
 
 function database() {
@@ -179,7 +185,7 @@ async function sha256(value: string) {
 export async function loadCommandCenterState(): Promise<CommandCenterState> {
   await ensureCommandCenterDatabase();
   const db = database();
-  const [projectRows, workRows, approvalRows, communicationRows, usageRows, agentRows, intakeRows, settingRows] =
+  const [projectRows, workRows, approvalRows, communicationRows, usageRows, agentRows, intakeRows, attachmentRows, settingRows] =
     await Promise.all([
       db.prepare("SELECT * FROM projects ORDER BY sort_order").all<D1Row>(),
       db.prepare("SELECT * FROM work_items ORDER BY CASE priority WHEN 'critical' THEN 1 WHEN 'high' THEN 2 WHEN 'normal' THEN 3 ELSE 4 END, updated_at DESC").all<D1Row>(),
@@ -188,10 +194,25 @@ export async function loadCommandCenterState(): Promise<CommandCenterState> {
       db.prepare("SELECT * FROM usage_preflights ORDER BY created_at DESC").all<D1Row>(),
       db.prepare("SELECT * FROM agent_statuses ORDER BY agent").all<D1Row>(),
       db.prepare("SELECT * FROM intake_items ORDER BY received_at DESC LIMIT 100").all<D1Row>(),
+      db.prepare("SELECT * FROM intake_attachments ORDER BY created_at").all<D1Row>(),
       db.prepare("SELECT * FROM settings").all<D1Row>(),
     ]);
 
   const settings = Object.fromEntries(settingRows.results.map((row) => [asString(row, "key"), asString(row, "value")]));
+  const attachmentsByItem = new Map<string, CommandCenterState["intakeItems"][number]["attachments"]>();
+  for (const row of attachmentRows.results) {
+    const intakeItemId = asString(row, "intake_item_id");
+    const attachments = attachmentsByItem.get(intakeItemId) ?? [];
+    attachments.push({
+      id: asString(row, "id"),
+      originalFilename: asString(row, "original_filename"),
+      contentType: asString(row, "content_type"),
+      sizeBytes: Number(row.size_bytes ?? 0),
+      sha256: asString(row, "sha256"),
+      downloadUrl: `/api/attachments/${encodeURIComponent(asString(row, "id"))}`,
+    });
+    attachmentsByItem.set(intakeItemId, attachments);
+  }
   return {
     generatedAt: new Date().toISOString(),
     settings,
@@ -241,8 +262,10 @@ export async function loadCommandCenterState(): Promise<CommandCenterState> {
       lastSeenAt: asString(row, "last_seen_at"), nextAction: asString(row, "next_action"),
       blockedReason: asNullableString(row, "blocked_reason"), evidence: asString(row, "evidence"),
     })),
-    intakeItems: intakeRows.results.map((row) => ({
-      id: asString(row, "id"), sourceId: asString(row, "source_id"), projectId: asString(row, "project_id"),
+    intakeItems: intakeRows.results.map((row) => {
+      const id = asString(row, "id");
+      return {
+      id, sourceId: asString(row, "source_id"), projectId: asString(row, "project_id"),
       kind: asString(row, "kind") as CommandCenterState["intakeItems"][number]["kind"],
       source: asString(row, "source"), title: asString(row, "title"),
       originalFilename: asNullableString(row, "original_filename"), contentType: asNullableString(row, "content_type"),
@@ -251,7 +274,8 @@ export async function loadCommandCenterState(): Promise<CommandCenterState> {
       device: asString(row, "device"), sha256: asNullableString(row, "sha256"),
       status: asString(row, "status") as CommandCenterState["intakeItems"][number]["status"],
       occurredAt: asString(row, "occurred_at"), receivedAt: asString(row, "received_at"), updatedAt: asString(row, "updated_at"),
-    })),
+      attachments: attachmentsByItem.get(id) ?? [],
+    };}),
   };
 }
 
@@ -278,6 +302,87 @@ export async function ingestUniversalItem(input: {
     input.device, input.sha256 ?? null, "captured", input.occurredAt, now, now,
   ).run();
   return { id, duplicate: false };
+}
+
+export async function createBrowserIntake(input: {
+  text: string;
+  uploadedBy: string | null;
+  attachments: Array<{
+    id: string;
+    objectKey: string;
+    originalFilename: string;
+    contentType: string;
+    sizeBytes: number;
+    sha256: string;
+  }>;
+}) {
+  await ensureCommandCenterDatabase();
+  const db = database();
+  const now = new Date().toISOString();
+  const intakeId = `intake-${crypto.randomUUID()}`;
+  const workId = `capture-${crypto.randomUUID()}`;
+  const sourceId = `browser:${crypto.randomUUID()}`;
+  const fallbackTitle = input.attachments.length === 1
+    ? `Review attachment — ${input.attachments[0].originalFilename}`
+    : `Review ${input.attachments.length} attachments`;
+  const title = input.text.trim().slice(0, 500) || fallbackTitle;
+  const totalBytes = input.attachments.reduce((total, attachment) => total + attachment.sizeBytes, 0);
+  const contentType = input.attachments.length === 0
+    ? null
+    : input.attachments.length === 1
+      ? input.attachments[0].contentType
+      : "multipart/mixed";
+  const originalFilename = input.attachments.length === 1 ? input.attachments[0].originalFilename : null;
+  const statements = [
+    db.prepare(
+      `INSERT INTO intake_items
+        (id,source_id,project_id,kind,source,title,original_filename,content_type,size_bytes,drive_path,
+         source_url,captured_text,device,sha256,status,occurred_at,received_at,updated_at)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+    ).bind(
+      intakeId, sourceId, "general", input.attachments.length ? "file" : "text", "command-center-web",
+      title, originalFilename, contentType, totalBytes, null, null, input.text.trim() || null,
+      "Command Center web", null, "captured", now, now, now,
+    ),
+    db.prepare(
+      `INSERT INTO work_items
+        (id,project_id,title,owner,status,priority,attention_lane,due_at,blocker,source_label,source_url,updated_at)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+    ).bind(
+      workId, "general", title, "Codex",
+      input.attachments.length ? `Captured with ${input.attachments.length} attachment${input.attachments.length === 1 ? "" : "s"} — routing needed` : "Captured — routing needed",
+      "normal", "next", null, null, "Command Center intake", null, now,
+    ),
+  ];
+  for (const attachment of input.attachments) {
+    statements.push(
+      db.prepare(
+        `INSERT INTO intake_attachments
+          (id,intake_item_id,object_key,original_filename,content_type,size_bytes,sha256,uploaded_by,created_at)
+         VALUES (?,?,?,?,?,?,?,?,?)`,
+      ).bind(
+        attachment.id, intakeId, attachment.objectKey, attachment.originalFilename,
+        attachment.contentType, attachment.sizeBytes, attachment.sha256, input.uploadedBy, now,
+      ),
+    );
+  }
+  await db.batch(statements);
+  return { intakeId, workId };
+}
+
+export async function getIntakeAttachment(id: string) {
+  await ensureCommandCenterDatabase();
+  return database().prepare(
+    `SELECT id, object_key, original_filename, content_type, size_bytes, sha256
+     FROM intake_attachments WHERE id = ?`,
+  ).bind(id).first<{
+    id: string;
+    object_key: string;
+    original_filename: string;
+    content_type: string;
+    size_bytes: number;
+    sha256: string;
+  }>();
 }
 
 export async function setBackgroundPause(paused: boolean) {

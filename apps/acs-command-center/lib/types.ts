@@ -110,6 +110,16 @@ export type IntakeItemRecord = {
   occurredAt: string;
   receivedAt: string;
   updatedAt: string;
+  attachments: IntakeAttachmentRecord[];
+};
+
+export type IntakeAttachmentRecord = {
+  id: string;
+  originalFilename: string;
+  contentType: string;
+  sizeBytes: number;
+  sha256: string;
+  downloadUrl: string;
 };
 
 export type CommandCenterState = {

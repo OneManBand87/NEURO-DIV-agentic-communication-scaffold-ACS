@@ -1,0 +1,1 @@
+CREATE INDEX `intake_attachments_item_idx` ON `intake_attachments` (`intake_item_id`,`created_at`);
