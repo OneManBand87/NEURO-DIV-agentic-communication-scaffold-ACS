@@ -161,6 +161,22 @@
       },
       "controlRecord": "resources/universal-intake-implementation.md"
     },
+    "voiceCaptureBoundary": {
+      "status": "standing-project-instruction",
+      "siriRole": "secretary-only-recorder-trigger",
+      "capturePrimitive": "open-line-audio-recording",
+      "completionSignal": "explicit-user-stop-only",
+      "silenceEndsCapture": false,
+      "supportsPauseResume": true,
+      "preserveOriginalAudio": true,
+      "transcriptRole": "linked-derivative-aid-may-contain-errors",
+      "siriMayInterpret": false,
+      "siriMayInterrupt": false,
+      "siriMayInferAction": false,
+      "downstreamRoute": "ccs-after-explicit-completion",
+      "fallbackWhenGuaranteesUnavailable": "button-recorder-control-or-other-open-line-capture",
+      "controlRecord": "resources/universal-intake-implementation.md"
+    },
     "verification": {
       "productionBuild": "passed",
       "lint": "passed",

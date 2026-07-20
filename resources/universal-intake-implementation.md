@@ -40,6 +40,17 @@ Provide one low-friction route into the ACS Command Center for screenshots, scre
 - Files deliberately attached in the Command Center are transmitted to its private Sites R2 storage. The route accepts no more than five files, 20 MB per file, and 40 MB combined; download responses force attachment disposition, disable caching, apply a sandbox content policy, and do not render the original MIME type inline.
 - Intake is preservation and triage, not permission to publish, send, execute, or otherwise act on captured content.
 
+## Siri and spoken-word capture boundary
+
+- Siri is secretary-only. It may initiate a separate audio recorder but must not interpret the user's thought, control the conversational turn, infer completion from silence, or submit a standardized Siri response as the user's request.
+- Spoken-word intake must use a real open-line audio recording rather than Siri dictation or a speech-to-text prompt box.
+- Recording continues until the user explicitly stops it. Long pauses, topic changes, self-correction, repetition, and nonlinear ADHD speech do not constitute completion.
+- The recorder must support pause and resume without finalizing or routing the item.
+- The original audio is the primary source and must be preserved before transcription, summarization, classification, or routing. Transcripts are linked derivative aids that may contain errors and must not silently replace the audio.
+- No capture surface may interrupt with clarifying questions, suggestions, confirmations, summaries, or conclusions while the user is thinking aloud.
+- After explicit completion, the recording may enter CCS intake for downstream transcription and interpretation. Any proposed task, decision, state change, or external action remains subject to normal CCS verification and approval controls.
+- If the available Siri or Shortcut route cannot guarantee explicit-stop recording and original-audio preservation, use a button, recorder control, or another open-line capture surface instead.
+
 ## Current evidence and limitations
 
 - Observed: source build, lint, MCP type-check, and five contract tests pass.
