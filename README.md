@@ -1,31 +1,126 @@
-# NEURO-DIV - agentic communication scaffold (ACS)
+# ACS Command Center
 
-ACS is the communications subsystem of the larger NEURO-DIV systematic architecture. It gives Codex, Claude Code, GitHub Copilot in VS Code, Gemini/Antigravity, Perplexity, and other compatible agents a shared way to exchange operational context, coordinate responsibilities, route narrative and cognitive feedback, synchronize state, and reach common tools without requiring the user to act as the integration layer.
+A mobile-first, ADHD-friendly operating interface for the NEURO-DIV Agentic
+Communication Scaffold. It consolidates focus, approvals, recruiter response
+timing, project status, external-agent status, and AI usage controls without
+requiring the user to navigate separate project menus.
 
-ACS is not the whole NEURO-DIV architecture. It is the communications team and connective scaffold operating across whichever ecosystem layers require agent-to-agent handoffs, context continuity, feedback routing, verification, or tool-mediated action.
+## Prerequisites
 
-## Relationship to the parent architecture
+- Node.js `>=22.13.0`
 
-The current parent spine is the [NEURO-DIV Core Foundation Document v1](https://docs.google.com/document/d/1DRlYOnp6AGBwRWOYgfh03gxNWxn6kaWSjmkddPa7gdY/edit). That document is incomplete and contaminated by transcription noise. It requires a separate, multi-version reconstruction that compares surviving architecture versions, identifies missing pieces, resolves contradictions, and produces a coherent full-system architecture. ACS should be integrated into that reconstruction as a cross-layer communications subsystem, not mistaken for the parent framework.
+## Local development
 
-Start with [AGENTS.md](AGENTS.md). The current capability matrix and synchronization procedure live in [resources/agent-coordination.md](resources/agent-coordination.md).
-
-The integrated theory and branch hierarchy lives in [resources/theory-branch-integration.md](resources/theory-branch-integration.md). It connects WIPED behavioral adaptation, branch-structured reasoning, CBAL branch identity, ACS communication, distributed worker execution, and the integrity and garbage-collection control plane.
-
-All participating agents are subject to the [QTU provisional validation hold](resources/qtu-provisional-validation-hold.md). QTU is advisory design evidence pending independent empirical validation. Historical `QTU_AUTHORIZED` records mean `DESIGN_CONFORMANCE_ONLY — NOT EMPIRICALLY VALIDATED`; `0.90` is a provisional policy parameter, not a scientific cutoff; and QTU cannot independently authorize M3/M4 or consequential action. Historical scope guidance remains in the [administrative and logistical safe harbor](resources/qtu-administrative-logistical-safe-harbor.md), subject to the hold.
-
-Material claims and commitments are also governed by the [Integrity, Materiality, Evidence, and Commitment Control](resources/integrity-materiality-control.md). The control is PCAOB-aligned but does not claim PCAOB compliance; it requires evidence classification, contradiction handling, environment/counterpart awareness, commitment tracking, and verified read-back.
-
-The [Maximal Progression and User-Attention Escalation Control](resources/maximal-progression-user-attention-control.md) keeps workflow ownership with the agent. Agents must complete safe preparation, reduce a genuine user dependency to one prominent action request, and resume automatically after approval or authentication.
-
-The mandatory [Automation Cost, Cadence, and Proportionality Control](resources/automation-cost-cadence-proportionality-control.md) requires every recurring or background workflow to weigh total usage and attention cost against importance and urgency, prefer event-driven and least-cost adequate execution, cap runs and task churn, and pause automatically on repeated errors or no-op polls.
-
-Run the local validation with:
-
-```sh
-./scripts/verify-agent-resources.sh
+```bash
+npm install
+npm run dev
+npm run mcp
+npm run build
 ```
 
-OAuth and other credentials are intentionally excluded. Each client must authenticate to Zapier locally.
+This starter does not use `wrangler.jsonc`.
 
-The active GitHub repository is [OneManBand87/NEURO-DIV-agentic-communication-scaffold-ACS](https://github.com/OneManBand87/NEURO-DIV-agentic-communication-scaffold-ACS). GitHub repository names cannot preserve the spaces and parentheses in the human-facing title, so the repository uses a technically valid slug. The repository was safely repurposed from the earlier Neuro-DIV Bolt prototype; its former default state remains recoverable from `archive/neuro-div-bolt-prototype-2026-07-16`, and its original topic branches remain intact.
+The web interface runs at `http://localhost:3000`. The MCP server runs at
+`http://127.0.0.1:8787/mcp` and uses the web API as its live state layer.
+
+## Architecture
+
+- `app/` contains the responsive dashboard and API routes.
+- `db/` contains the durable D1 schema, runtime initialization, and state access.
+- `lib/` contains typed seed state and the usage preflight policy.
+- `mcp/` exposes standard `search` and `fetch` tools plus dashboard, capture,
+  recruiter-ingestion, approval, and usage-preflight tools.
+- `public/command-center-widget.html` is the MCP Apps/ChatGPT widget.
+
+Google Drive remains the canonical artifact store. D1 is an operational index,
+not a competing source of truth.
+
+## Workspace Auth Headers
+
+OpenAI workspace sites can read the current user's email from
+`oai-authenticated-user-email`.
+
+SIWC-authenticated workspace sites may also receive
+`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
+`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
+`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
+
+Treat the full name as optional and fall back to email when it is absent:
+
+```tsx
+import { headers } from "next/headers";
+
+export default async function Home() {
+  const requestHeaders = await headers();
+  const email = requestHeaders.get("oai-authenticated-user-email");
+  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
+  const fullName =
+    encodedFullName &&
+    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
+      "percent-encoded-utf-8"
+      ? decodeURIComponent(encodedFullName)
+      : null;
+
+  const displayName = fullName ?? email;
+  // ...
+}
+```
+
+## Optional Dispatch-Owned ChatGPT Sign-In
+
+Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
+optional or required ChatGPT sign-in:
+
+- Use `getChatGPTUser()` for optional signed-in UI.
+- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
+  anonymous visitors through Sign in with ChatGPT.
+- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
+  browser links or actions.
+- Pass a same-origin relative `returnTo` path for the destination after sign-in
+  or sign-out. The helper validates and safely encodes it.
+- Mark protected pages with `export const dynamic = "force-dynamic"` because
+  they depend on per-request identity headers.
+
+Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
+OAuth cookies, and identity header injection. Do not implement app routes for
+those reserved paths. Routes that do not import and call the helper remain
+anonymous-compatible.
+
+SIWC establishes identity only; it does not prove workspace membership. Use the
+Sites hosting platform's access policy controls for workspace-wide restrictions,
+or enforce explicit server-side membership or allowlist checks.
+
+Use SIWC for account pages, user-specific dashboards, saved records, and write
+actions tied to the current ChatGPT user. Leave public content anonymous.
+
+## Controls enforced in v0.1
+
+- Three-item work-in-progress limit on the main focus surface.
+- Unified approval queue with exact payload hashes.
+- Recruiter response target at two hours, critical threshold at three hours,
+  and a same-day hard deadline.
+- Event-driven recruiter design with no recurring AI polling.
+- Global background-AI pause and bounded usage preflight policy.
+- Native/no-model reminder preference.
+
+## Universal intake (v0.3)
+
+`POST /api/intake` accepts bounded metadata from trusted device routers using
+the `x-acs-device-token` header. It records screenshots, screen recordings,
+files, URLs, selected text, and other media in one deduplicated D1 queue. Source
+bytes remain in device-synced Apple intake storage; routed work products remain
+canonical in the project’s Google Drive structure. The native routers are
+event-driven and invoke no AI model.
+
+## Useful commands
+
+- `npm run dev`: start local development
+- `npm run build`: verify the vinext build output
+- `npm test`: build and verify the rendered Command Center contract
+- `npm run db:generate`: generate Drizzle migrations after schema changes
+- `npm run mcp`: run the local MCP Apps server
+
+## Learn More
+
+- [vinext Documentation](https://github.com/cloudflare/vinext)
+- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)

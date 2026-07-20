@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1784558798448,
+      "tag": "0000_naive_colonel_america",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1784561928903,
+      "tag": "0001_clammy_captain_cross",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1784561948722,
+      "tag": "0002_odd_chronomancer",
+      "breakpoints": true
+    }
+  ]
+}
