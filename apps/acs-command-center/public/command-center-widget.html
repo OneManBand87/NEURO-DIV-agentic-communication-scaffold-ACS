@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ACS Command Center</title>
+  <style>
+    :root { color-scheme: light dark; font-family: ui-sans-serif, system-ui, sans-serif; --ink:#183128; --paper:#fffdf7; --muted:#68766f; --green:#1e5b46; --soft:#dcebe2; --line:#d9ddd5; }
+    * { box-sizing: border-box; }
+    body { margin:0; padding:12px; background:transparent; color:var(--ink); }
+    main { border:1px solid var(--line); border-radius:18px; padding:16px; background:var(--paper); }
+    header { display:flex; justify-content:space-between; gap:14px; align-items:flex-start; }
+    small { color:var(--green); font-weight:800; letter-spacing:.12em; }
+    h1 { margin:5px 0 4px; font-size:1.35rem; letter-spacing:-.04em; }
+    p { color:var(--muted); margin:0; font-size:.82rem; line-height:1.4; }
+    .count { padding:6px 9px; border-radius:999px; background:var(--soft); color:var(--green); font-weight:800; font-size:.75rem; }
+    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:14px; }
+    .card { min-height:112px; padding:12px; border-radius:13px; background:#f4f2eb; }
+    .card span { display:block; color:var(--muted); font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; }
+    .card strong { display:block; margin:7px 0 5px; font-size:1.15rem; }
+    .card p { font-size:.72rem; }
+    .focus { margin-top:9px; padding:11px; border-left:4px solid var(--green); border-radius:10px; background:#f4f2eb; }
+    @media (max-width:520px) { .grid { grid-template-columns:1fr; } }
+    @media (prefers-color-scheme:dark) { :root { --ink:#e8f3ed; --paper:#183128; --muted:#b8c8c0; --soft:#284c3f; --line:#466458; } .card,.focus { background:#203d33; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header><div><small>ACS COMMAND CENTER</small><h1>Today, without the noise.</h1><p>Focus, approvals, recruiter timing, and usage safety.</p></div><div class="count" id="status">Loading</div></header>
+    <div class="grid"><div class="card"><span>Now</span><strong id="focus-count">—</strong><p>Maximum three active focus items.</p></div><div class="card"><span>Approvals</span><strong id="approval-count">—</strong><p>Only decisions that require the user.</p></div><div class="card"><span>Recruiters</span><strong id="recruiter-count">—</strong><p>2h target · 3h critical · same day.</p></div></div>
+    <div id="focus-list"></div>
+  </main>
+  <script type="module">
+    const render = (state) => {
+      if (!state) return;
+      const focus = (state.workItems || []).filter((item) => item.attentionLane === "now").slice(0, 3);
+      const approvals = (state.approvals || []).filter((item) => item.status === "pending");
+      const recruiters = (state.communications || []).filter((item) => item.status === "response-needed");
+      document.querySelector("#focus-count").textContent = String(focus.length);
+      document.querySelector("#approval-count").textContent = String(approvals.length);
+      document.querySelector("#recruiter-count").textContent = String(recruiters.length);
+      document.querySelector("#status").textContent = state.settings?.background_ai_paused === "false" ? "Guarded" : "AI paused";
+      const focusNodes = focus.map((item) => {
+        const container = document.createElement("div");
+        container.className = "focus";
+        const title = document.createElement("strong");
+        title.textContent = String(item.title ?? "Untitled item");
+        const detail = document.createElement("p");
+        detail.textContent = `${String(item.owner ?? "Unassigned")} · ${String(item.status ?? "Unknown")}`;
+        container.append(title, detail);
+        return container;
+      });
+      document.querySelector("#focus-list").replaceChildren(...focusNodes);
+    };
+    render(window.openai?.toolOutput);
+    const parentOrigin = (() => { try { return new URL(document.referrer).origin; } catch { return null; } })();
+    window.addEventListener("message", (event) => {
+      if (event.source !== window.parent || !parentOrigin || event.origin !== parentOrigin) return;
+      const message = event.data;
+      if (message?.jsonrpc === "2.0" && message.method === "ui/notifications/tool-result") render(message.params?.structuredContent);
+    }, { passive:true });
+    window.addEventListener("openai:set_globals", (event) => render(event.detail?.globals?.toolOutput ?? window.openai?.toolOutput), { passive:true });
+  </script>
+</body>
+</html>

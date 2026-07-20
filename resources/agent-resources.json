@@ -28,6 +28,74 @@
       "common-tool-access"
     ]
   },
+  "commandCenter": {
+    "status": "production-v0.2-owner-only",
+    "productionUrl": "https://acs-command-center.onemanband87.chatgpt.site",
+    "sourceDirectory": "apps/acs-command-center",
+    "role": "adhd-friendly-central-management-interface",
+    "canonicalStorage": "google-drive",
+    "operationalIndex": "sites-d1",
+    "driveProject": {
+      "folderUrl": "https://drive.google.com/drive/folders/1Eya9De0przu_CcyvphlUuRetCPTO4u5-",
+      "projectIndex": "https://docs.google.com/document/d/1yy0OeOAsqi-qLBABiZPWPYng8mAkV0CSpUHE6sJ7fL4/edit",
+      "approvedArchitectureAndControls": "https://docs.google.com/document/d/1Fop9QaYrLrQMlnLRcEvDBsnVghm1gBK96BEzFmoFHos/edit",
+      "releaseRecord": "https://docs.google.com/document/d/1CrZ7ZVCDDflLUcfUevnquadmC2f1hBWdhLJ2XxBRP6M/edit"
+    },
+    "parentBranches": [
+      "general",
+      "neuro-div",
+      "music",
+      "personal-life-and-administration",
+      "jobs-work",
+      "communications"
+    ],
+    "recruiterSlaMinutes": {
+      "target": 120,
+      "critical": 180,
+      "hardDeadline": "same-calendar-day"
+    },
+    "linkedinIntake": {
+      "route": "individual-email-notifications-to-job-search-gmail-event-driven-processing-and-manual-share-fallback",
+      "scrapingAuthorized": false,
+      "directMessageReadVerified": false,
+      "notificationEmailReadVerified": true,
+      "messagesIngested": 2,
+      "preparedReplies": 2,
+      "pendingExactDraftApprovals": 2
+    },
+    "usageSentinel": {
+      "backgroundAiDefault": "paused",
+      "recruiterPollingEnabled": false,
+      "eventDrivenPreferred": true,
+      "tripwires": {
+        "consecutiveSystemErrors": 2,
+        "consecutiveNoOps": 3,
+        "userCostComplaint": "immediate-pause"
+      }
+    },
+    "verification": {
+      "productionBuild": "passed",
+      "lint": "passed",
+      "contractTests": "passed",
+      "d1HealthAndState": "passed-local-runtime",
+      "mcpInitialization": "passed-local-runtime",
+      "mcpToolsDiscovered": 7,
+      "driveReadBack": "passed",
+      "privateDeployment": "succeeded-sites-version-3-owner-only",
+      "securityHardening": "passed-live-and-source-verification",
+      "productionDependencyAudit": "passed-zero-vulnerabilities",
+      "crossOriginMutationRejection": "passed-http-403",
+      "apiNoStoreAndSecurityHeaders": "passed-live-response",
+      "gmailLiveRead": "passed-eliekurtz01-account",
+      "secondGmailAccount": "pending",
+      "linkedinNotificationIntake": "passed-two-existing-messages",
+      "exactDraftApprovals": "passed-two-pending-items",
+      "recruiterEventDelivery": "pending",
+      "nativeRecruiterAlerts": "pending",
+      "driveWriteThrough": "pending",
+      "chatgptDeveloperConnectorRegistration": "pending"
+    }
+  },
   "theoryBranchIntegration": {
     "snapshot": "resources/theory-branch-integration.md",
     "architecturalChain": [

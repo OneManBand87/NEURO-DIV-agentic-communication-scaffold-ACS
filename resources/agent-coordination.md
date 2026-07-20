@@ -1,6 +1,6 @@
 # NEURO-DIV - agentic communication scaffold (ACS) - Repository Snapshot
 
-Last verified: 2026-07-19
+Last verified: 2026-07-20
 
 Canonical source: [NEURO-DIV - Agentic Communication Scaffold (ACS) - Shared Agent Brief - Current](https://docs.google.com/document/d/1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q/edit)
 
@@ -25,6 +25,18 @@ The mandatory [Maximal Progression and User-Attention Escalation Control](maxima
 The mandatory [Automation Cost, Cadence, and Proportionality Control](automation-cost-cadence-proportionality-control.md) governs recurring, scheduled, polling, monitoring, retry, and background work. It requires a whole-window cost-versus-importance preflight; event-driven and least-cost adequate execution; bounded runs, expiry, cost, model/reasoning level, task creation, and tripwires; and automatic pause after two consecutive system errors, three consecutive no-op runs, or a user cost complaint. Unknown, unbounded, or disproportionate cost blocks activation.
 
 The native reminder and notification routing rule requires ordinary one-time or recurring reminders to use the cheapest adequate device-native or product-native mechanism that invokes no AI model, including Apple Reminders, Calendar reminders, local operating-system notifications, or the target product's native scheduler. Never create a Codex or other LLM automation merely to wait, poll, check time, or deliver a reminder. Codex automation is reserved for execution-time work that genuinely requires reasoning or tool actions and still must pass the automation cost control. Native recurring reminders are preferred over recurring agent runs. If native cross-device delivery is unavailable, agents must disclose the reachability limitation and use the least-cost already-authorized reachable native channel rather than silently substituting an expensive Codex automation. Codex native notifications are reserved for meaningful Codex completion or a genuine user-only blocker, while task ownership remains with the agent.
+
+## ACS Command Center
+
+The [private ACS Command Center](https://acs-command-center.onemanband87.chatgpt.site) is the ADHD-friendly management surface for current priorities, exact-payload approvals, recruiter response SLAs, the six approved parent branches, project plans and timeline health, agent status, suggested next actions, and AI usage controls. Version 0.2 was deployed with owner-only access on 2026-07-20.
+
+The implementation lives under `apps/acs-command-center`. Its production surface uses a durable D1 operational index; Google Drive remains canonical. The [project index](https://docs.google.com/document/d/1yy0OeOAsqi-qLBABiZPWPYng8mAkV0CSpUHE6sJ7fL4/edit), [approved architecture and controls](https://docs.google.com/document/d/1Fop9QaYrLrQMlnLRcEvDBsnVghm1gBK96BEzFmoFHos/edit), and [v0.2 release record](https://docs.google.com/document/d/1CrZ7ZVCDDflLUcfUevnquadmC2f1hBWdhLJ2XxBRP6M/edit) are stored in the canonical Drive project.
+
+Verified implementation evidence includes successful production build, lint, source/build contract tests, D1 health and state responses, MCP initialization, seven-tool discovery, live dashboard-state return, Drive artifact read-back, owner-only Sites version 3 deployment, a live read from the authorized `eliekurtz01@gmail.com` mailbox, and production intake of two LinkedIn recruiter notifications with two prepared replies and two exact-draft approvals. Production verification also confirmed safe DOM widget rendering, strict bounded request validation, cross-origin mutation rejection, no-store API responses, baseline response security headers, and a zero-vulnerability production dependency audit. The MCP/ChatGPT-app server is implemented and locally verified but is not yet registered as a ChatGPT developer connector.
+
+Recruiter response policy is a two-hour target, three-hour critical escalation, and same-day hard deadline. The compliant LinkedIn route uses individual LinkedIn email notifications delivered to Gmail, event-driven processing, draft preparation, and one-tap copy/open controls, with manual mobile sharing as fallback. No scraping or prohibited automated LinkedIn activity is authorized. Continuous notification-event delivery, the second Gmail account, native alerts, and end-to-end same-day handling remain pending; no recurring AI polling was enabled.
+
+Active context should be compacted after substantive conclusions or state-changing work while full transcript, evidence, rationale, dissent, and superseded material remain preserved in history or archive. Task titles and branch classification should then be reviewed so the task reflects its actual primary matter and preserves the ideation-to-execution trail.
 
 ## Capability matrix
 
@@ -56,6 +68,7 @@ The native reminder and notification routing rule requires ordinary one-time or 
 - Project-local Codex context reminder hooks in `.codex/hooks.json` and `.codex/hooks/ndv_context_hook.py`.
 - Zapier SDK and durable-workflow skills under `.agents/skills`.
 - A local verifier that checks required files, JSON syntax, endpoint consistency, and obvious secret-bearing files.
+- Private ACS Command Center v0.2, its canonical Drive project records, exact-payload approval queue, two ingested recruiter items and prepared replies, recruiter SLA model, agent ledger, Usage Sentinel, D1 operational index, and locally verified seven-tool MCP/ChatGPT-app server.
 
 GitHub synchronization attention item `ATTN-003` is resolved. Provider-hosted device authentication succeeded for account `OneManBand87`; all eight intended local commits were pushed to `origin/main`, and the remote head advanced from `ed63d9f` to `edf1430` before the closure-record update.
 
