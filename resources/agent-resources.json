@@ -35,6 +35,32 @@
     "role": "adhd-friendly-central-management-interface",
     "canonicalStorage": "google-drive",
     "operationalIndex": "sites-d1",
+    "codexRouting": {
+      "status": "mandatory",
+      "scope": "all-neuro-div-work-with-codex-participation",
+      "ccsRole": "orchestration-and-visibility-layer",
+      "requiredCoverage": [
+        "requests",
+        "actions",
+        "device-control-paths",
+        "approvals",
+        "state-changes",
+        "blockers",
+        "outputs",
+        "completion-evidence"
+      ],
+      "executionTransportsAreSubordinate": [
+        "chatgpt-remote",
+        "iphone-mirroring",
+        "shortcuts",
+        "mobile-device-management",
+        "connectors",
+        "local-tools"
+      ],
+      "missingCapabilityFallback": "record-need-and-current-state-in-ccs-without-silent-bypass",
+      "canonicalBriefRevision": "ALtnJHzSSCzYPOt6ef5Qk_sbUmYApd8rAvhsC82uP8J72gxVuN7HYWenZuIMI73L73KC4ybHc0arNn3N5Nq5n7PE0D6AOSs0VAmbI-leIg",
+      "productionIntakeId": "intake-c823b88f-982d-4ee6-abd9-e476b9f84d8f"
+    },
     "driveProject": {
       "folderUrl": "https://drive.google.com/drive/folders/1Eya9De0przu_CcyvphlUuRetCPTO4u5-",
       "projectIndex": "https://docs.google.com/document/d/1yy0OeOAsqi-qLBABiZPWPYng8mAkV0CSpUHE6sJ7fL4/edit",

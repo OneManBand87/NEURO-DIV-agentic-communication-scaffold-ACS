@@ -33,6 +33,19 @@ for file in $required_files; do
   fi
 done
 
+for codex_ccs_file in AGENTS.md resources/agent-coordination.md; do
+  if ! rg -Fq 'Mandatory Codex routing through CCS' "$codex_ccs_file" &&
+     ! rg -Fq 'mandatory orchestration and visibility layer for all NEURO-DIV work in which Codex participates' "$codex_ccs_file"; then
+    printf 'Mandatory Codex-to-CCS routing rule missing: %s\n' "$codex_ccs_file" >&2
+    exit 1
+  fi
+done
+
+if ! jq -e '.commandCenter.codexRouting | (.status == "mandatory") and (.scope == "all-neuro-div-work-with-codex-participation") and (.ccsRole == "orchestration-and-visibility-layer") and (.requiredCoverage | index("device-control-paths") != null) and (.executionTransportsAreSubordinate | index("iphone-mirroring") != null) and (.productionIntakeId | startswith("intake-"))' resources/agent-resources.json >/dev/null; then
+  printf 'Mandatory Codex-to-CCS routing metadata mismatch\n' >&2
+  exit 1
+fi
+
 for automation_cost_file in AGENTS.md CLAUDE.md GEMINI.md .github/copilot-instructions.md .github/instructions/agent-coordination.instructions.md README.md resources/agent-coordination.md resources/theory-branch-integration.md; do
   if ! rg -Fq 'automation-cost-cadence-proportionality-control.md' "$automation_cost_file"; then
     printf 'Automation cost control link missing: %s\n' "$automation_cost_file" >&2
