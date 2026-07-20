@@ -91,6 +91,27 @@ export type AgentStatusRecord = {
   evidence: string;
 };
 
+export type IntakeItemRecord = {
+  id: string;
+  sourceId: string;
+  projectId: string;
+  kind: "screenshot" | "screen-recording" | "file" | "url" | "text" | "media";
+  source: string;
+  title: string;
+  originalFilename: string | null;
+  contentType: string | null;
+  sizeBytes: number | null;
+  drivePath: string | null;
+  sourceUrl: string | null;
+  capturedText: string | null;
+  device: string;
+  sha256: string | null;
+  status: "captured" | "processing" | "routed" | "needs-attention";
+  occurredAt: string;
+  receivedAt: string;
+  updatedAt: string;
+};
+
 export type CommandCenterState = {
   generatedAt: string;
   projects: ProjectRecord[];
@@ -99,5 +120,6 @@ export type CommandCenterState = {
   communications: CommunicationRecord[];
   usagePreflights: UsagePreflightRecord[];
   agentStatuses: AgentStatusRecord[];
+  intakeItems: IntakeItemRecord[];
   settings: Record<string, string>;
 };

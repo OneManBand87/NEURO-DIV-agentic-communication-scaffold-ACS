@@ -13,8 +13,21 @@ test("build output and source contain the ACS Command Center", async () => {
   assert.match(component, /ONE APPROVAL QUEUE/);
   assert.match(component, /RECRUITER SLA/);
   assert.match(component, /USAGE SENTINEL/);
+  assert.match(component, /UNIVERSAL INTAKE/);
   assert.match(component, /role="status"/);
   assert.doesNotMatch(component, /codex-preview/);
+});
+
+test("universal intake is device-authenticated, bounded, and deduplicated", async () => {
+  const [route, database] = await Promise.all([
+    readFile(new URL("../app/api/intake/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../db/command-center.ts", import.meta.url), "utf8"),
+  ]);
+  assert.match(route, /x-acs-device-token/);
+  assert.match(route, /32_768/);
+  assert.match(route, /Unauthorized intake device/);
+  assert.match(database, /source_id TEXT NOT NULL UNIQUE/);
+  assert.match(database, /duplicate: true/);
 });
 
 test("keeps the product and safety controls explicit", async () => {

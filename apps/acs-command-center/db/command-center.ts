@@ -43,9 +43,18 @@ const schemaStatements = [
   `CREATE TABLE IF NOT EXISTS settings (
     key TEXT PRIMARY KEY, value TEXT NOT NULL, updated_at TEXT NOT NULL
   )`,
+  `CREATE TABLE IF NOT EXISTS intake_items (
+    id TEXT PRIMARY KEY, source_id TEXT NOT NULL UNIQUE, project_id TEXT NOT NULL,
+    kind TEXT NOT NULL, source TEXT NOT NULL, title TEXT NOT NULL,
+    original_filename TEXT, content_type TEXT, size_bytes INTEGER, drive_path TEXT,
+    source_url TEXT, captured_text TEXT, device TEXT NOT NULL, sha256 TEXT,
+    status TEXT NOT NULL, occurred_at TEXT NOT NULL, received_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+  )`,
   "CREATE INDEX IF NOT EXISTS work_items_lane_idx ON work_items(attention_lane, priority)",
   "CREATE INDEX IF NOT EXISTS communications_status_idx ON communications(status, response_target_at)",
   "CREATE INDEX IF NOT EXISTS approvals_status_idx ON approvals(status, deadline)",
+  "CREATE INDEX IF NOT EXISTS intake_status_idx ON intake_items(status, received_at)",
 ];
 
 function database() {
@@ -170,7 +179,7 @@ async function sha256(value: string) {
 export async function loadCommandCenterState(): Promise<CommandCenterState> {
   await ensureCommandCenterDatabase();
   const db = database();
-  const [projectRows, workRows, approvalRows, communicationRows, usageRows, agentRows, settingRows] =
+  const [projectRows, workRows, approvalRows, communicationRows, usageRows, agentRows, intakeRows, settingRows] =
     await Promise.all([
       db.prepare("SELECT * FROM projects ORDER BY sort_order").all<D1Row>(),
       db.prepare("SELECT * FROM work_items ORDER BY CASE priority WHEN 'critical' THEN 1 WHEN 'high' THEN 2 WHEN 'normal' THEN 3 ELSE 4 END, updated_at DESC").all<D1Row>(),
@@ -178,6 +187,7 @@ export async function loadCommandCenterState(): Promise<CommandCenterState> {
       db.prepare("SELECT * FROM communications ORDER BY received_at DESC").all<D1Row>(),
       db.prepare("SELECT * FROM usage_preflights ORDER BY created_at DESC").all<D1Row>(),
       db.prepare("SELECT * FROM agent_statuses ORDER BY agent").all<D1Row>(),
+      db.prepare("SELECT * FROM intake_items ORDER BY received_at DESC LIMIT 100").all<D1Row>(),
       db.prepare("SELECT * FROM settings").all<D1Row>(),
     ]);
 
@@ -231,7 +241,43 @@ export async function loadCommandCenterState(): Promise<CommandCenterState> {
       lastSeenAt: asString(row, "last_seen_at"), nextAction: asString(row, "next_action"),
       blockedReason: asNullableString(row, "blocked_reason"), evidence: asString(row, "evidence"),
     })),
+    intakeItems: intakeRows.results.map((row) => ({
+      id: asString(row, "id"), sourceId: asString(row, "source_id"), projectId: asString(row, "project_id"),
+      kind: asString(row, "kind") as CommandCenterState["intakeItems"][number]["kind"],
+      source: asString(row, "source"), title: asString(row, "title"),
+      originalFilename: asNullableString(row, "original_filename"), contentType: asNullableString(row, "content_type"),
+      sizeBytes: row.size_bytes == null ? null : Number(row.size_bytes), drivePath: asNullableString(row, "drive_path"),
+      sourceUrl: asNullableString(row, "source_url"), capturedText: asNullableString(row, "captured_text"),
+      device: asString(row, "device"), sha256: asNullableString(row, "sha256"),
+      status: asString(row, "status") as CommandCenterState["intakeItems"][number]["status"],
+      occurredAt: asString(row, "occurred_at"), receivedAt: asString(row, "received_at"), updatedAt: asString(row, "updated_at"),
+    })),
   };
+}
+
+export async function ingestUniversalItem(input: {
+  sourceId: string; projectId: string; kind: string; source: string; title: string;
+  originalFilename?: string; contentType?: string; sizeBytes?: number; drivePath?: string;
+  sourceUrl?: string; capturedText?: string; device: string; sha256?: string; occurredAt: string;
+}) {
+  await ensureCommandCenterDatabase();
+  const db = database();
+  const existing = await db.prepare("SELECT id FROM intake_items WHERE source_id = ?").bind(input.sourceId).first<{ id: string }>();
+  if (existing) return { id: existing.id, duplicate: true };
+  const id = `intake-${crypto.randomUUID()}`;
+  const now = new Date().toISOString();
+  await db.prepare(
+    `INSERT INTO intake_items
+      (id,source_id,project_id,kind,source,title,original_filename,content_type,size_bytes,drive_path,
+       source_url,captured_text,device,sha256,status,occurred_at,received_at,updated_at)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+  ).bind(
+    id, input.sourceId, input.projectId, input.kind, input.source, input.title,
+    input.originalFilename ?? null, input.contentType ?? null, input.sizeBytes ?? null,
+    input.drivePath ?? null, input.sourceUrl ?? null, input.capturedText ?? null,
+    input.device, input.sha256 ?? null, "captured", input.occurredAt, now, now,
+  ).run();
+  return { id, duplicate: false };
 }
 
 export async function setBackgroundPause(paused: boolean) {

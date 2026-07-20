@@ -147,6 +147,7 @@ export const initialCommandCenterState: CommandCenterState = {
   ],
   approvals: [],
   communications: [],
+  intakeItems: [],
   usagePreflights: [
     {
       id: "usage-command-center-build",

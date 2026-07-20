@@ -103,6 +103,15 @@ actions tied to the current ChatGPT user. Leave public content anonymous.
 - Global background-AI pause and bounded usage preflight policy.
 - Native/no-model reminder preference.
 
+## Universal intake (v0.3)
+
+`POST /api/intake` accepts bounded metadata from trusted device routers using
+the `x-acs-device-token` header. It records screenshots, screen recordings,
+files, URLs, selected text, and other media in one deduplicated D1 queue. Source
+bytes remain in device-synced Apple intake storage; routed work products remain
+canonical in the project’s Google Drive structure. The native routers are
+event-driven and invoke no AI model.
+
 ## Useful commands
 
 - `npm run dev`: start local development

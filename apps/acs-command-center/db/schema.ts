@@ -96,3 +96,24 @@ export const settings = sqliteTable("settings", {
   value: text("value").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
+
+export const intakeItems = sqliteTable("intake_items", {
+  id: text("id").primaryKey(),
+  sourceId: text("source_id").notNull().unique(),
+  projectId: text("project_id").notNull(),
+  kind: text("kind").notNull(),
+  source: text("source").notNull(),
+  title: text("title").notNull(),
+  originalFilename: text("original_filename"),
+  contentType: text("content_type"),
+  sizeBytes: integer("size_bytes"),
+  drivePath: text("drive_path"),
+  sourceUrl: text("source_url"),
+  capturedText: text("captured_text"),
+  device: text("device").notNull(),
+  sha256: text("sha256"),
+  status: text("status").notNull(),
+  occurredAt: text("occurred_at").notNull(),
+  receivedAt: text("received_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});

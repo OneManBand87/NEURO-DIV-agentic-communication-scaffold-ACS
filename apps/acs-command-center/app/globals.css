@@ -50,6 +50,15 @@ h1 { margin-bottom: 10px; font-size: clamp(2.3rem, 6vw, 4.9rem); max-width: 760p
 .capture-card p { margin: 0; color: #bdc9c4; line-height: 1.5; }
 .capture-controls textarea { width: 100%; resize: vertical; min-height: 92px; padding: 15px 16px; color: var(--ink); background: #fffdf8; border: 2px solid transparent; border-radius: 15px; outline: none; line-height: 1.45; }
 .capture-controls textarea:focus { border-color: #8cc6aa; box-shadow: 0 0 0 4px rgba(140,198,170,.18); }
+.section-intro { max-width: 780px; color: var(--muted); line-height: 1.55; }
+.intake-list { display: grid; gap: 10px; }
+.intake-card { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 15px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+.intake-kind { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px; background: var(--green-soft); color: var(--green); font-weight: 850; }
+.intake-main h3 { margin: 6px 0 4px; font-size: 1rem; }
+.intake-main p { margin: 0 0 5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.intake-main small { color: var(--muted); }
+.intake-status { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; text-transform: capitalize; font-size: .78rem; }
+.intake-status a { color: var(--green); font-weight: 750; }
 .button-row { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 9px; margin-top: 10px; }
 .button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 16px; border: 1px solid transparent; border-radius: 12px; font-weight: 760; text-decoration: none; cursor: pointer; transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
 .button:hover:not(:disabled) { transform: translateY(-1px); }
@@ -179,6 +188,8 @@ h1 { margin-bottom: 10px; font-size: clamp(2.3rem, 6vw, 4.9rem); max-width: 760p
   .subtitle { font-size: .91rem; }
   .section-nav { top: 6px; margin-inline: -2px; }
   .capture-card, .section-block { padding: 20px; border-radius: 20px; }
+  .intake-card { grid-template-columns: 40px minmax(0, 1fr); }
+  .intake-status { grid-column: 2; align-items: flex-start; flex-direction: row; }
   .section-heading { flex-direction: column; margin-bottom: 16px; }
   .focus-grid, .project-grid, .usage-summary, .usage-policy-grid { grid-template-columns: 1fr; }
   .focus-card, .project-card { min-height: auto; }

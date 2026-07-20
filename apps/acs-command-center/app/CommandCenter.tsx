@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import type { ApprovalRecord, CommandCenterState, CommunicationRecord, WorkItemRecord } from "../lib/types";
+import type { ApprovalRecord, CommandCenterState, CommunicationRecord, IntakeItemRecord, WorkItemRecord } from "../lib/types";
 
 type SpeechRecognitionEventLike = { results: ArrayLike<{ 0: { transcript: string } }> };
 type SpeechRecognitionLike = {
@@ -85,6 +85,7 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
     [state.workItems],
   );
   const backgroundPaused = state.settings.background_ai_paused !== "false";
+  const intakeWaiting = state.intakeItems.filter((item) => item.status === "captured" || item.status === "needs-attention");
 
   async function mutate(payload: Record<string, unknown>, label: string) {
     setBusy(label);
@@ -151,6 +152,7 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
 
       <nav className="section-nav" aria-label="Command Center sections">
         <a href="#today">Today</a>
+        <a href="#intake">Intake <span>{intakeWaiting.length}</span></a>
         <a href="#approvals">Approvals <span>{pendingApprovals.length}</span></a>
         <a href="#communications">Recruiters <span>{recruiterMessages.length}</span></a>
         <a href="#projects">Projects</a>
@@ -174,6 +176,19 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
             <button className="button primary" type="button" onClick={submitCapture} disabled={!capture.trim() || busy !== null}>{busy === "Idea capture" ? "Saving…" : "Capture"}</button>
           </div>
         </div>
+      </section>
+
+      <section id="intake" className="section-block intake-block" aria-labelledby="intake-title">
+        <div className="section-heading">
+          <div><span className="section-kicker">UNIVERSAL INTAKE</span><h2 id="intake-title">Everything you send, ready for routing</h2></div>
+          <span className={`count-badge ${intakeWaiting.length ? "attention" : "clear"}`}>{intakeWaiting.length} captured</span>
+        </div>
+        <p className="section-intro">Screenshots, recordings, files, links, and selected text arrive through the same governed queue. Originals remain preserved in device-synced intake storage; routed work products remain canonical in Google Drive.</p>
+        {state.intakeItems.length === 0 ? (
+          <div className="empty-state"><span aria-hidden="true">↗</span><div><strong>The universal intake is ready for its first item.</strong><p>Use “Send to NEURO-DIV” from any Share menu, or take a screenshot on your Mac.</p></div></div>
+        ) : (
+          <div className="intake-list">{state.intakeItems.slice(0, 12).map((item) => <IntakeCard key={item.id} item={item} />)}</div>
+        )}
       </section>
 
       <section id="today" className="section-block" aria-labelledby="today-title">
@@ -282,8 +297,19 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
         </button>
       </section>
 
-      <footer className="page-footer"><strong>ACS Command Center v0.2</strong><span>Observed facts, sourced facts, proposals, and unknowns remain explicitly separated.</span></footer>
+      <footer className="page-footer"><strong>ACS Command Center v0.3</strong><span>Observed facts, sourced facts, proposals, and unknowns remain explicitly separated.</span></footer>
     </main>
+  );
+}
+
+function IntakeCard({ item }: { item: IntakeItemRecord }) {
+  const size = item.sizeBytes == null ? null : item.sizeBytes < 1_000_000 ? `${Math.max(1, Math.round(item.sizeBytes / 1000))} KB` : `${(item.sizeBytes / 1_000_000).toFixed(1)} MB`;
+  return (
+    <article className="intake-card">
+      <div className="intake-kind" aria-hidden="true">{item.kind === "url" ? "↗" : item.kind === "text" ? "T" : item.kind.includes("recording") ? "▶" : "▣"}</div>
+      <div className="intake-main"><div className="meta-row"><span className="priority normal">{item.kind.replace("-", " ")}</span><span>{item.source} · {item.device}</span></div><h3>{item.title}</h3><p>{item.capturedText ?? item.originalFilename ?? item.sourceUrl ?? "Canonical source preserved in Drive."}</p><small>{formatDate(item.occurredAt)}{size ? ` · ${size}` : ""}</small></div>
+      <div className="intake-status"><strong>{item.status.replace("-", " ")}</strong>{item.sourceUrl ? <a href={item.sourceUrl} target="_blank" rel="noreferrer">Open source</a> : null}</div>
+    </article>
   );
 }
 

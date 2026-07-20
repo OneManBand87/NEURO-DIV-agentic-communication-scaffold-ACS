@@ -29,7 +29,7 @@
     ]
   },
   "commandCenter": {
-    "status": "production-v0.2-owner-only",
+    "status": "production-v0.2-owner-only-v0.3-universal-intake-pending-deployment",
     "productionUrl": "https://acs-command-center.onemanband87.chatgpt.site",
     "sourceDirectory": "apps/acs-command-center",
     "role": "adhd-friendly-central-management-interface",
@@ -72,6 +72,26 @@
         "consecutiveNoOps": 3,
         "userCostComplaint": "immediate-pause"
       }
+    },
+    "universalIntake": {
+      "status": "implemented-locally-pending-production-deployment-and-end-to-end-readback",
+      "acceptedKinds": ["screenshot", "screen-recording", "file", "url", "text", "media"],
+      "macCaptureDestinationConfigured": true,
+      "macLaunchAgentInstalled": true,
+      "macShareSheetShortcutConfigured": true,
+      "iosShortcutSyncVerified": false,
+      "trigger": "event-driven-filesystem-notification",
+      "aiRunsPerCapture": 0,
+      "deduplication": "sha256-source-id",
+      "rawInputStorage": "device-synced-apple-intake-storage",
+      "routedArtifactCanonicalStorage": "google-drive",
+      "deviceSecretStorage": "macos-keychain-not-versioned",
+      "tripwires": {
+        "consecutiveSystemErrors": 2,
+        "consecutiveNoOps": 3,
+        "userCostOrTaskChurnComplaint": "immediate-pause"
+      },
+      "controlRecord": "resources/universal-intake-implementation.md"
     },
     "verification": {
       "productionBuild": "passed",

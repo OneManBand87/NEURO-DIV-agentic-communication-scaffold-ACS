@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>Label</key><string>org.neuro-div.acs.universal-intake</string>
+  <key>ProgramArguments</key><array><string>__ROUTER_PATH__</string></array>
+  <key>WatchPaths</key><array><string>__PENDING_DIR__</string></array>
+  <key>EnvironmentVariables</key><dict>
+    <key>ACS_INTAKE_PENDING_DIR</key><string>__PENDING_DIR__</string>
+    <key>ACS_INTAKE_PROCESSED_DIR</key><string>__PROCESSED_DIR__</string>
+    <key>ACS_INTAKE_STATE_DIR</key><string>__STATE_DIR__</string>
+    <key>ACS_INTAKE_API_URL</key><string>https://acs-command-center.onemanband87.chatgpt.site/api/intake</string>
+  </dict>
+  <key>StandardOutPath</key><string>__LOG_DIR__/router.log</string>
+  <key>StandardErrorPath</key><string>__LOG_DIR__/router-error.log</string>
+  <key>ProcessType</key><string>Background</string>
+  <key>LowPriorityIO</key><true/>
+  <key>ThrottleInterval</key><integer>60</integer>
+</dict></plist>
