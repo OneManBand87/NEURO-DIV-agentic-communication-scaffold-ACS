@@ -1,6 +1,6 @@
 # ACS Universal Intake
 
-Status: Implemented locally; production deployment and end-to-end verification pending
+Status: Production-deployed and end-to-end verified on macOS; iOS synchronization verification pending
 
 ## Objective
 
@@ -10,7 +10,7 @@ Provide one low-friction route into the ACS Command Center for screenshots, scre
 
 1. Apple Shortcuts supplies the cross-application Share Sheet entry point named `Send to NEURO-DIV`.
 2. macOS saves system screenshots and screen recordings directly into the same device-synced pending folder.
-3. A native macOS LaunchAgent reacts to folder changes; it does not poll and invokes no AI model.
+3. A native macOS LaunchAgent reacts to folder changes and opens the dedicated `Process NEURO-DIV Intake` shortcut. Shortcuts performs the iCloud read under its existing macOS privacy authorization, then invokes the bounded router. The route does not poll and invokes no AI model.
 4. Raw inputs are retained in device-synced Apple intake storage. Routed work products remain canonical in the ACS Command Center Google Drive project.
 5. The router submits bounded metadata to the owner-only Command Center through Sites access plus a separate device token stored in macOS Keychain.
 6. D1 stores the operational queue, provenance, hash, type, source, device, timestamps, and routing status. SHA-256 source IDs suppress duplicate intake records.
@@ -40,10 +40,13 @@ Provide one low-friction route into the ACS Command Center for screenshots, scre
 
 ## Current evidence and limitations
 
-- Observed: source build, lint, MCP type-check, and four contract tests pass locally.
+- Observed: source build, lint, MCP type-check, and four contract tests pass.
 - Observed: screenshot destination points to the managed pending folder.
-- Observed: the LaunchAgent is installed, enabled, event-driven, and uses a 60-second launch throttle.
-- Observed: macOS Shortcuts sharing extension is enabled, and `Send to NEURO-DIV` is configured for the Share Sheet.
+- Observed: the LaunchAgent is installed, enabled, event-driven, and uses a five-second launch throttle.
+- Observed: macOS Shortcuts sharing is enabled; `Send to NEURO-DIV` is configured for the Share Sheet; and `Process NEURO-DIV Intake` provides the privacy-compatible Mac processor.
+- Observed: owner-only Sites v0.3 is deployed in production and a live metadata write/read-back succeeded.
+- Observed: a real screenshot was automatically archived and appeared in the production queue as `screenshot`, `captured`, with device and SHA-256 provenance.
+- Observed: a real file passed through `Send to NEURO-DIV`, the processor shortcut, the router, and production deduplication.
 - Sourced: Apple documents that Share Sheet shortcuts can receive content from other apps and can sync to iOS/iPadOS when iCloud Shortcuts sync is enabled.
-- Pending: production v0.3 deployment, production metadata write/read-back, one real capture, and confirmation that the shortcut has synchronized to the user's iOS devices.
+- Pending: confirmation on a physical iOS device that the shortcut has synchronized and is visible in the Share Sheet.
 - Unknown until tested: how each third-party app converts proprietary objects into a Shortcuts-compatible file, URL, or text representation.

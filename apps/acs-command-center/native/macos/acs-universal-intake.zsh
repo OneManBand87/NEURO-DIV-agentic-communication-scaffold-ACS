@@ -16,7 +16,21 @@ mkdir -p "$PENDING_DIR" "$PROCESSED_DIR" "$STATE_DIR" || exit 1
 SITE_TOKEN=$(/usr/bin/security find-generic-password -s "$KEYCHAIN_SERVICE" -a sites-bypass -w 2>/dev/null) || exit 10
 DEVICE_TOKEN=$(/usr/bin/security find-generic-password -s "$KEYCHAIN_SERVICE" -a device-token -w 2>/dev/null) || exit 11
 DEVICE_NAME=$(/usr/sbin/scutil --get ComputerName 2>/dev/null || /usr/bin/hostname)
-FILES=("$PENDING_DIR"/*(N-.))
+# Shortcuts can preserve a shared item's suggested path beneath the selected
+# destination. Scan recursively so those items enter the same queue as direct
+# screenshots and recordings. A bounded rescan covers the short interval in
+# which Shortcuts creates a subfolder before it finishes writing the file.
+FILES=("$@")
+if (( ${#FILES} == 0 )); then
+  for ATTEMPT in 1 2 3 4; do
+    FILES=()
+    while IFS= read -r -d '' CANDIDATE; do
+      FILES+=("$CANDIDATE")
+    done < <(/usr/bin/find "$PENDING_DIR" -type f -print0)
+    (( ${#FILES} > 0 )) && break
+    (( ATTEMPT < 4 )) && /bin/sleep 1
+  done
+fi
 if (( ${#FILES} == 0 )); then
   NOOPS=$(( $(<"$NOOP_FILE" 2>/dev/null || print 0) + 1 ))
   print -r -- "$NOOPS" > "$NOOP_FILE"
@@ -30,6 +44,7 @@ print -r -- 0 > "$NOOP_FILE"
 
 for SOURCE_FILE in "${FILES[@]}"; do
   [[ -f "$SOURCE_FILE" ]] || continue
+  [[ "${SOURCE_FILE:t}" == .* ]] && continue
   /usr/sbin/lsof -- "$SOURCE_FILE" >/dev/null 2>&1 && continue
 
   FILE_NAME=${SOURCE_FILE:t}
@@ -65,9 +80,10 @@ for SOURCE_FILE in "${FILES[@]}"; do
     --arg title "$FILE_NAME" --arg originalFilename "$FILE_NAME" --arg contentType "$MIME_TYPE" \
     --arg sourceUrl "$SOURCE_URL" --arg capturedText "$CAPTURED_TEXT" \
     --arg device "$DEVICE_NAME" --arg sha256 "$SHA256" --arg occurredAt "$OCCURRED_AT" --argjson sizeBytes "$FILE_SIZE" \
-    '{sourceId:$sourceId,projectId:"general",kind:$kind,source:$source,title:$title,originalFilename:$originalFilename,contentType:$contentType,sizeBytes:$sizeBytes,drivePath:$drivePath,device:$device,sha256:$sha256,occurredAt:$occurredAt} + (if $sourceUrl == "" then {} else {sourceUrl:$sourceUrl} end) + (if $capturedText == "" then {} else {capturedText:$capturedText} end)') || continue
+    '{sourceId:$sourceId,projectId:"general",kind:$kind,source:$source,title:$title,originalFilename:$originalFilename,contentType:$contentType,sizeBytes:$sizeBytes,device:$device,sha256:$sha256,occurredAt:$occurredAt} + (if $sourceUrl == "" then {} else {sourceUrl:$sourceUrl} end) + (if $capturedText == "" then {} else {capturedText:$capturedText} end)') || continue
 
   HTTP_STATUS=$(/usr/bin/curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
+    --connect-timeout 10 --max-time 30 \
     --request POST "$API_URL" \
     --header "OAI-Sites-Authorization: Bearer $SITE_TOKEN" \
     --header "x-acs-device-token: $DEVICE_TOKEN" \
@@ -87,4 +103,10 @@ for SOURCE_FILE in "${FILES[@]}"; do
       exit 71
     fi
   fi
+done
+
+# Remove only empty subfolders created beneath Pending. The watched Pending
+# directory itself and every non-empty directory are preserved.
+for EMPTY_DIR in "$PENDING_DIR"/**/*(N/); do
+  /bin/rmdir -- "$EMPTY_DIR" 2>/dev/null || true
 done
