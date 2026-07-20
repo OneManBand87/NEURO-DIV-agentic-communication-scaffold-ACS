@@ -34,15 +34,23 @@ test("signal intake is authenticated, deduplicated, cost-bounded, and excludes S
 });
 
 test("universal intake is device-authenticated, bounded, and deduplicated", async () => {
-  const [route, database] = await Promise.all([
+  const [route, database, router] = await Promise.all([
     readFile(new URL("../app/api/intake/route.ts", import.meta.url), "utf8"),
     readFile(new URL("../db/command-center.ts", import.meta.url), "utf8"),
+    readFile(new URL("../native/macos/acs-universal-intake.zsh", import.meta.url), "utf8"),
   ]);
   assert.match(route, /x-acs-device-token/);
   assert.match(route, /32_768/);
   assert.match(route, /Unauthorized intake device/);
   assert.match(database, /source_id TEXT NOT NULL UNIQUE/);
   assert.match(database, /duplicate: true/);
+  assert.match(router, /Process NEURO-DIV Voice Intake/);
+  assert.match(router, /Voice Processor\/Input\.aiff/);
+  assert.match(router, /originalAudioPreserved: true/);
+  assert.match(router, /needsHumanReview: true/);
+  assert.match(router, /reviewRequired: true/);
+  assert.match(router, /apple-voice-intake-on-device/);
+  assert.match(router, /preserving raw audio/);
 });
 
 test("browser intake supports bounded private attachments backed by R2", async () => {

@@ -9,6 +9,124 @@ STATE_DIR="${ACS_INTAKE_STATE_DIR:?Missing ACS_INTAKE_STATE_DIR}"
 ERROR_FILE="$STATE_DIR/consecutive-errors"
 NOOP_FILE="$STATE_DIR/consecutive-noops"
 PAUSE_FILE="$STATE_DIR/paused"
+VOICE_PROCESSOR_SHORTCUT="Process NEURO-DIV Voice Intake"
+VOICE_PROCESSOR_INPUT="${STATE_DIR:h}/Voice Processor/Input.aiff"
+
+generate_voice_sidecar() {
+  local SOURCE_AUDIO="$1"
+  local OUTPUT_SIDECAR="$2"
+  local CAPTURE_ID_VALUE="$3"
+  local VOICE_TMP_DIR NORMALIZED_AUDIO RAW_OUTPUT MODEL_OUTPUT TRANSCRIPT_TEXT CLEAN_MODEL NORMALIZED_SIDECAR
+
+  VOICE_TMP_DIR=$(/usr/bin/mktemp -d "$STATE_DIR/voice-processing.XXXXXX") || return 1
+  NORMALIZED_AUDIO="$VOICE_TMP_DIR/input.aiff"
+  RAW_OUTPUT="$VOICE_TMP_DIR/result.txt"
+  NORMALIZED_SIDECAR=$(/usr/bin/mktemp "$STATE_DIR/voice-sidecar.XXXXXX") || {
+    /bin/rmdir -- "$VOICE_TMP_DIR" 2>/dev/null || true
+    return 1
+  }
+
+  if ! /usr/bin/afconvert -f AIFF -d BEI16@22050 "$SOURCE_AUDIO" "$NORMALIZED_AUDIO" >/dev/null 2>&1; then
+    print -r -- "$(/bin/date -u +%FT%TZ) voice audio normalization failed; preserving raw audio: ${SOURCE_AUDIO:t}" >&2
+    /bin/rm -f -- "$NORMALIZED_SIDECAR"
+    /bin/rmdir -- "$VOICE_TMP_DIR" 2>/dev/null || true
+    return 1
+  fi
+  if [[ ! -f "$VOICE_PROCESSOR_INPUT" ]] || ! /bin/cp -- "$NORMALIZED_AUDIO" "$VOICE_PROCESSOR_INPUT"; then
+    print -r -- "$(/bin/date -u +%FT%TZ) stable voice bridge unavailable; preserving raw audio: ${SOURCE_AUDIO:t}" >&2
+    /bin/rm -f -- "$NORMALIZED_AUDIO" "$NORMALIZED_SIDECAR"
+    /bin/rmdir -- "$VOICE_TMP_DIR" 2>/dev/null || true
+    return 1
+  fi
+
+  if ! /usr/bin/shortcuts run "$VOICE_PROCESSOR_SHORTCUT" --output-path "$RAW_OUTPUT" >/dev/null 2>&1; then
+    print -r -- "$(/bin/date -u +%FT%TZ) on-device voice interpretation failed; preserving raw audio: ${SOURCE_AUDIO:t}" >&2
+    /bin/rm -f -- "$NORMALIZED_AUDIO" "$RAW_OUTPUT" "$NORMALIZED_SIDECAR"
+    /bin/rmdir -- "$VOICE_TMP_DIR" 2>/dev/null || true
+    return 1
+  fi
+
+  [[ -f "$RAW_OUTPUT" ]] || {
+    print -r -- "$(/bin/date -u +%FT%TZ) voice processor returned no output; preserving raw audio: ${SOURCE_AUDIO:t}" >&2
+    /bin/rm -f -- "$NORMALIZED_AUDIO" "$NORMALIZED_SIDECAR"
+    /bin/rmdir -- "$VOICE_TMP_DIR" 2>/dev/null || true
+    return 1
+  }
+  RAW_OUTPUT=$(<"$RAW_OUTPUT")
+  /bin/rm -f -- "$NORMALIZED_AUDIO" "$VOICE_TMP_DIR/result.txt"
+  /bin/rmdir -- "$VOICE_TMP_DIR" 2>/dev/null || true
+  [[ "$RAW_OUTPUT" == *'<<<MODEL>>>'*'<<<TRANSCRIPT>>>'* ]] || {
+    print -r -- "$(/bin/date -u +%FT%TZ) voice processor returned an invalid envelope; preserving raw audio: ${SOURCE_AUDIO:t}" >&2
+    /bin/rm -f -- "$NORMALIZED_SIDECAR"
+    return 1
+  }
+
+  MODEL_OUTPUT=${RAW_OUTPUT#*'<<<MODEL>>>'}
+  MODEL_OUTPUT=${MODEL_OUTPUT%%'<<<TRANSCRIPT>>>'*}
+  TRANSCRIPT_TEXT=${RAW_OUTPUT#*'<<<TRANSCRIPT>>>'}
+  TRANSCRIPT_TEXT=${TRANSCRIPT_TEXT##[[:space:]]#}
+  TRANSCRIPT_TEXT=${TRANSCRIPT_TEXT%%[[:space:]]#}
+  CLEAN_MODEL=$(print -r -- "$MODEL_OUTPUT" | /usr/bin/sed -e '/^[[:space:]]*```json[[:space:]]*$/d' -e '/^[[:space:]]*```[[:space:]]*$/d')
+
+  [[ -n "$TRANSCRIPT_TEXT" ]] && print -r -- "$CLEAN_MODEL" | /usr/bin/jq -e 'type == "object"' >/dev/null 2>&1 || {
+    print -r -- "$(/bin/date -u +%FT%TZ) voice processor output could not be validated; preserving raw audio: ${SOURCE_AUDIO:t}" >&2
+    /bin/rm -f -- "$NORMALIZED_SIDECAR"
+    return 1
+  }
+
+  if ! /usr/bin/jq -n \
+    --argjson model "$CLEAN_MODEL" \
+    --arg captureId "$CAPTURE_ID_VALUE" \
+    --arg transcript "$TRANSCRIPT_TEXT" '
+      def text_or($fallback): if type == "string" and (gsub("\\s+"; " ") | length) > 0 then gsub("\\s+"; " ") else $fallback end;
+      def confidence: if . == "high" or . == "medium" or . == "low" then . else "low" end;
+      def actions: [(. // [])[] | select(type == "object") | {text: (((.text // "") | text_or("Review captured request")) | gsub("000000"; $captureId)), reviewRequired: true}];
+      ($model.proposedActions | actions) as $actions |
+      (($model.summary // "") | text_or(($transcript | .[0:400]))) as $summary |
+      ([($model.items // [])[] |
+        select(type == "object" and (.type == "idea" or .type == "task" or .type == "concern" or .type == "evidence")) |
+        {type: .type, text: ((.text // "") | text_or($summary))}]) as $modelItems |
+      ($modelItems +
+        (if ($modelItems | length) == 0 then
+          ([$actions[] | {type: "task", text: .text}] +
+           (if ($transcript | test("(?i)\\b(concern|worry|risk|problem|issue)\\b")) then [{type: "concern", text: $summary}] else [] end))
+        else [] end)) as $items |
+      {
+        captureId: $captureId,
+        title: (($model.title // "") | text_or("Review voice capture \($captureId)")),
+        summary: $summary,
+        items: $items,
+        dates: [($model.dates // [])[] |
+          select(type == "object") |
+          (.originalText // "") as $dateText |
+          select(($dateText | type) == "string" and ($dateText | test("(?i)\\b(today|tomorrow|yesterday|monday|tuesday|wednesday|thursday|friday|saturday|sunday|january|february|march|april|may|june|july|august|september|october|november|december|next (day|week|month|year)|this (week|month|year)|last (day|week|month|year)|[0-9]{1,2}[/-][0-9]{1,2}([/-][0-9]{2,4})?|[0-9]{4})\\b"))) | {
+          originalText: ((.originalText // "") | text_or("Unclear date reference")),
+          normalized: (if (.normalized | type) == "string" then .normalized else null end),
+          context: ((.context // "") | text_or("")),
+          confidence: (.confidence | confidence)
+        }],
+        people: [($model.people // [])[] |
+          select(type == "object") |
+          (.name // "") as $personName |
+          select(($personName | type) == "string" and (($transcript | ascii_downcase) | contains($personName | ascii_downcase))) | {
+          name: ((.name // "") | text_or("Unclear person reference")),
+          context: ((.context // "") | text_or("")),
+          confidence: (.confidence | confidence)
+        }],
+        proposedActions: $actions,
+        confidence: ($model.confidence | confidence),
+        needsHumanReview: true,
+        originalAudioPreserved: true,
+        modelRoute: "on-device",
+        transcript: $transcript
+      }
+    ' > "$NORMALIZED_SIDECAR"; then
+    /bin/rm -f -- "$NORMALIZED_SIDECAR"
+    return 1
+  fi
+
+  /bin/mv -f -- "$NORMALIZED_SIDECAR" "$OUTPUT_SIDECAR"
+}
 
 mkdir -p "$PENDING_DIR" "$PROCESSED_DIR" "$STATE_DIR" || exit 1
 [[ -e "$PAUSE_FILE" ]] && exit 70
@@ -74,6 +192,9 @@ for SOURCE_FILE in "${FILES[@]}"; do
   if [[ "$FILE_NAME" =~ '^NEURO-DIV Voice Intake - ([0-9]{6})\.(m4a|caf|wav|mp3)$' ]]; then
     CAPTURE_ID="$match[1]"
     VOICE_SIDECAR="${SOURCE_FILE:r}.ccs-intake.json"
+    if [[ ! -f "$VOICE_SIDECAR" ]]; then
+      generate_voice_sidecar "$SOURCE_FILE" "$VOICE_SIDECAR" "$CAPTURE_ID" || true
+    fi
   elif [[ "$FILE_NAME" == *.ccs-intake.json ]]; then
     VOICE_SIDECAR="$SOURCE_FILE"
     CAPTURE_ID=$(/usr/bin/jq -r '.captureId // empty' -- "$VOICE_SIDECAR" 2>/dev/null || true)
@@ -102,7 +223,16 @@ for SOURCE_FILE in "${FILES[@]}"; do
     if (( TITLE_LENGTH < 12 || TITLE_LENGTH > 72 || TITLE_WORDS < 4 || TITLE_WORDS > 10 )) ||
        [[ "$TITLE_LOWER" == "voice note" || "$TITLE_LOWER" == "recording" || "$TITLE_LOWER" == "new idea" || "$TITLE_LOWER" == "untitled" ||
           "$FIRST_SENTENCE_LOWER" == "$TITLE_LOWER" || "$FIRST_SENTENCE_LOWER" == "$TITLE_LOWER "* ]]; then
-      ROUTING_TITLE="Review voice capture $CAPTURE_ID"
+      SUMMARY_TITLE=$(/usr/bin/jq -r '.summary | gsub("[\\n\\r\\t]+"; " ") | gsub("  +"; " ") | sub("[.!?,;:—–-]+$"; "")' -- "$VOICE_SIDECAR")
+      SUMMARY_LENGTH=${#SUMMARY_TITLE}
+      SUMMARY_WORDS=$(print -r -- "$SUMMARY_TITLE" | /usr/bin/awk '{print NF}')
+      SUMMARY_LOWER=$(print -r -- "$SUMMARY_TITLE" | /usr/bin/tr '[:upper:]' '[:lower:]')
+      if (( SUMMARY_LENGTH >= 12 && SUMMARY_LENGTH <= 72 && SUMMARY_WORDS >= 4 && SUMMARY_WORDS <= 10 )) &&
+         [[ "$FIRST_SENTENCE_LOWER" != "$SUMMARY_LOWER" && "$FIRST_SENTENCE_LOWER" != "$SUMMARY_LOWER "* ]]; then
+        ROUTING_TITLE="$SUMMARY_TITLE"
+      else
+        ROUTING_TITLE="Review voice capture $CAPTURE_ID"
+      fi
     fi
     ROUTING_SOURCE="apple-voice-intake-on-device"
   fi
