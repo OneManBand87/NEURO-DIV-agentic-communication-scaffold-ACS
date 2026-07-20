@@ -177,7 +177,8 @@
       "iosSyncBlocker": null,
       "iosRemainingValidation": "one-physical-action-button-recording-with-usable-audio-and-downstream-ccs-readback",
       "iosActionButtonImplementationCcsIntakeId": "intake-9e324b1f-6643-449c-8a3e-1b8c11d863e0",
-      "iosActionButtonImplementationCanonicalRevisionId": "ALtnJHwDfd2q0HhSluN5VWwil9X3oY1JgeIbVFKWiWLVq3bBdMHt2zIxeIHDnyJtrJMTGTJYHLt9b7DoALISGUFyhqIEs3NvXUROEHOuQg",
+      "iosActionButtonImplementationCanonicalRevisionId": "ALtnJHx4NTskisog_pnXF4KFLq4gqo0Zq_h227V9KX0Tdo7TwrrkeYnRO3MQuH06A0ggQydQv4GbSNQkAKnkuqLI69xUTZBhwEjpgiHVBg",
+      "iosActionButtonPauseResumeCorrectionCcsIntakeId": "intake-2482b02f-2568-480b-a035-3d729cc0160c",
       "browserAttachments": {
         "status": "production-verified",
         "storage": "sites-r2-private",
@@ -209,6 +210,8 @@
       "shortcutName": "NEURO-DIV Voice Intake",
       "recordingStart": "immediately",
       "recordingFinish": "explicit-user-tap",
+      "pauseResumeControlObserved": false,
+      "pauseResumeRequirementStatus": "unmet-requires-recorder-refinement",
       "filenamePattern": "NEURO-DIV Voice Intake - [six-digit-random-number].m4a",
       "randomNumberRange": [100000, 999999],
       "saveDestination": "icloud-drive/Shortcuts/NEURO-DIV Intake/Pending",
