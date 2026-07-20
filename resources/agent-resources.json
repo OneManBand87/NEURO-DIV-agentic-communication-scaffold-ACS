@@ -73,7 +73,7 @@
     "approvedArchitectureRevision": "ALtnJHxai1_St4aMGqiKrs_bdNN1Vz3AcY9YgPCIld7vtootjq_-9k6_4RfBlG05LNnt3e-20KRen-rIcNAbXi5o1TmeUVtBhbEgQn_1Fw"
   },
   "ccsSignalIngestionControl": {
-    "status": "implemented-locally-pending-production-verification",
+    "status": "production-verified",
     "architecture": "event-driven-single-ccs-ledger",
     "capabilities": [
       "cross-source-discovery",
@@ -98,6 +98,14 @@
       "prohibitedRoles": ["recurring-monitoring", "broad-connector-sweeps", "routine-ccs-orchestration", "multi-destination-status-publication"]
     },
     "acsAct002": "unexecuted-pending-canonical-reconciliation",
+    "productionUrl": "https://acs-command-center.onemanband87.chatgpt.site",
+    "sitesVersion": 7,
+    "productionVerification": {
+      "signalCount": 9,
+      "actionCandidateCount": 4,
+      "zapierConnectorStatus": "degraded-one-error",
+      "duplicateSuppressionVerified": true
+    },
     "canonicalBriefRevision": "ALtnJHxz-oW9jk9HK5CpKGZn6kdoPsrnQ8ZfAsk9TPGa1N4iR8bot01T2sAKQmQEykil0Zg9diAHeLGHWGX_9s3bTTKKc-zyNRtfU7U7sA",
     "approvedArchitectureRevision": "AIroW37Fss-O6jJl0a-QFeF9IpZbjw-1OvzYFO73kT7cmpP51JffeJwr0VGOsgbZcwf-7SqaEXU2qQeoiMULibTkMWGrD71x1r1Vycshhw"
   },
