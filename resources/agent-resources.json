@@ -269,12 +269,13 @@
         "productionVerificationIntakeId": "intake-208002db-cd65-4e00-850a-d40bea79fc4b",
         "productionVerificationTitle": "Semantic title extraction verification",
         "finalSynchronizationIntakeId": "intake-e6236b53-127d-4649-9a5c-044eba855451",
-        "canonicalBriefRevisionId": "ALtnJHy2DfJ5TGYFni_4ZY9_c5qMeQ4sweMEiyEAnUS0Mr2D8OTBM87_PFJPc8yra5oXJP5QRFp0d39nmIgIdZT2E04V19_QqkPv5ZXDBg",
+        "blockerCorrectionIntakeId": "intake-2dfc3081-f790-4363-b241-224dac6741da",
+        "canonicalBriefRevisionId": "ALtnJHyhbAMfJCu9Z3m2ZX3eK3nTdz2XVZfidNOvDKi-3nZ0UPpy7japiDneVlvIkAOhR4FEU1SXKoFNjAHnk3f13EZXbblp5PoWDM9lqg",
         "canonicalBriefReadBackVerified": true,
         "iphoneTranscribeAudioActionAvailable": true,
         "iphoneOnDeviceUseModelActionAvailable": true,
         "iphoneRecordedAudioVariableWired": false,
-        "pendingUserDependency": "unlock-mac-for-final-iphone-mirroring-variable-wiring"
+        "pendingUserDependency": "lock-iphone-and-leave-idle-for-final-mirroring-variable-wiring"
       },
       "filenamePattern": "NEURO-DIV Voice Intake - [six-digit-random-number].m4a",
       "randomNumberRange": [100000, 999999],
