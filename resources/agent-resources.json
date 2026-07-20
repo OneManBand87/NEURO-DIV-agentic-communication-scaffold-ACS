@@ -41,6 +41,37 @@
       "general-purpose-device-surfaces"
     ]
   },
+  "slackExclusionControl": {
+    "status": "mandatory-complete-exclusion",
+    "effectiveDate": "2026-07-20",
+    "architectureRole": "none",
+    "allowedUses": [],
+    "prohibitedUses": [
+      "intake",
+      "routing",
+      "monitoring",
+      "notifications",
+      "handoffs",
+      "agent-coordination",
+      "storage",
+      "publication",
+      "user-facing-interaction"
+    ],
+    "historicalContentDisposition": "provenance-only-not-current-state-or-source-of-truth",
+    "replacementControlPlane": "central-command-center",
+    "replacementMechanisms": [
+      "approved-ccs-transports",
+      "stable-identifiers",
+      "bounded-event-triggers",
+      "zapier-or-other-approved-connectors",
+      "canonical-google-drive-records"
+    ],
+    "userNavigationRequired": false,
+    "canonicalBriefDocumentId": "1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q",
+    "canonicalBriefRevision": "ALtnJHwDfd2q0HhSluN5VWwil9X3oY1JgeIbVFKWiWLVq3bBdMHt2zIxeIHDnyJtrJMTGTJYHLt9b7DoALISGUFyhqIEs3NvXUROEHOuQg",
+    "approvedArchitectureDocumentId": "1Fop9QaYrLrQMlnLRcEvDBsnVghm1gBK96BEzFmoFHos",
+    "approvedArchitectureRevision": "ALtnJHxai1_St4aMGqiKrs_bdNN1Vz3AcY9YgPCIld7vtootjq_-9k6_4RfBlG05LNnt3e-20KRen-rIcNAbXi5o1TmeUVtBhbEgQn_1Fw"
+  },
   "commandCenter": {
     "status": "production-v0.4-owner-only-universal-intake-attachments-verified",
     "productionUrl": "https://acs-command-center.onemanband87.chatgpt.site",

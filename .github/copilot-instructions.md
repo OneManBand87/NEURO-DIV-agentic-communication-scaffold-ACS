@@ -6,6 +6,7 @@
 - Apply [resources/integrity-materiality-control.md](../resources/integrity-materiality-control.md) to material claims, promises, memory/synchronization assertions, and completion statements; require evidence and read-back.
 - Apply [resources/maximal-progression-user-attention-control.md](../resources/maximal-progression-user-attention-control.md) before escalating a user-dependent blocker. Retain task ownership, complete safe preparation, request one irreducible user action prominently, and resume automatically.
 - Apply [resources/automation-cost-cadence-proportionality-control.md](../resources/automation-cost-cadence-proportionality-control.md) before recurring or background work is created, enabled, reactivated, or materially changed. Bound runs, expiry, cost, model/reasoning level, task churn, and tripwires; prefer event-driven and least-cost adequate execution; block unknown or disproportionate cost.
+- Slack is completely excluded from NEURO-DIV architecture and workflows. Do not use or propose it for intake, routing, monitoring, notifications, handoffs, coordination, storage, publication, or user-facing interaction; historical Slack content is provenance only.
 - Use [resources/agent-coordination.md](../resources/agent-coordination.md) for the current capability matrix and synchronization rules.
 - Treat the canonical Google Doc linked from those files as the source of truth when it is accessible.
 - Use Zapier MCP from [.vscode/mcp.json](../.vscode/mcp.json) for shared actions when authenticated.

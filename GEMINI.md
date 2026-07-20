@@ -10,6 +10,8 @@ Before escalating a user-dependent blocker, apply [resources/maximal-progression
 
 Before creating, enabling, reactivating, or materially changing recurring, scheduled, polling, monitoring, retry, or background work, apply [resources/automation-cost-cadence-proportionality-control.md](resources/automation-cost-cadence-proportionality-control.md). Bound total runs, expiry, cost, model/reasoning level, task churn, and tripwires; prefer event-driven and least-cost adequate execution; and block unknown or disproportionate cost.
 
+Slack is completely excluded from NEURO-DIV architecture and workflows. Do not use or propose it for intake, routing, monitoring, notifications, handoffs, coordination, storage, publication, or user-facing interaction; historical Slack content is provenance only.
+
 Use [resources/agent-coordination.md](resources/agent-coordination.md) as the repository snapshot and the canonical Google Doc linked there as the source of truth.
 
 The Zapier MCP endpoint is `https://mcp.zapier.com/api/v1/connect`. Current Antigravity authentication and protocol status is recorded in [resources/agent-resources.json](resources/agent-resources.json); do not infer success from configuration alone.

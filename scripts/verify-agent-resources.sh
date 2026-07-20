@@ -46,6 +46,19 @@ if ! jq -e '.commandCenter.aiRouting | (.status == "mandatory") and (.scope == "
   exit 1
 fi
 
+for slack_exclusion_file in AGENTS.md CLAUDE.md GEMINI.md .github/copilot-instructions.md .github/instructions/agent-coordination.instructions.md resources/agent-coordination.md; do
+  if ! rg -Fqi 'Slack is completely excluded' "$slack_exclusion_file" &&
+     ! rg -Fqi 'Complete Slack exclusion' "$slack_exclusion_file"; then
+    printf 'Complete Slack exclusion missing: %s\n' "$slack_exclusion_file" >&2
+    exit 1
+  fi
+done
+
+if ! jq -e '.slackExclusionControl | (.status == "mandatory-complete-exclusion") and (.architectureRole == "none") and (.allowedUses | length == 0) and (.prohibitedUses | index("agent-coordination") != null) and (.prohibitedUses | index("user-facing-interaction") != null) and (.historicalContentDisposition == "provenance-only-not-current-state-or-source-of-truth") and (.replacementControlPlane == "central-command-center") and (.userNavigationRequired == false) and (.canonicalBriefRevision | length > 20) and (.approvedArchitectureRevision | length > 20)' resources/agent-resources.json >/dev/null; then
+  printf 'Complete Slack exclusion metadata mismatch\n' >&2
+  exit 1
+fi
+
 for automation_cost_file in AGENTS.md CLAUDE.md GEMINI.md .github/copilot-instructions.md .github/instructions/agent-coordination.instructions.md README.md resources/agent-coordination.md resources/theory-branch-integration.md; do
   if ! rg -Fq 'automation-cost-cadence-proportionality-control.md' "$automation_cost_file"; then
     printf 'Automation cost control link missing: %s\n' "$automation_cost_file" >&2

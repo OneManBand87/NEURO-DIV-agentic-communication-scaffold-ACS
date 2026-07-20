@@ -16,4 +16,6 @@ Enforce [resources/maximal-progression-user-attention-control.md](../../resource
 
 Enforce [resources/automation-cost-cadence-proportionality-control.md](../../resources/automation-cost-cadence-proportionality-control.md): before recurring or background work is created, enabled, reactivated, or materially changed, bound runs, expiry, total cost, model/reasoning level, task churn, and tripwires; prefer event-driven and least-cost adequate execution; block unknown or disproportionate cost.
 
+Slack is completely excluded from NEURO-DIV architecture and workflows. Do not use or propose it for intake, routing, monitoring, notifications, handoffs, coordination, storage, publication, or user-facing interaction; historical Slack content is provenance only.
+
 Keep the canonical Google Doc, repository snapshot, and capability manifest aligned. Do not commit authentication material or report an unverified integration as working.
