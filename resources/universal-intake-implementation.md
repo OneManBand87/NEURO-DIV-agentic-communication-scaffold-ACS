@@ -88,6 +88,17 @@ Provide one low-friction route into the ACS Command Center for screenshots, scre
 ## Apple Intelligence selective-adoption boundary
 
 - Apple Intelligence is not included in NEURO-DIV scope merely because it is available.
+- Apply the contingent routing protocol before every proposed Apple Intelligence use. The permitted routes are `deterministic`, `apple-on-device`, `ccs-reasoning`, and `defer-for-review`; every route remains visible to CCS and none may execute an action.
+- Use `deterministic` for routine CCS status briefs, exact record operations, reminders, and device control when current structured records can produce the result without interpretation. Do not invoke a model merely to make routine status sound conversational.
+- Use `apple-on-device` after an explicitly completed voice capture whose original audio was already preserved, because semantic titling, classification, entity extraction, and proposed-action drafting provide distinct clerical value. Also permit it for a bounded rewrite or interpretive status summary only when the user explicitly requests interpretation.
+- Use `ccs-reasoning` whenever the task needs cross-record context, current external information, connectors or tools, consequential judgment, or any action-producing decision. Also use CCS when the on-device result fails schema/title validation or has low confidence.
+- Use `defer-for-review` when voice capture has not been explicitly completed, original-source preservation is unverified, or safe routing cannot yet be established.
+- Privacy preference is on-device processing for simple sensitive transformations, but sensitivity never authorizes Apple Intelligence to bypass CCS, normal approval controls, or preserved-source verification.
+- Siri, Alexa, Siri-to-ChatGPT, and the ChatGPT Shortcut model are prohibited fallback routes. A failure must return to CCS or review, never degrade into an assistant conversation.
+- Alexa is outside the NEURO-DIV and CCS ecosystem. Independent use for music playback or optional room-light control is not an integration and creates no CCS dependency; no Alexa endpoint, skill, monitor, or future workflow is planned.
+- The contingent gate passed five route-specific contract tests and all nine combined voice-title and Apple-routing tests. The canonical shared-agent brief was updated with the full validation evidence and read back at revision `ALtnJHzhMRj2rxeiuaqjSYcsq_NiGZqr_OR3Fbuy3QykqQ98IVaAPqwIqNBivpjJkH2DfW8nCff3Wp2wx0cl88SJQr4uhLcHQIye4yhyFA`.
+- Production CCS intake item `intake-7267ed62-1160-41b5-b65b-d48ef2881707` mirrors the contingent-routing protocol, Alexa exclusion, test evidence, canonical revision, and remaining iPhone Mirroring boundary; it was read back from the production state API.
+- Full validation also passed the Command Center production build, all 20 repository tests, ESLint, and the MCP TypeScript check.
 - The Siri-to-ChatGPT experience is excluded and may not serve as a CCS front door, spoken intake surface, conversational operator, or task executor.
 - Supported photo or document transfer through Siri still requires file confirmation and does not satisfy the low-friction intake requirement or replace CCS document routing.
 - A Shortcuts `Use Model` action may be considered only when the entire route is silent, bounded, subordinate to CCS, and demonstrably useful. Its output may feed predetermined actions but may not become an independent task orchestrator.
