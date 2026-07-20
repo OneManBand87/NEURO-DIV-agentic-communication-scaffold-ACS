@@ -69,6 +69,21 @@ Provide one low-friction route into the ACS Command Center for screenshots, scre
 - Validation limitation: iPhone Mirroring cannot supply the iPhone microphone. The mirrored test verifies execution, naming, permission, destination, and iCloud queue routing, but it does not verify usable audio. One physical Action Button recording remains required before real-audio capture is declared validated. The observed Record Audio screen exposed an explicit finish control but no pause/resume control, so pause/resume remains unmet and the route is not yet fully conformant with the standing capture specification.
 - No exported-shortcut signature is required because the Shortcut was created locally and runs on the same iPhone. The relevant assignment control is the verified Action Button selection.
 
+## Semantic title and structured interpretation layer
+
+- Preserve and save the original audio before any transcription or interpretation. The audio remains authoritative; the transcript and every extraction remain linked derivative aids.
+- After capture, `Transcribe Audio` may produce a complete transcript. `Use Model` should use Apple's `On-Device` model by default for this simple, privacy-sensitive clerical pass. Private Cloud Compute or CCS processing requires a demonstrated need; the ChatGPT extension model remains excluded from this route.
+- The interpretation output is a strict JSON sidecar named `NEURO-DIV Voice Intake - [six-digit capture ID].ccs-intake.json` beside the matching audio file.
+- The sidecar preserves the complete transcript and separates zero or more `idea`, `task`, `concern`, and `evidence` items. It also extracts explicitly stated dates and people, assigns confidence, and records proposed actions only with `reviewRequired: true`.
+- A proposed action is never an approval, commitment, calendar event, message, or completed task. Material downstream action remains subject to normal CCS verification and approval controls.
+- The semantic title describes the central subject of the whole capture in 4–10 words and no more than 72 characters. It must remove filler and false starts, must not copy the opening sentence, and must not invent people, dates, organizations, commitments, or subjects. Generic titles such as `Voice Note`, `Recording`, `New Idea`, and `Untitled` are rejected.
+- If the subject is unclear, the honest fallback is `Review voice capture [capture ID]`; the system must not manufacture a confident caption merely to avoid a fallback.
+- The Mac router validates the sidecar, pairs it with the matching audio, uses the guarded semantic title for the single CCS intake item, retains the original audio filename, and carries the structured JSON as captured derivative context. Invalid or absent sidecars leave the raw-audio fallback route intact.
+- No model is invoked merely to wait, poll, or deliver a reminder. Interpretation is event-driven and runs only after a completed voice capture.
+- Production verification item `intake-208002db-cd65-4e00-850a-d40bea79fc4b` read back the title `Semantic title extraction verification`, retained original filename `NEURO-DIV Voice Intake - 864209.m4a`, identified source `apple-voice-intake-on-device`, and preserved the structured JSON payload.
+- The canonical shared-agent Google Doc now contains the same semantic-layer boundary and was read back at revision `ALtnJHw7n10xMkVziO_j5zba0Yoq_S9eatAcaoN2jjiIN-onVUl0e5VThGIVAKPh-9wPCOvqdq7V0uUlMoeUwU5s9Auz_mP68FbFY86nQg`.
+- Device wiring status: the iPhone exposes both `Transcribe Audio` and `Use Model > On-Device`. The final magic-variable connection from recorded audio into transcription is not yet installed because iPhone Mirroring did not expose the required long-press variable selector. The incomplete actions were removed, leaving the verified raw-audio Action Button flow intact until the Mac is unlocked and the connection can be completed safely.
+
 ## Apple Intelligence selective-adoption boundary
 
 - Apple Intelligence is not included in NEURO-DIV scope merely because it is available.
