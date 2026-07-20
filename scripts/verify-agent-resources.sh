@@ -59,6 +59,18 @@ if ! jq -e '.slackExclusionControl | (.status == "mandatory-complete-exclusion")
   exit 1
 fi
 
+for labor_boundary_file in AGENTS.md CLAUDE.md GEMINI.md .github/copilot-instructions.md .github/instructions/agent-coordination.instructions.md resources/agent-coordination.md; do
+  if ! rg -Fq 'Claude is reserved for explicitly assigned high-value coding and deep design work' "$labor_boundary_file"; then
+    printf 'Claude labor boundary missing: %s\n' "$labor_boundary_file" >&2
+    exit 1
+  fi
+done
+
+if ! jq -e '.ccsSignalIngestionControl | (.architecture == "event-driven-single-ccs-ledger") and (.duplicateDisposition == "suppress-task-and-model-run") and (.noChangeDisposition == "suppress-task-and-model-run") and (.connectorTripwires.consecutiveErrors == 2) and (.connectorTripwires.consecutiveNoChangeEvents == 3) and (.claudeRoutine.status == "paused") and (.claudeRoutine.allowedRole == "explicit-high-value-coding-and-deep-design") and (.acsAct002 == "unexecuted-pending-canonical-reconciliation")' resources/agent-resources.json >/dev/null; then
+  printf 'CCS signal ingestion or Claude labor boundary metadata mismatch\n' >&2
+  exit 1
+fi
+
 for automation_cost_file in AGENTS.md CLAUDE.md GEMINI.md .github/copilot-instructions.md .github/instructions/agent-coordination.instructions.md README.md resources/agent-coordination.md resources/theory-branch-integration.md; do
   if ! rg -Fq 'automation-cost-cadence-proportionality-control.md' "$automation_cost_file"; then
     printf 'Automation cost control link missing: %s\n' "$automation_cost_file" >&2

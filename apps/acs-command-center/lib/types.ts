@@ -122,6 +122,41 @@ export type IntakeAttachmentRecord = {
   downloadUrl: string;
 };
 
+export type SignalSource = "claude" | "codex" | "gmail" | "google-workspace" | "supabase" | "github" | "notion" | "tapdat" | "manual" | "other";
+
+export type SignalRecord = {
+  id: string;
+  sourceId: string;
+  projectId: string;
+  source: SignalSource;
+  kind: "finding" | "connector-health" | "action-candidate" | "status-change" | "no-op";
+  title: string;
+  summary: string;
+  severity: "critical" | "high" | "normal" | "low";
+  status: "open" | "watching" | "resolved" | "archived" | "suppressed";
+  verificationStatus: "claude-sourced-unverified" | "source-verified" | "independently-verified" | "unknown";
+  material: boolean;
+  synthesisStatus: "not-needed" | "needed" | "completed" | "blocked-by-cost-control";
+  suggestedAction: string | null;
+  sourceUrl: string | null;
+  occurredAt: string;
+  dueAt: string | null;
+  receivedAt: string;
+  updatedAt: string;
+  ageDays: number;
+};
+
+export type ConnectorHealthRecord = {
+  source: SignalSource;
+  status: "healthy" | "degraded" | "paused";
+  consecutiveErrors: number;
+  consecutiveNoOps: number;
+  lastEventAt: string;
+  lastSuccessAt: string | null;
+  lastError: string | null;
+  pausedReason: string | null;
+};
+
 export type CommandCenterState = {
   generatedAt: string;
   projects: ProjectRecord[];
@@ -131,5 +166,7 @@ export type CommandCenterState = {
   usagePreflights: UsagePreflightRecord[];
   agentStatuses: AgentStatusRecord[];
   intakeItems: IntakeItemRecord[];
+  signals: SignalRecord[];
+  connectorHealth: ConnectorHealthRecord[];
   settings: Record<string, string>;
 };

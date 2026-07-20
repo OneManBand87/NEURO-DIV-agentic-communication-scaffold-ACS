@@ -36,12 +36,25 @@ async function mutate(payload: Record<string, unknown>): Promise<CommandCenterSt
   return result;
 }
 
+async function ingestSignal(payload: Record<string, unknown>) {
+  const token = process.env.INTAKE_DEVICE_TOKEN;
+  if (!token) throw new Error("INTAKE_DEVICE_TOKEN is required for signal ingestion");
+  const response = await fetch(`${apiBase}/api/signals`, {
+    method: "POST",
+    headers: { "content-type": "application/json", "x-acs-device-token": token },
+    body: JSON.stringify(payload),
+  });
+  const result = await response.json() as { error?: string; duplicate?: boolean; actionCandidateCreated?: boolean; modelRunSuppressed?: boolean };
+  if (!response.ok) throw new Error(result.error ?? "Signal ingestion failed");
+  return result;
+}
+
 function buildServer() {
   const server = new McpServer(
     { name: "acs-command-center", version: "0.1.0" },
     {
       instructions:
-        "Use search and fetch for read-only discovery. Show the dashboard with render_command_center. Never create polling or recurring AI work without a bounded usage preflight. Resolve only an exact approval payload hash.",
+        "Use search and fetch for read-only discovery. Show the dashboard with render_command_center. Route substantive findings through ingest_signal. Slack is excluded. Never create polling or recurring AI work without a bounded usage preflight. Resolve only an exact approval payload hash.",
     },
   );
 
@@ -77,6 +90,7 @@ function buildServer() {
         ...state.approvals.map((item) => ({ id: `approval:${item.id}`, title: item.title, text: `${item.status} ${item.whyRequired}` })),
         ...state.communications.map((item) => ({ id: `communication:${item.id}`, title: `${item.sender}: ${item.subject}`, text: `${item.channel} ${item.summary} ${item.status}` })),
         ...state.agentStatuses.map((item) => ({ id: `agent:${item.id}`, title: item.agent, text: `${item.platform} ${item.task} ${item.status}` })),
+        ...state.signals.map((item) => ({ id: `signal:${item.id}`, title: item.title, text: `${item.source} ${item.kind} ${item.summary} ${item.verificationStatus}` })),
       ];
       const results = records
         .filter((item) => `${item.title} ${item.text}`.toLowerCase().includes(normalized))
@@ -97,7 +111,7 @@ function buildServer() {
     async ({ id }) => {
       const state = await liveState();
       const [kind, recordId] = id.split(":", 2);
-      const collection = kind === "project" ? state.projects : kind === "work" ? state.workItems : kind === "approval" ? state.approvals : kind === "communication" ? state.communications : kind === "agent" ? state.agentStatuses : [];
+      const collection = kind === "project" ? state.projects : kind === "work" ? state.workItems : kind === "approval" ? state.approvals : kind === "communication" ? state.communications : kind === "agent" ? state.agentStatuses : kind === "signal" ? state.signals : [];
       const record = collection.find((item) => item.id === recordId);
       if (!record) throw new Error(`Record ${id} was not found`);
       return {
@@ -175,6 +189,30 @@ function buildServer() {
     async (message) => {
       const state = await mutate({ action: "ingest-recruiter-message", ...message });
       return { structuredContent: state, content: [{ type: "text", text: "Recruiter message recorded with a two-hour target, three-hour critical threshold, and same-day hard deadline." }] };
+    },
+  );
+
+  server.registerTool(
+    "ingest_signal",
+    {
+      title: "Ingest governed CCS signal",
+      description: "Use this for a materially new cross-source finding, connector result, status change, or action candidate. Duplicate and no-change events do not invoke synthesis. Slack is excluded.",
+      inputSchema: {
+        sourceId: z.string().min(8).max(300), projectId: z.string().min(1).max(100).default("general"),
+        source: z.enum(["claude", "codex", "gmail", "google-workspace", "supabase", "github", "notion", "tapdat", "manual", "other"]),
+        kind: z.enum(["finding", "connector-health", "action-candidate", "status-change", "no-op"]),
+        title: z.string().min(1).max(500), summary: z.string().min(1).max(5000),
+        severity: z.enum(["critical", "high", "normal", "low"]),
+        verificationStatus: z.enum(["claude-sourced-unverified", "source-verified", "independently-verified", "unknown"]),
+        material: z.boolean(), actionable: z.boolean().default(false), suggestedAction: z.string().max(2000).optional(),
+        sourceUrl: z.string().url().max(4000).optional(), occurredAt: z.string().datetime(), dueAt: z.string().datetime().optional(),
+        connectorOutcome: z.enum(["success", "error", "no-op"]).optional(), connectorError: z.string().max(2000).optional(),
+      },
+      annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false, idempotentHint: true },
+    },
+    async (signal) => {
+      const result = await ingestSignal(signal);
+      return { content: [{ type: "text", text: result.duplicate ? "Duplicate signal suppressed; no task or model run was created." : `Signal recorded in CCS. Action candidate: ${result.actionCandidateCreated ? "created" : "not needed"}. Model run: ${result.modelRunSuppressed ? "suppressed" : "eligible for a bounded low-cost synthesis"}.` }], structuredContent: result };
     },
   );
 

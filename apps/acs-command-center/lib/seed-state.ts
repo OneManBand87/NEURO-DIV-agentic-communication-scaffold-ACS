@@ -148,6 +148,8 @@ export const initialCommandCenterState: CommandCenterState = {
   approvals: [],
   communications: [],
   intakeItems: [],
+  signals: [],
+  connectorHealth: [],
   usagePreflights: [
     {
       id: "usage-command-center-build",
@@ -200,10 +202,10 @@ export const initialCommandCenterState: CommandCenterState = {
       agent: "Claude Code",
       platform: "Claude Code",
       projectId: "neuro-div",
-      task: "No active assignment in this implementation",
-      status: "Available, not assigned",
+      task: "Reserved for bounded high-value coding and deep design review",
+      status: "Available for deliberate assignment",
       lastSeenAt: "2026-07-19T12:00:00-04:00",
-      nextAction: "Optional independent review after the Codex implementation is testable.",
+      nextAction: "Use for work such as TapDAT initial architecture review; do not use for recurring monitoring or CCS orchestration.",
       blockedReason: null,
       evidence: "Repository capability snapshot; no live status call was made.",
     },

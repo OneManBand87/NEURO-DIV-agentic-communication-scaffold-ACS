@@ -72,6 +72,35 @@
     "approvedArchitectureDocumentId": "1Fop9QaYrLrQMlnLRcEvDBsnVghm1gBK96BEzFmoFHos",
     "approvedArchitectureRevision": "ALtnJHxai1_St4aMGqiKrs_bdNN1Vz3AcY9YgPCIld7vtootjq_-9k6_4RfBlG05LNnt3e-20KRen-rIcNAbXi5o1TmeUVtBhbEgQn_1Fw"
   },
+  "ccsSignalIngestionControl": {
+    "status": "implemented-locally-pending-production-verification",
+    "architecture": "event-driven-single-ccs-ledger",
+    "capabilities": [
+      "cross-source-discovery",
+      "deduplication",
+      "calculated-aging",
+      "connector-failure-tracking",
+      "action-candidate-creation",
+      "selective-synthesis-routing"
+    ],
+    "duplicateDisposition": "suppress-task-and-model-run",
+    "noChangeDisposition": "suppress-task-and-model-run",
+    "synthesisEligibility": "materially-new-high-severity-only",
+    "connectorTripwires": {
+      "consecutiveErrors": 2,
+      "consecutiveNoChangeEvents": 3
+    },
+    "claudeRoutine": {
+      "status": "paused",
+      "operationalOutputs": false,
+      "historicalOutputs": ["notion", "github", "excluded-slack-provenance"],
+      "allowedRole": "explicit-high-value-coding-and-deep-design",
+      "prohibitedRoles": ["recurring-monitoring", "broad-connector-sweeps", "routine-ccs-orchestration", "multi-destination-status-publication"]
+    },
+    "acsAct002": "unexecuted-pending-canonical-reconciliation",
+    "canonicalBriefRevision": "ALtnJHxz-oW9jk9HK5CpKGZn6kdoPsrnQ8ZfAsk9TPGa1N4iR8bot01T2sAKQmQEykil0Zg9diAHeLGHWGX_9s3bTTKKc-zyNRtfU7U7sA",
+    "approvedArchitectureRevision": "AIroW37Fss-O6jJl0a-QFeF9IpZbjw-1OvzYFO73kT7cmpP51JffeJwr0VGOsgbZcwf-7SqaEXU2qQeoiMULibTkMWGrD71x1r1Vycshhw"
+  },
   "commandCenter": {
     "status": "production-v0.4-owner-only-universal-intake-attachments-verified",
     "productionUrl": "https://acs-command-center.onemanband87.chatgpt.site",

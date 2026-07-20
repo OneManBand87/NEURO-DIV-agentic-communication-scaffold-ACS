@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { ApprovalRecord, CommandCenterState, CommunicationRecord, IntakeItemRecord, WorkItemRecord } from "../lib/types";
+import type { ApprovalRecord, CommandCenterState, CommunicationRecord, IntakeItemRecord, SignalRecord, WorkItemRecord } from "../lib/types";
 
 type SpeechRecognitionEventLike = { results: ArrayLike<{ 0: { transcript: string } }> };
 type SpeechRecognitionLike = {
@@ -88,6 +88,7 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
   );
   const backgroundPaused = state.settings.background_ai_paused !== "false";
   const intakeWaiting = state.intakeItems.filter((item) => item.status === "captured" || item.status === "needs-attention");
+  const openSignals = state.signals.filter((item) => item.status === "open" || item.status === "watching");
 
   async function mutate(payload: Record<string, unknown>, label: string) {
     setBusy(label);
@@ -198,6 +199,7 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
       <nav className="section-nav" aria-label="Command Center sections">
         <a href="#today">Today</a>
         <a href="#intake">Intake <span>{intakeWaiting.length}</span></a>
+        <a href="#signals">Signals <span>{openSignals.length}</span></a>
         <a href="#approvals">Approvals <span>{pendingApprovals.length}</span></a>
         <a href="#communications">Recruiters <span>{recruiterMessages.length}</span></a>
         <a href="#projects">Projects</a>
@@ -242,6 +244,22 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
           <div className="empty-state"><span aria-hidden="true">↗</span><div><strong>The universal intake is ready for its first item.</strong><p>Use “Send to NEURO-DIV” from any Share menu, or take a screenshot on your Mac.</p></div></div>
         ) : (
           <div className="intake-list">{state.intakeItems.slice(0, 12).map((item) => <IntakeCard key={item.id} item={item} />)}</div>
+        )}
+      </section>
+
+      <section id="signals" className="section-block" aria-labelledby="signals-title">
+        <div className="section-heading">
+          <div><span className="section-kicker">QUIET SIGNAL LEDGER</span><h2 id="signals-title">New evidence without another feed</h2></div>
+          <span className={`count-badge ${openSignals.length ? "attention" : "clear"}`}>{openSignals.length} open</span>
+        </div>
+        <p className="section-intro">Cross-source findings are deduplicated here. Age is calculated when you open CCS; no AI process polls merely to watch time pass. Claude-sourced imports remain visibly unverified until checked.</p>
+        {state.connectorHealth.length > 0 ? <div className="connector-strip" aria-label="Connector health">
+          {state.connectorHealth.map((connector) => <div className={`connector-pill ${connector.status}`} key={connector.source}><strong>{connector.source}</strong><span>{connector.status}</span>{connector.pausedReason ? <small>{connector.pausedReason}</small> : null}</div>)}
+        </div> : null}
+        {state.signals.length === 0 ? (
+          <div className="empty-state"><span aria-hidden="true">◇</span><div><strong>No material signals are waiting.</strong><p>Duplicate and no-change events stop before synthesis or task creation.</p></div></div>
+        ) : (
+          <div className="signal-list">{state.signals.slice(0, 20).map((signal) => <SignalCard key={signal.id} signal={signal} />)}</div>
         )}
       </section>
 
@@ -354,6 +372,13 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
       <footer className="page-footer"><strong>ACS Command Center v0.4</strong><span>Observed facts, sourced facts, proposals, and unknowns remain explicitly separated.</span></footer>
     </main>
   );
+}
+
+function SignalCard({ signal }: { signal: SignalRecord }) {
+  return <article className={`signal-card ${signal.severity}`}>
+    <div className="signal-main"><div className="meta-row"><span className={`priority ${signal.severity}`}>{signal.severity}</span><span>{signal.source} · {signal.kind.replace("-", " ")}</span></div><h3>{signal.title}</h3><p>{signal.summary}</p>{signal.suggestedAction ? <strong>Next: {signal.suggestedAction}</strong> : null}</div>
+    <div className="signal-status"><strong>{signal.verificationStatus.replaceAll("-", " ")}</strong><span>{signal.ageDays} day{signal.ageDays === 1 ? "" : "s"} old</span><span>Synthesis {signal.synthesisStatus.replaceAll("-", " ")}</span>{signal.sourceUrl ? <a href={signal.sourceUrl} target="_blank" rel="noreferrer">Open source</a> : null}</div>
+  </article>;
 }
 
 function IntakeCard({ item }: { item: IntakeItemRecord }) {

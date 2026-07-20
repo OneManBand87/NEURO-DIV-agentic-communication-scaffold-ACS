@@ -18,4 +18,6 @@ Enforce [resources/automation-cost-cadence-proportionality-control.md](../../res
 
 Slack is completely excluded from NEURO-DIV architecture and workflows. Do not use or propose it for intake, routing, monitoring, notifications, handoffs, coordination, storage, publication, or user-facing interaction; historical Slack content is provenance only.
 
+Codex and deterministic connector infrastructure own CCS signal intake, deduplication, reconciliation, calculated aging, connector-health tracking, and action-candidate routing. Claude is reserved for explicitly assigned high-value coding and deep design work and must not run recurring monitoring, broad connector sweeps, routine CCS orchestration, or multi-destination status publication. Treat the retired monitor's outputs as historical provenance only and leave `ACS-ACT-002` unexecuted until canonical reconciliation.
+
 Keep the canonical Google Doc, repository snapshot, and capability manifest aligned. Do not commit authentication material or report an unverified integration as working.

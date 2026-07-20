@@ -133,3 +133,39 @@ export const intakeAttachments = sqliteTable(
   },
   (table) => [index("intake_attachments_item_idx").on(table.intakeItemId, table.createdAt)],
 );
+
+export const signals = sqliteTable(
+  "signals",
+  {
+    id: text("id").primaryKey(),
+    sourceId: text("source_id").notNull().unique(),
+    projectId: text("project_id").notNull(),
+    source: text("source").notNull(),
+    kind: text("kind").notNull(),
+    title: text("title").notNull(),
+    summary: text("summary").notNull(),
+    severity: text("severity").notNull(),
+    status: text("status").notNull(),
+    verificationStatus: text("verification_status").notNull(),
+    material: integer("material", { mode: "boolean" }).notNull(),
+    synthesisStatus: text("synthesis_status").notNull(),
+    suggestedAction: text("suggested_action"),
+    sourceUrl: text("source_url"),
+    occurredAt: text("occurred_at").notNull(),
+    dueAt: text("due_at"),
+    receivedAt: text("received_at").notNull(),
+    updatedAt: text("updated_at").notNull(),
+  },
+  (table) => [index("signals_status_idx").on(table.status, table.severity, table.occurredAt)],
+);
+
+export const connectorHealth = sqliteTable("connector_health", {
+  source: text("source").primaryKey(),
+  status: text("status").notNull(),
+  consecutiveErrors: integer("consecutive_errors").notNull(),
+  consecutiveNoOps: integer("consecutive_no_ops").notNull(),
+  lastEventAt: text("last_event_at").notNull(),
+  lastSuccessAt: text("last_success_at"),
+  lastError: text("last_error"),
+  pausedReason: text("paused_reason"),
+});

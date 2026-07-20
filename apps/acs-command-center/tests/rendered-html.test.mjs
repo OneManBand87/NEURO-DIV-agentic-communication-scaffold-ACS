@@ -14,8 +14,23 @@ test("build output and source contain the ACS Command Center", async () => {
   assert.match(component, /RECRUITER SLA/);
   assert.match(component, /USAGE SENTINEL/);
   assert.match(component, /UNIVERSAL INTAKE/);
+  assert.match(component, /QUIET SIGNAL LEDGER/);
   assert.match(component, /role="status"/);
   assert.doesNotMatch(component, /codex-preview/);
+});
+
+test("signal intake is authenticated, deduplicated, cost-bounded, and excludes Slack", async () => {
+  const [route, database, policy] = await Promise.all([
+    readFile(new URL("../app/api/signals/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../db/command-center.ts", import.meta.url), "utf8"),
+    readFile(new URL("../lib/signal-policy.ts", import.meta.url), "utf8"),
+  ]);
+  assert.match(route, /x-acs-device-token/);
+  assert.doesNotMatch(route, /z\.enum\(\[[^\]]*slack/i);
+  assert.match(database, /Slack is excluded from NEURO-DIV workflows/);
+  assert.match(database, /duplicate: true, actionCandidateCreated: false, modelRunSuppressed: true/);
+  assert.match(policy, /SIGNAL_ERROR_TRIPWIRE = 2/);
+  assert.match(policy, /SIGNAL_NO_OP_TRIPWIRE = 3/);
 });
 
 test("universal intake is device-authenticated, bounded, and deduplicated", async () => {

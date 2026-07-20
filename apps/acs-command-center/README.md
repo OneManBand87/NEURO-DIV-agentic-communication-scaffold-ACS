@@ -112,6 +112,15 @@ bytes remain in device-synced Apple intake storage; routed work products remain
 canonical in the project’s Google Drive structure. The native routers are
 event-driven and invoke no AI model.
 
+## Quiet signal ledger
+
+`POST /api/signals` accepts authenticated cross-source findings, connector results,
+status changes, no-change events, and action candidates. Slack is not an accepted
+source. Source IDs are deduplicated, aging is calculated at read time, and no-change
+events do not create tasks or invoke a model. Only material high-severity signals
+become eligible for bounded low-cost synthesis. Connector sources pause after two
+consecutive errors or three consecutive no-change events.
+
 ## Useful commands
 
 - `npm run dev`: start local development

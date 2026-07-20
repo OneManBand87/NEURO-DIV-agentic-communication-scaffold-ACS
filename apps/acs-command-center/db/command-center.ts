@@ -1,5 +1,6 @@
 import { env } from "cloudflare:workers";
 import { initialCommandCenterState } from "../lib/seed-state";
+import { ageInDays, evaluateSignalPolicy, nextConnectorHealth } from "../lib/signal-policy";
 import type { CommandCenterState } from "../lib/types";
 
 type D1Row = Record<string, unknown>;
@@ -56,11 +57,25 @@ const schemaStatements = [
     original_filename TEXT NOT NULL, content_type TEXT NOT NULL, size_bytes INTEGER NOT NULL,
     sha256 TEXT NOT NULL, uploaded_by TEXT, created_at TEXT NOT NULL
   )`,
+  `CREATE TABLE IF NOT EXISTS signals (
+    id TEXT PRIMARY KEY, source_id TEXT NOT NULL UNIQUE, project_id TEXT NOT NULL,
+    source TEXT NOT NULL, kind TEXT NOT NULL, title TEXT NOT NULL, summary TEXT NOT NULL,
+    severity TEXT NOT NULL, status TEXT NOT NULL, verification_status TEXT NOT NULL,
+    material INTEGER NOT NULL, synthesis_status TEXT NOT NULL, suggested_action TEXT,
+    source_url TEXT, occurred_at TEXT NOT NULL, due_at TEXT, received_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+  )`,
+  `CREATE TABLE IF NOT EXISTS connector_health (
+    source TEXT PRIMARY KEY, status TEXT NOT NULL, consecutive_errors INTEGER NOT NULL,
+    consecutive_no_ops INTEGER NOT NULL, last_event_at TEXT NOT NULL, last_success_at TEXT,
+    last_error TEXT, paused_reason TEXT
+  )`,
   "CREATE INDEX IF NOT EXISTS work_items_lane_idx ON work_items(attention_lane, priority)",
   "CREATE INDEX IF NOT EXISTS communications_status_idx ON communications(status, response_target_at)",
   "CREATE INDEX IF NOT EXISTS approvals_status_idx ON approvals(status, deadline)",
   "CREATE INDEX IF NOT EXISTS intake_status_idx ON intake_items(status, received_at)",
   "CREATE INDEX IF NOT EXISTS intake_attachments_item_idx ON intake_attachments(intake_item_id, created_at)",
+  "CREATE INDEX IF NOT EXISTS signals_status_idx ON signals(status, severity, occurred_at)",
 ];
 
 function database() {
@@ -185,7 +200,7 @@ async function sha256(value: string) {
 export async function loadCommandCenterState(): Promise<CommandCenterState> {
   await ensureCommandCenterDatabase();
   const db = database();
-  const [projectRows, workRows, approvalRows, communicationRows, usageRows, agentRows, intakeRows, attachmentRows, settingRows] =
+  const [projectRows, workRows, approvalRows, communicationRows, usageRows, agentRows, intakeRows, attachmentRows, signalRows, connectorRows, settingRows] =
     await Promise.all([
       db.prepare("SELECT * FROM projects ORDER BY sort_order").all<D1Row>(),
       db.prepare("SELECT * FROM work_items ORDER BY CASE priority WHEN 'critical' THEN 1 WHEN 'high' THEN 2 WHEN 'normal' THEN 3 ELSE 4 END, updated_at DESC").all<D1Row>(),
@@ -195,6 +210,8 @@ export async function loadCommandCenterState(): Promise<CommandCenterState> {
       db.prepare("SELECT * FROM agent_statuses ORDER BY agent").all<D1Row>(),
       db.prepare("SELECT * FROM intake_items ORDER BY received_at DESC LIMIT 100").all<D1Row>(),
       db.prepare("SELECT * FROM intake_attachments ORDER BY created_at").all<D1Row>(),
+      db.prepare("SELECT * FROM signals ORDER BY CASE severity WHEN 'critical' THEN 1 WHEN 'high' THEN 2 WHEN 'normal' THEN 3 ELSE 4 END, occurred_at DESC LIMIT 100").all<D1Row>(),
+      db.prepare("SELECT * FROM connector_health ORDER BY source").all<D1Row>(),
       db.prepare("SELECT * FROM settings").all<D1Row>(),
     ]);
 
@@ -276,7 +293,114 @@ export async function loadCommandCenterState(): Promise<CommandCenterState> {
       occurredAt: asString(row, "occurred_at"), receivedAt: asString(row, "received_at"), updatedAt: asString(row, "updated_at"),
       attachments: attachmentsByItem.get(id) ?? [],
     };}),
+    signals: signalRows.results.map((row) => ({
+      id: asString(row, "id"), sourceId: asString(row, "source_id"), projectId: asString(row, "project_id"),
+      source: asString(row, "source") as CommandCenterState["signals"][number]["source"],
+      kind: asString(row, "kind") as CommandCenterState["signals"][number]["kind"],
+      title: asString(row, "title"), summary: asString(row, "summary"),
+      severity: asString(row, "severity") as CommandCenterState["signals"][number]["severity"],
+      status: asString(row, "status") as CommandCenterState["signals"][number]["status"],
+      verificationStatus: asString(row, "verification_status") as CommandCenterState["signals"][number]["verificationStatus"],
+      material: Number(row.material ?? 0) === 1,
+      synthesisStatus: asString(row, "synthesis_status") as CommandCenterState["signals"][number]["synthesisStatus"],
+      suggestedAction: asNullableString(row, "suggested_action"), sourceUrl: asNullableString(row, "source_url"),
+      occurredAt: asString(row, "occurred_at"), dueAt: asNullableString(row, "due_at"),
+      receivedAt: asString(row, "received_at"), updatedAt: asString(row, "updated_at"),
+      ageDays: ageInDays(asString(row, "occurred_at")),
+    })),
+    connectorHealth: connectorRows.results.map((row) => ({
+      source: asString(row, "source") as CommandCenterState["connectorHealth"][number]["source"],
+      status: asString(row, "status") as CommandCenterState["connectorHealth"][number]["status"],
+      consecutiveErrors: Number(row.consecutive_errors ?? 0), consecutiveNoOps: Number(row.consecutive_no_ops ?? 0),
+      lastEventAt: asString(row, "last_event_at"), lastSuccessAt: asNullableString(row, "last_success_at"),
+      lastError: asNullableString(row, "last_error"), pausedReason: asNullableString(row, "paused_reason"),
+    })),
   };
+}
+
+export async function ingestSignal(input: {
+  sourceId: string;
+  projectId: string;
+  source: CommandCenterState["signals"][number]["source"];
+  kind: CommandCenterState["signals"][number]["kind"];
+  title: string;
+  summary: string;
+  severity: CommandCenterState["signals"][number]["severity"];
+  verificationStatus: CommandCenterState["signals"][number]["verificationStatus"];
+  material: boolean;
+  actionable: boolean;
+  suggestedAction?: string;
+  sourceUrl?: string;
+  occurredAt: string;
+  dueAt?: string;
+  connectorOutcome?: "success" | "error" | "no-op";
+  connectorError?: string;
+}) {
+  await ensureCommandCenterDatabase();
+  if (input.source.toLowerCase() === "slack") throw new Error("Slack is excluded from NEURO-DIV workflows");
+  const db = database();
+  const existing = await db.prepare("SELECT id FROM signals WHERE source_id = ?").bind(input.sourceId).first<{ id: string }>();
+  if (existing) return { id: existing.id, duplicate: true, actionCandidateCreated: false, modelRunSuppressed: true };
+
+  const now = new Date().toISOString();
+  const policy = evaluateSignalPolicy(input);
+  const id = `signal-${crypto.randomUUID()}`;
+  const statements = [
+    db.prepare(
+      `INSERT INTO signals
+        (id,source_id,project_id,source,kind,title,summary,severity,status,verification_status,material,
+         synthesis_status,suggested_action,source_url,occurred_at,due_at,received_at,updated_at)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+    ).bind(
+      id, input.sourceId, input.projectId, input.source, input.kind, input.title, input.summary,
+      input.severity, input.kind === "no-op" ? "suppressed" : "open", input.verificationStatus,
+      input.material ? 1 : 0, policy.synthesisStatus, input.suggestedAction ?? null, input.sourceUrl ?? null,
+      input.occurredAt, input.dueAt ?? null, now, now,
+    ),
+  ];
+
+  if (policy.createActionCandidate) {
+    statements.push(
+      db.prepare(
+        `INSERT INTO work_items
+          (id,project_id,title,owner,status,priority,attention_lane,due_at,blocker,source_label,source_url,updated_at)
+         VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+      ).bind(
+        `signal-work-${id}`, input.projectId, input.title, "Codex",
+        input.verificationStatus === "claude-sourced-unverified" ? "Verification required before action" : input.suggestedAction ?? "Review signal",
+        input.severity, input.severity === "critical" ? "now" : "review", input.dueAt ?? null,
+        input.verificationStatus === "claude-sourced-unverified" ? "Claude-sourced; not independently reverified" : null,
+        `${input.source} signal`, input.sourceUrl ?? null, now,
+      ),
+    );
+  }
+
+  if (input.connectorOutcome) {
+    const current = await db.prepare("SELECT consecutive_errors, consecutive_no_ops, last_success_at FROM connector_health WHERE source = ?")
+      .bind(input.source).first<{ consecutive_errors: number; consecutive_no_ops: number; last_success_at: string | null }>();
+    const health = nextConnectorHealth({
+      currentErrors: current?.consecutive_errors ?? 0,
+      currentNoOps: current?.consecutive_no_ops ?? 0,
+      outcome: input.connectorOutcome,
+    });
+    statements.push(
+      db.prepare(
+        `INSERT INTO connector_health
+          (source,status,consecutive_errors,consecutive_no_ops,last_event_at,last_success_at,last_error,paused_reason)
+         VALUES (?,?,?,?,?,?,?,?)
+         ON CONFLICT(source) DO UPDATE SET status=excluded.status, consecutive_errors=excluded.consecutive_errors,
+         consecutive_no_ops=excluded.consecutive_no_ops, last_event_at=excluded.last_event_at,
+         last_success_at=excluded.last_success_at, last_error=excluded.last_error, paused_reason=excluded.paused_reason`,
+      ).bind(
+        input.source, health.status, health.consecutiveErrors, health.consecutiveNoOps, now,
+        input.connectorOutcome === "success" ? now : current?.last_success_at ?? null,
+        input.connectorOutcome === "error" ? input.connectorError ?? input.summary : null,
+        health.pausedReason,
+      ),
+    );
+  }
+  await db.batch(statements);
+  return { id, duplicate: false, actionCandidateCreated: policy.createActionCandidate, modelRunSuppressed: policy.suppressModelRun };
 }
 
 export async function ingestUniversalItem(input: {
