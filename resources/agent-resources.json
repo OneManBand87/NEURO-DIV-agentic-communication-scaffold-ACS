@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastVerified": "2026-07-19",
+  "lastVerified": "2026-07-20",
   "canonicalBrief": {
     "name": "NEURO-DIV - Agentic Communication Scaffold (ACS) - Shared Agent Brief - Current",
     "url": "https://docs.google.com/document/d/1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q/edit",
@@ -50,21 +50,38 @@
     "validationBoundary": "WIPED is a provisional simulation-based behavioral-adaptation model requiring independent empirical validation."
   },
   "qtuExecutionGate": {
-    "status": "mandatory",
+    "status": "provisional-validation-hold",
+    "repositoryControl": "resources/qtu-provisional-validation-hold.md",
+    "operationalRole": "advisory-diagnostic-design-conformance-only",
+    "independentExecutionAuthorization": false,
     "appliesTo": "all-state-changing-directives-within-qtu-scope-by-all-participating-agents",
     "rawFunctional": "U(M) = A_OOD(M) * A_CF(M) / L(M)",
     "normalizedScore": "U_norm(M) = A_OOD(M) * A_CF(M) * (L_min / L(M))",
     "interval": {
       "type": "one-sided-lower-confidence-bound",
       "confidenceLevel": 0.9,
-      "minimumLowerBoundForExecution": 0.9,
+      "minimumLowerBoundForExecution": null,
+      "provisionalPolicyParameter": 0.9,
+      "scientificallyEstablishedCutoff": false,
       "field": "QTU-LCB90"
     },
-    "authorizedStatus": "QTU_AUTHORIZED",
+    "historicalAuthorizedStatus": "QTU_AUTHORIZED",
+    "historicalStatusInterpretation": "DESIGN_CONFORMANCE_ONLY — NOT EMPIRICALLY VALIDATED",
+    "activeDesignStatus": "QTU_DESIGN_CONFORMANT",
+    "empiricallyValidatedStatusAvailable": false,
     "blockedStatuses": [
       "QTU_UNESTABLISHED",
       "QTU_VERIFYING",
       "QTU_BLOCKED"
+    ],
+    "cannotIndependentlyAuthorize": [
+      "M3",
+      "M4",
+      "irreversible-or-destructive-action",
+      "security-privacy-authentication-credentials-permissions-sharing",
+      "financial-legal-regulatory-clinical-safety",
+      "external-communication-publication-deployment-production",
+      "consequential-canonical-write"
     ],
     "selfReportedModelConfidenceAccepted": false,
     "administrativeLogisticalSafeHarbor": {

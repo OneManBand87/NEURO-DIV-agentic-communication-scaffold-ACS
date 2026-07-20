@@ -6,7 +6,7 @@ applyTo: "**"
 
 Read [AGENTS.md](../../AGENTS.md) and [resources/agent-resources.json](../../resources/agent-resources.json) before changing agent configuration, MCP settings, shared instructions, or coordination documentation.
 
-Enforce the mandatory QTU execution gate: state-changing work within QTU scope requires a directive-specific `QTU-LCB90 >= 0.90`. Missing or stale evidence blocks in-scope execution.
+Enforce [the QTU provisional validation hold](../../resources/qtu-provisional-validation-hold.md): QTU is advisory and diagnostic pending independent empirical validation. Historical `QTU_AUTHORIZED` is design-conformance evidence only; `0.90` is a provisional policy parameter; QTU cannot independently authorize M3/M4 or consequential actions.
 
 Apply [resources/qtu-administrative-logistical-safe-harbor.md](../../resources/qtu-administrative-logistical-safe-harbor.md) before classifying an action outside QTU. Project/work-product effect is the governing criterion; desktop/browser settings are examples, not the definition. Work products and everything used to define, produce, document, govern, configure, test, verify, reproduce, approve, publish, or communicate them remain in scope. Examples are illustrative and do not represent all possibilities; uncertainty returns the action to QTU.
 

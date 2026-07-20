@@ -152,11 +152,14 @@ const result = {
   complexityRatio,
   pointEstimate: Number(pointEstimate.toFixed(9)),
   qtuLcb90: Number(qtuLcb90.toFixed(9)),
-  gate: qtuLcb90 >= 0.90 ? 'QTU_AUTHORIZED' : 'QTU_BLOCKED'
+  assessment: qtuLcb90 >= 0.90 ? 'QTU_DESIGN_CONFORMANT' : 'QTU_BLOCKED',
+  empiricalValidation: false,
+  executionAuthorization: false
 };
 
 if (result.directiveHash !== '59440be80776be0f83b9b381a62ee1d46a3aec36c8dd49d25d6908d902e9183b' ||
-    result.qtuLcb90 !== 0.927284744 || result.gate !== 'QTU_AUTHORIZED') {
+    result.qtuLcb90 !== 0.927284744 || result.assessment !== 'QTU_DESIGN_CONFORMANT' ||
+    result.empiricalValidation !== false || result.executionAuthorization !== false) {
   console.error(JSON.stringify(result, null, 2));
   process.exit(1);
 }

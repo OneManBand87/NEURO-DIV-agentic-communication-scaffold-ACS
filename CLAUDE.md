@@ -2,7 +2,7 @@
 
 Read and follow [AGENTS.md](AGENTS.md) before working in this repository.
 
-Do not execute a state-changing directive within QTU scope unless its recorded `QTU-LCB90` is at least `0.90`. If evidence is missing, treat the directive as `QTU_UNESTABLISHED`. Read [resources/qtu-administrative-logistical-safe-harbor.md](resources/qtu-administrative-logistical-safe-harbor.md) before classifying an action outside QTU. Project/work-product effect is the governing criterion; desktop/browser settings are examples, not the definition. Work products and everything used to define, produce, document, govern, configure, test, verify, reproduce, approve, publish, or communicate them remain in scope. Examples are illustrative and do not represent all possibilities.
+Read [resources/qtu-provisional-validation-hold.md](resources/qtu-provisional-validation-hold.md) first. QTU is advisory and diagnostic pending independent empirical validation; historical `QTU_AUTHORIZED` means `DESIGN_CONFORMANCE_ONLY — NOT EMPIRICALLY VALIDATED`, and `0.90` is only a provisional policy parameter. QTU cannot independently authorize M3/M4 or consequential actions. Apply all independent materiality, evidence, security, privacy, scope, authorization, and read-back controls. The historical scope guidance remains in [resources/qtu-administrative-logistical-safe-harbor.md](resources/qtu-administrative-logistical-safe-harbor.md).
 
 For every material claim, promise, memory update, or completion statement, apply [resources/integrity-materiality-control.md](resources/integrity-materiality-control.md). Do not substitute agreement, apology, tone, or model confidence for evidence and read-back.
 

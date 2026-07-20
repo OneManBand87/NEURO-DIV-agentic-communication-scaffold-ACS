@@ -18,7 +18,7 @@ For every material claim or action, an agent must:
 2. evaluate supporting and contradictory evidence;
 3. prefer direct observation and primary authoritative sources;
 4. record the active environment, tools, authentication, permissions, target-system state, counterpart reach, and limitations;
-5. apply the QTU gate before state-changing execution within QTU scope, using [qtu-administrative-logistical-safe-harbor.md](qtu-administrative-logistical-safe-harbor.md) only for qualifying non-substantive administrative or logistical actions;
+5. apply the [QTU provisional validation hold](qtu-provisional-validation-hold.md): use QTU only as advisory design evidence and never as independent authorization, while retaining all materiality and independent hard gates;
 6. convert every material promise into a durable commitment record;
 7. require read-back evidence before claiming memory persistence, synchronization, completion, or remediation; and
 8. reopen a matter when recurrence contradicts a prior completion claim.
@@ -96,6 +96,8 @@ Every report must disclose corpus source, date range, inaccessible surfaces, ded
 
 The QTU paper defines `U(M) = A_OOD * A_CF / L(M)`. The normalized score, confidence-bound method, and `QTU-LCB90 >= 0.90` execution threshold are ACS operational extensions, not statements contained in the paper.
 
+Effective 2026-07-20, [the QTU provisional validation hold](qtu-provisional-validation-hold.md) supersedes every execution-authorization interpretation below. Preserve the records as history, but read each prior `QTU_AUTHORIZED` result as `DESIGN_CONFORMANCE_ONLY — NOT EMPIRICALLY VALIDATED`. The `0.90` threshold is a provisional policy parameter, not a scientifically established cutoff. No QTU result can independently authorize M3/M4 or another consequential action.
+
 Directive `NDV-INT-2026-07-17-A` authorized this reversible control installation. The declared protocol used uniform `Beta(1,1)` component priors; 60 of 60 OOD design-conformance cases; 60 of 60 counterfactual-routing cases; exact one-sided 90% component lower credible bounds of `0.962956`; `L_min/L = 0.98`; point estimate `0.948642`; and conservative product `QTU-LCB90 = 0.908739`. The record authorizes installation only. It is not evidence that the control is effective in production.
 
 Directive `NDV-QTU-SH-2026-07-19-A` authorized the reversible [administrative and logistical safe-harbor amendment](qtu-administrative-logistical-safe-harbor.md). Its declared protocol used uniform `Beta(1,1)` component priors; 60 of 60 OOD classification cases; 60 of 60 counterfactual cases; exact one-sided 90% component lower credible bounds of `0.962956`; `L_min/L = 1.0`; normalized posterior-mean point estimate `0.968002`; and conservative `QTU-LCB90 = 0.927285`. The amendment excludes only non-substantive administrative or logistical actions satisfying every safe-harbor condition. It does not exclude artifacts or artifact-related documents, memos, narratives, manifests, skills, controls, code, production configuration, governance, evidence, security, or external actions, and it is not evidence of production effectiveness.
@@ -115,7 +117,8 @@ DETECT
   -> IDENTIFY CONTRADICTIONS
   -> ROOT CAUSE
   -> DESIGN CORRECTION
-  -> QTU AUTHORIZE
+  -> QTU DESIGN-CONFORMANCE REVIEW
+  -> INDEPENDENT AUTHORIZATION AND HARD-GATE REVIEW
   -> IMPLEMENT
   -> READ BACK
   -> TEST RECURRENCE

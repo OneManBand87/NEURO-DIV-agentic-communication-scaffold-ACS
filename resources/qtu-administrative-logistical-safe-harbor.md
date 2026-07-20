@@ -1,8 +1,10 @@
 # QTU Administrative and Logistical Safe Harbor
 
-Status: Mandatory scope amendment to the QTU execution gate
+Status: Historical scope amendment; subject to the mandatory QTU provisional validation hold
 
-Last verified: 2026-07-19
+Last verified: 2026-07-20
+
+Current interpretation: [the QTU provisional validation hold](qtu-provisional-validation-hold.md) supersedes this document's execution-gate and authorization language. Preserve that language as provenance only. Every historical `QTU_AUTHORIZED` label means `DESIGN_CONFORMANCE_ONLY — NOT EMPIRICALLY VALIDATED`; `0.90` is a provisional policy parameter; QTU cannot independently authorize consequential action.
 
 Canonical source: [NEURO-DIV - Agentic Communication Scaffold (ACS) - Shared Agent Brief - Current](https://docs.google.com/document/d/1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q/edit)
 

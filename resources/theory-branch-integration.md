@@ -32,7 +32,7 @@ The NDV Architecture Ontology & Axial Framework v2 defines three interacting org
 
 Cross-axis systems include ACS communication, distributed cognition, integrity verification, garbage collection, consolidation, artifact governance, and recursive optimization.
 
-## QTU understanding and execution gate
+## QTU understanding and provisional validation hold
 
 The Quantitative Theory of Understanding defines:
 
@@ -48,15 +48,17 @@ U_norm(M) = A_OOD(M) * A_CF(M) * (L_min / L(M))
 
 The task class must define `L_min` and its evaluation protocol before scoring. All terms are bounded so `U_norm` lies in `[0,1]`.
 
-No AI agent may execute a state-changing directive within QTU scope unless:
+ACS previously treated the following as a mandatory execution threshold:
 
 ```text
 QTU-LCB90(U_norm) >= 0.90
 ```
 
-`QTU-LCB90` is the one-sided 90% lower confidence bound, calculated using a declared reproducible method such as a bootstrap confidence bound or Bayesian lower credible bound. A point estimate of `0.90` does not pass when its lower bound is below `0.90`. Missing evidence is `QTU_UNESTABLISHED`, never an invitation to guess. Model fluency, consensus, and self-reported confidence do not count as evidence.
+`QTU-LCB90` is a one-sided 90% lower interval bound under a declared method. The normalized score, the component-bound construction, the 60-case protocols, and the `0.90` threshold are ACS operational extensions; the QTU paper does not empirically establish them as an execution-authorization mechanism.
 
-Before authorization, agents may perform only non-state-changing epistemic work needed to establish the bound: read-only retrieval, inspection, clarification, calculation, comparison, threat analysis, simulation, validation, and non-mutating dry runs. In-scope file edits, commits, pushes, external messages, workflow activation, permission changes, purchases, destructive commands, and similar actions remain blocked.
+The mandatory [QTU Provisional Validation Hold](qtu-provisional-validation-hold.md) therefore supersedes the execution-gate interpretation. QTU remains advisory and diagnostic only. Historical `QTU_AUTHORIZED` records mean `DESIGN_CONFORMANCE_ONLY — NOT EMPIRICALLY VALIDATED`; `0.90` is retained only as a provisional policy parameter, not a scientific cutoff. QTU may demand more evidence or block overclaiming, but it cannot independently authorize a state-changing action.
+
+M3/M4, irreversible, security/privacy, financial, legal, clinical, external, production, and consequential canonical actions require applicable independent authorization, materiality, evidence, capability, security, privacy, scope, contradiction-search, independent-review, and read-back controls. QTU cannot waive any of them.
 
 ### Administrative and logistical safe harbor
 
@@ -66,16 +68,17 @@ Work products and artifact-related documents of every format or extension—incl
 
 Safe-harbor examples are illustrative, non-comprehensive, non-exhaustive, and non-exclusive; they do not represent every possible activity, setting, purpose, dependency, or effect. Similarity to an example does not override the controlling criteria. Borderline classifications turn on actual purpose and reasonably foreseeable downstream effect. If applicability remains genuinely uncertain, QTU applies. Security, privacy, authorization, platform-policy, external-communication, and destructive-action controls remain independent hard gates whether or not QTU applies.
 
-Every directive record must preserve: directive identity; target and scope; `A_OOD`; `A_CF`; `L(M)`; predefined `L_min`; `U_norm`; interval method; `QTU-LCB90`; evidence references; unresolved assumptions; evaluator; timestamp; evidence expiry or target-state version; gate status; and post-execution verification requirement.
+Every QTU assessment record must preserve: directive identity; target and scope; `A_OOD`; `A_CF`; `L(M)`; predefined `L_min`; `U_norm`; interval method; `QTU-LCB90`; evidence references; unresolved assumptions; evaluator; timestamp; evidence expiry or target-state version; design-conformance status; and post-action verification requirement. Scores are research evidence, not independent authorization.
 
 Gate states are:
 
 ```text
-QTU_UNESTABLISHED -> QTU_VERIFYING -> QTU_AUTHORIZED
+QTU_UNESTABLISHED -> QTU_VERIFYING -> QTU_DESIGN_CONFORMANT
                                `--> QTU_BLOCKED
+QTU_EMPIRICALLY_VALIDATED is reserved and currently unavailable.
 ```
 
-Material changes to the directive, evidence, scope, target state, or security conditions invalidate authorization. Passing QTU is necessary but does not override security, privacy, authentication, external-communication approval, user scope, or platform policy.
+Material changes to the directive, evidence, scope, target state, or security conditions invalidate the assessment. No QTU result overrides security, privacy, authentication, external-communication approval, user scope, materiality, independent review, or platform policy.
 
 ## Integrated hierarchy
 

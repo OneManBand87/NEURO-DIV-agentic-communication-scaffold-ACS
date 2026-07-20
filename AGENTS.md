@@ -6,14 +6,15 @@ These instructions apply to every AI agent working in this repository.
 
 1. Read [resources/agent-coordination.md](resources/agent-coordination.md).
 2. Read [resources/agent-resources.json](resources/agent-resources.json) for machine-readable endpoints, capabilities, and status.
-3. Read [resources/theory-branch-integration.md](resources/theory-branch-integration.md), including the mandatory QTU execution gate.
-4. Read [resources/qtu-administrative-logistical-safe-harbor.md](resources/qtu-administrative-logistical-safe-harbor.md) before deciding whether a routine state change is outside QTU scope.
-5. Read [resources/integrity-materiality-control.md](resources/integrity-materiality-control.md) before making a material claim, commitment, or completion statement.
-6. Read [resources/maximal-progression-user-attention-control.md](resources/maximal-progression-user-attention-control.md) before escalating a user-dependent blocker or transferring any action to the user.
-7. Read [resources/automation-cost-cadence-proportionality-control.md](resources/automation-cost-cadence-proportionality-control.md) before creating, enabling, reactivating, or materially changing recurring, scheduled, polling, monitoring, retry, or background work.
-8. Treat the canonical Google Doc as the source of truth when the authenticated client can access it:
+3. Read [resources/qtu-provisional-validation-hold.md](resources/qtu-provisional-validation-hold.md); it supersedes QTU as an execution-authorization gate pending independent empirical validation.
+4. Read [resources/theory-branch-integration.md](resources/theory-branch-integration.md), including the QTU research functional and validation boundary.
+5. Read [resources/qtu-administrative-logistical-safe-harbor.md](resources/qtu-administrative-logistical-safe-harbor.md) as historical scope guidance, subject to the validation hold.
+6. Read [resources/integrity-materiality-control.md](resources/integrity-materiality-control.md) before making a material claim, commitment, or completion statement.
+7. Read [resources/maximal-progression-user-attention-control.md](resources/maximal-progression-user-attention-control.md) before escalating a user-dependent blocker or transferring any action to the user.
+8. Read [resources/automation-cost-cadence-proportionality-control.md](resources/automation-cost-cadence-proportionality-control.md) before creating, enabling, reactivating, or materially changing recurring, scheduled, polling, monitoring, retry, or background work.
+9. Treat the canonical Google Doc as the source of truth when the authenticated client can access it:
    [NEURO-DIV - Agentic Communication Scaffold (ACS) - Shared Agent Brief - Current](https://docs.google.com/document/d/1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q/edit).
-9. Use the repository snapshot when the canonical document is unavailable, and state that limitation.
+10. Use the repository snapshot when the canonical document is unavailable, and state that limitation.
 
 ## Shared architecture
 
@@ -27,7 +28,7 @@ These instructions apply to every AI agent working in this repository.
 
 ## Operating rules
 
-- Mandatory QTU gate: no AI agent may execute a state-changing directive within QTU scope unless the directive-specific normalized Quantitative Theory of Understanding score has a one-sided 90% lower confidence bound of at least `0.90` (`QTU-LCB90 >= 0.90`). Missing evidence is `QTU_UNESTABLISHED` and blocks in-scope execution. Model self-confidence is not evidence. Before authorization, agents may perform only non-state-changing investigation, clarification, calculation, simulation, dry runs, and verification needed to establish the bound.
+- Mandatory QTU validation hold: QTU is advisory and diagnostic, not an execution-authorization gate. Historical `QTU_AUTHORIZED` records mean `DESIGN_CONFORMANCE_ONLY — NOT EMPIRICALLY VALIDATED`. The `0.90` value is a provisional policy parameter, not a scientifically established cutoff. QTU cannot independently authorize M3/M4, irreversible, security/privacy, financial, legal, clinical, external, production, or consequential canonical actions. Apply [resources/qtu-provisional-validation-hold.md](resources/qtu-provisional-validation-hold.md) and all independent hard gates.
 - Administrative and logistical safe harbor: the governing criterion is whether an action affects a project/work-product or anything used to define, produce, document, govern, configure, test, verify, reproduce, approve, publish, or communicate it. If yes, QTU applies. If no, a routine, non-substantive, bounded, reversible administrative or logistical action may qualify only when every condition in [resources/qtu-administrative-logistical-safe-harbor.md](resources/qtu-administrative-logistical-safe-harbor.md) passes. Desktop/browser settings are examples, not the definition. If applicability remains uncertain, QTU applies. Examples are illustrative and do not represent all possible activities, settings, purposes, dependencies, or effects.
 - Artifact-related and protected activity remains within QTU scope regardless of storage location or file extension. This includes all work products and documentation (including Markdown and README files), memoranda, narratives, manifests, registries, indexes, metadata, schemas, evidence, provenance, implementation or status records, skills, agent instructions, controls, examples, templates, methodology, workflows, software code, dependencies, configuration, automation, accessibility requirements, tests, verification, security, privacy, authentication, permissions, sharing, publication, deployment, commits, pushes, and destructive changes.
 - Security, privacy, scope, authentication, external-communication approval, destructive-action controls, and platform policy remain independent hard gates whether or not QTU applies.

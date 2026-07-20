@@ -16,6 +16,7 @@ GEMINI.md
 resources/agent-coordination.md
 resources/agent-resources.json
 resources/theory-branch-integration.md
+resources/qtu-provisional-validation-hold.md
 resources/qtu-administrative-logistical-safe-harbor.md
 resources/integrity-materiality-control.md
 resources/maximal-progression-user-attention-control.md
@@ -54,7 +55,8 @@ if ! jq -e '.automationCostCadenceProportionalityControl | (.status == "mandator
 fi
 
 if ! rg -Fq 'automation-cost-cadence-proportionality-control.md' .codex/hooks/ndv_context_hook.py ||
-   ! rg -Fq 'automation cost/cadence control' .codex/hooks/ndv_context_hook.py; then
+   ! rg -Fq 'automation cost/cadence control' .codex/hooks/ndv_context_hook.py ||
+   ! rg -Fq 'qtu-provisional-validation-hold.md' .codex/hooks/ndv_context_hook.py; then
   printf 'Codex context hook automation cost reminder missing\n' >&2
   exit 1
 fi
@@ -108,12 +110,31 @@ if ! rg -Fq 'PCAOB-aligned' resources/integrity-materiality-control.md || ! rg -
   exit 1
 fi
 
-for qtu_file in AGENTS.md CLAUDE.md GEMINI.md .github/copilot-instructions.md .github/instructions/agent-coordination.instructions.md resources/agent-coordination.md resources/agent-resources.json resources/theory-branch-integration.md; do
-  if ! rg -Fq 'QTU-LCB90' "$qtu_file"; then
-    printf 'QTU execution gate missing: %s\n' "$qtu_file" >&2
+for qtu_file in AGENTS.md CLAUDE.md GEMINI.md .github/copilot-instructions.md .github/instructions/agent-coordination.instructions.md README.md resources/agent-coordination.md resources/agent-resources.json resources/theory-branch-integration.md resources/integrity-materiality-control.md; do
+  if ! rg -Fq 'qtu-provisional-validation-hold.md' "$qtu_file"; then
+    printf 'QTU provisional validation hold missing: %s\n' "$qtu_file" >&2
     exit 1
   fi
 done
+
+for qtu_hold_file in AGENTS.md CLAUDE.md GEMINI.md .github/copilot-instructions.md .github/instructions/agent-coordination.instructions.md README.md resources/agent-coordination.md resources/theory-branch-integration.md resources/integrity-materiality-control.md; do
+  if ! rg -Fq 'qtu-provisional-validation-hold.md' "$qtu_hold_file"; then
+    printf 'QTU provisional validation hold link missing: %s\n' "$qtu_hold_file" >&2
+    exit 1
+  fi
+done
+
+if ! rg -Fq 'DESIGN_CONFORMANCE_ONLY — NOT EMPIRICALLY VALIDATED' resources/qtu-provisional-validation-hold.md ||
+   ! rg -Fq 'provisional policy parameter' resources/qtu-provisional-validation-hold.md ||
+   ! rg -Fq 'cannot independently authorize' resources/qtu-provisional-validation-hold.md; then
+  printf 'QTU provisional validation hold invariants missing\n' >&2
+  exit 1
+fi
+
+if ! jq -e '.qtuExecutionGate | (.status == "provisional-validation-hold") and (.independentExecutionAuthorization == false) and (.interval.provisionalPolicyParameter == 0.9) and (.interval.scientificallyEstablishedCutoff == false) and (.activeDesignStatus == "QTU_DESIGN_CONFORMANT") and (.empiricallyValidatedStatusAvailable == false) and (.cannotIndependentlyAuthorize | index("M3") != null) and (.cannotIndependentlyAuthorize | index("M4") != null)' resources/agent-resources.json >/dev/null; then
+  printf 'QTU provisional validation hold metadata mismatch\n' >&2
+  exit 1
+fi
 
 for safe_harbor_file in AGENTS.md CLAUDE.md GEMINI.md .github/copilot-instructions.md .github/instructions/agent-coordination.instructions.md README.md resources/agent-coordination.md resources/theory-branch-integration.md resources/integrity-materiality-control.md; do
   if ! rg -Fq 'qtu-administrative-logistical-safe-harbor.md' "$safe_harbor_file"; then
