@@ -194,6 +194,28 @@
       "fallbackWhenGuaranteesUnavailable": "button-recorder-control-or-other-open-line-capture",
       "controlRecord": "resources/universal-intake-implementation.md"
     },
+    "appleIntelligenceBoundary": {
+      "status": "standing-project-instruction",
+      "adoptionModel": "selective-value-gated-not-default-scope",
+      "siriChatGPTExperience": "excluded",
+      "siriMayFrontCCS": false,
+      "fileTransferThroughSiriMeetsLowFrictionRequirement": false,
+      "shortcutUseModelCandidate": "silent-bounded-ccs-subordinate-predetermined-actions-only",
+      "chatGPTExtensionModel": "out-of-scope-unless-distinct-benefit-is-tested",
+      "permittedCandidateRoles": [
+        "notification-prioritization-or-reduce-interruptions",
+        "user-invoked-writing-tools",
+        "local-or-private-cloud-compute-preprocessing",
+        "notes-or-call-summaries",
+        "photos-search",
+        "visual-intelligence"
+      ],
+      "mayDetermineMaterialStatus": false,
+      "maySuppressRequiredAlerts": false,
+      "mayCreateCanonicalOutput": false,
+      "requiresUseCasePrivacyFailureCCSVisibilityAndADHDValueEvaluation": true,
+      "controlRecord": "resources/universal-intake-implementation.md"
+    },
     "verification": {
       "productionBuild": "passed",
       "lint": "passed",

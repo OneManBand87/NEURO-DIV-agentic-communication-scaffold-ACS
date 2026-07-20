@@ -58,6 +58,16 @@ Provide one low-friction route into the ACS Command Center for screenshots, scre
 - After explicit completion, the recording may enter CCS intake for downstream transcription and interpretation. Any proposed task, decision, state change, or external action remains subject to normal CCS verification and approval controls.
 - If the available spoken-trigger or Shortcut route cannot guarantee explicit-stop recording, original-audio preservation, and complete avoidance of Siri and Alexa, use the Action Button, recorder control, or another assistant-free open-line capture surface instead.
 
+## Apple Intelligence selective-adoption boundary
+
+- Apple Intelligence is not included in NEURO-DIV scope merely because it is available.
+- The Siri-to-ChatGPT experience is excluded and may not serve as a CCS front door, spoken intake surface, conversational operator, or task executor.
+- Supported photo or document transfer through Siri still requires file confirmation and does not satisfy the low-friction intake requirement or replace CCS document routing.
+- A Shortcuts `Use Model` action may be considered only when the entire route is silent, bounded, subordinate to CCS, and demonstrably useful. Its output may feed predetermined actions but may not become an independent task orchestrator.
+- Keep the ChatGPT extension model out of scope unless a tested Shortcut proves a distinct benefit that direct CCS or Codex routing cannot provide with equal or lower friction.
+- Notification prioritization, Reduce Interruptions, user-invoked Writing Tools, local or Private Cloud Compute preprocessing, Notes or call summaries, Photos search, and Visual Intelligence are optional attention or convenience candidates only.
+- No Apple Intelligence feature may independently determine material status, suppress required alerts, create canonical output, or be enabled before its use case, privacy route, failure behavior, CCS visibility, and net ADHD workflow value have been evaluated.
+
 ## Current evidence and limitations
 
 - Observed: source build, lint, MCP type-check, and five contract tests pass.
