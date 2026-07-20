@@ -185,6 +185,11 @@
       "siriMayInterpret": false,
       "siriMayInterrupt": false,
       "siriMayInferAction": false,
+      "alexaRole": "none-in-spoken-intake-or-activation",
+      "alexaTriggerRole": "prohibited",
+      "alexaMayProduceUserFacingResponse": false,
+      "degradeToAlexaWhenVoiceTriggerUnavailable": false,
+      "alexaCompatibleHardwareRole": "future-silent-endpoint-only-after-separate-validation",
       "downstreamRoute": "ccs-after-explicit-completion",
       "fallbackWhenGuaranteesUnavailable": "button-recorder-control-or-other-open-line-capture",
       "controlRecord": "resources/universal-intake-implementation.md"

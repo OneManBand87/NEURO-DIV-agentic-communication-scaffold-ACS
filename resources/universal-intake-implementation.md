@@ -40,22 +40,23 @@ Provide one low-friction route into the ACS Command Center for screenshots, scre
 - Files deliberately attached in the Command Center are transmitted to its private Sites R2 storage. The route accepts no more than five files, 20 MB per file, and 40 MB combined; download responses force attachment disposition, disable caching, apply a sandbox content policy, and do not render the original MIME type inline.
 - Intake is preservation and triage, not permission to publish, send, execute, or otherwise act on captured content.
 
-## Siri and spoken-word capture boundary
+## Voice-assistant and spoken-word capture boundary
 
 - The iPhone Action Button and a spoken activation phrase are equivalent entrances to the same dedicated open-line recording Shortcut; neither creates a separate capture workflow.
-- Voice activation must use an on-device Vocal Shortcut or another confirmed silent trigger that launches the recorder directly without invoking Siri at any point.
-- Siri is prohibited from this workflow, including as a fallback. The user must never receive a Siri response, clarification, confirmation, interpretation, error message, or `I don't understand` prompt.
-- If Siri-free voice activation cannot be guaranteed, voice activation remains unavailable and the Action Button remains the supported trigger. The workflow must never degrade to Siri.
-- Vocal Shortcuts' continuous microphone-listening state must be visible and tested for privacy, battery, false-trigger, and interference costs before adoption.
+- Voice activation must use an on-device Vocal Shortcut or another confirmed silent trigger that launches the recorder directly without invoking Siri or Alexa at any point.
+- Siri and Alexa are prohibited from spoken intake, voice activation, interpretation, and user-facing responses, including as fallbacks. The user must never receive their clarification, confirmation, interpretation, error message, or `I don't understand` prompt.
+- If assistant-free voice activation cannot be guaranteed, voice activation remains unavailable and the Action Button remains the supported trigger. The workflow must never degrade to Siri or Alexa.
+- Any future use of Alexa-compatible hardware as a silent physical-environment endpoint requires separate validation and must not require the user to speak to, hear from, or otherwise deal with Alexa.
+- A continuously listening voice trigger's microphone state must be visible and tested for privacy, battery, false-trigger, and interference costs before adoption.
 - Either trigger starts or opens the recording surface; it does not authorize transcription, interpretation, submission, or downstream action.
-- Siri has no role in capture or activation.
-- Spoken-word intake must use a real open-line audio recording rather than Siri dictation or a speech-to-text prompt box.
+- Siri and Alexa have no role in capture or activation.
+- Spoken-word intake must use a real open-line audio recording rather than assistant dictation or a speech-to-text prompt box.
 - Recording continues until the user explicitly stops and finalizes it through the recorder control. Long pauses, topic changes, self-correction, repetition, and nonlinear ADHD speech do not constitute completion.
 - The recorder must support pause and resume without finalizing or routing the item.
 - The original audio is the primary source and must be preserved before transcription, summarization, classification, or routing. Transcripts are linked derivative aids that may contain errors and must not silently replace the audio.
 - No capture surface may interrupt with clarifying questions, suggestions, confirmations, summaries, or conclusions while the user is thinking aloud.
 - After explicit completion, the recording may enter CCS intake for downstream transcription and interpretation. Any proposed task, decision, state change, or external action remains subject to normal CCS verification and approval controls.
-- If the available spoken-trigger or Shortcut route cannot guarantee explicit-stop recording, original-audio preservation, and complete avoidance of Siri, use the Action Button, recorder control, or another Siri-free open-line capture surface instead.
+- If the available spoken-trigger or Shortcut route cannot guarantee explicit-stop recording, original-audio preservation, and complete avoidance of Siri and Alexa, use the Action Button, recorder control, or another assistant-free open-line capture surface instead.
 
 ## Current evidence and limitations
 
