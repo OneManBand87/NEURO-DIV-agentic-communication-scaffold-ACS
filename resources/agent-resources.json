@@ -163,8 +163,12 @@
     },
     "voiceCaptureBoundary": {
       "status": "standing-project-instruction",
+      "primaryTrigger": "iphone-action-button-runs-dedicated-recording-shortcut",
+      "siriTriggerRole": "optional-fallback-only",
       "siriRole": "secretary-only-recorder-trigger",
       "capturePrimitive": "open-line-audio-recording",
+      "triggerStartsRecorderOnly": true,
+      "triggerAuthorizesProcessingOrSubmission": false,
       "completionSignal": "explicit-user-stop-only",
       "silenceEndsCapture": false,
       "supportsPauseResume": true,

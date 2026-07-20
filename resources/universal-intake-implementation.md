@@ -42,9 +42,11 @@ Provide one low-friction route into the ACS Command Center for screenshots, scre
 
 ## Siri and spoken-word capture boundary
 
+- The iPhone Action Button is the preferred primary trigger and should run the dedicated open-line recording Shortcut directly. Siri is optional fallback only.
+- Action Button activation starts or opens the recording surface; it does not authorize transcription, interpretation, submission, or downstream action.
 - Siri is secretary-only. It may initiate a separate audio recorder but must not interpret the user's thought, control the conversational turn, infer completion from silence, or submit a standardized Siri response as the user's request.
 - Spoken-word intake must use a real open-line audio recording rather than Siri dictation or a speech-to-text prompt box.
-- Recording continues until the user explicitly stops it. Long pauses, topic changes, self-correction, repetition, and nonlinear ADHD speech do not constitute completion.
+- Recording continues until the user explicitly stops and finalizes it through the recorder control. Long pauses, topic changes, self-correction, repetition, and nonlinear ADHD speech do not constitute completion.
 - The recorder must support pause and resume without finalizing or routing the item.
 - The original audio is the primary source and must be preserved before transcription, summarization, classification, or routing. Transcripts are linked derivative aids that may contain errors and must not silently replace the audio.
 - No capture surface may interrupt with clarifying questions, suggestions, confirmations, summaries, or conclusions while the user is thinking aloud.
