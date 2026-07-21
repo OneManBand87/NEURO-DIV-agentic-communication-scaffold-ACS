@@ -1,0 +1,43 @@
+{
+  "description": "NEURO-DIV ACS project-local context reminder hooks for Codex.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/ndv_context_hook.py\"",
+            "timeout": 10,
+            "statusMessage": "Checking NEURO-DIV context"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/ndv_context_hook.py\"",
+            "timeout": 10,
+            "statusMessage": "Checking NEURO-DIV prompt context"
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "matcher": "manual|auto",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/ndv_context_hook.py\"",
+            "timeout": 10,
+            "statusMessage": "Restoring NEURO-DIV context reminder"
+          }
+        ]
+      }
+    ]
+  }
+}

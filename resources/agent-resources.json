@@ -1,0 +1,898 @@
+{
+  "schemaVersion": 1,
+  "lastVerified": "2026-07-21",
+  "canonicalBrief": {
+    "name": "NEURO-DIV - Agentic Communication Scaffold (ACS) - Shared Agent Brief - Current",
+    "url": "https://docs.google.com/document/d/1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q/edit",
+    "documentId": "1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q",
+    "role": "source-of-truth"
+  },
+  "repository": {
+    "humanTitle": "NEURO-DIV - agentic communication scaffold (ACS)",
+    "url": "https://github.com/OneManBand87/NEURO-DIV-agentic-communication-scaffold-ACS",
+    "visibility": "public",
+    "defaultBranch": "main",
+    "legacyArchiveBranch": "archive/neuro-div-bolt-prototype-2026-07-16"
+  },
+  "architectureRole": {
+    "type": "cross-layer-communications-subsystem",
+    "parentArchitectureName": "NEURO-DIV Core Foundation Document v1",
+    "parentArchitectureUrl": "https://docs.google.com/document/d/1DRlYOnp6AGBwRWOYgfh03gxNWxn6kaWSjmkddPa7gdY/edit",
+    "parentArchitectureStatus": "incomplete-requires-multi-version-reconstruction",
+    "responsibilities": [
+      "agent-to-agent-handoffs",
+      "shared-state-synchronization",
+      "narrative-and-cognitive-feedback-routing",
+      "context-continuity",
+      "verification-routing",
+      "common-tool-access"
+    ]
+  },
+  "externalTerminologyControl": {
+    "status": "mandatory",
+    "firstUseOutsideEstablishedContext": "Agentic Communication Scaffold (ACS) with plain-language explanation",
+    "preferredAppleFacingLabel": "NEURO-DIV Command Center",
+    "bareAcsAllowedAfterContextEstablished": true,
+    "coveredSurfaces": [
+      "apple-shortcuts",
+      "share-sheet-actions",
+      "file-dialogs",
+      "notifications",
+      "general-purpose-device-surfaces"
+    ]
+  },
+  "slackExclusionControl": {
+    "status": "mandatory-complete-exclusion",
+    "effectiveDate": "2026-07-20",
+    "architectureRole": "none",
+    "allowedUses": [],
+    "prohibitedUses": [
+      "intake",
+      "routing",
+      "monitoring",
+      "notifications",
+      "handoffs",
+      "agent-coordination",
+      "storage",
+      "publication",
+      "user-facing-interaction"
+    ],
+    "historicalContentDisposition": "provenance-only-not-current-state-or-source-of-truth",
+    "replacementControlPlane": "central-command-center",
+    "replacementMechanisms": [
+      "approved-ccs-transports",
+      "stable-identifiers",
+      "bounded-event-triggers",
+      "zapier-or-other-approved-connectors",
+      "canonical-google-drive-records"
+    ],
+    "userNavigationRequired": false,
+    "canonicalBriefDocumentId": "1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q",
+    "canonicalBriefRevision": "ALtnJHwDfd2q0HhSluN5VWwil9X3oY1JgeIbVFKWiWLVq3bBdMHt2zIxeIHDnyJtrJMTGTJYHLt9b7DoALISGUFyhqIEs3NvXUROEHOuQg",
+    "approvedArchitectureDocumentId": "1Fop9QaYrLrQMlnLRcEvDBsnVghm1gBK96BEzFmoFHos",
+    "approvedArchitectureRevision": "ALtnJHxai1_St4aMGqiKrs_bdNN1Vz3AcY9YgPCIld7vtootjq_-9k6_4RfBlG05LNnt3e-20KRen-rIcNAbXi5o1TmeUVtBhbEgQn_1Fw"
+  },
+  "ccsSignalIngestionControl": {
+    "status": "production-verified",
+    "architecture": "event-driven-single-ccs-ledger",
+    "capabilities": [
+      "cross-source-discovery",
+      "deduplication",
+      "calculated-aging",
+      "connector-failure-tracking",
+      "action-candidate-creation",
+      "selective-synthesis-routing"
+    ],
+    "duplicateDisposition": "suppress-task-and-model-run",
+    "noChangeDisposition": "suppress-task-and-model-run",
+    "synthesisEligibility": "materially-new-high-severity-only",
+    "connectorTripwires": {
+      "consecutiveErrors": 2,
+      "consecutiveNoChangeEvents": 3
+    },
+    "claudeRoutine": {
+      "status": "paused",
+      "operationalOutputs": false,
+      "historicalOutputs": ["notion", "github", "excluded-slack-provenance"],
+      "allowedRole": "explicit-high-value-coding-and-deep-design",
+      "prohibitedRoles": ["recurring-monitoring", "broad-connector-sweeps", "routine-ccs-orchestration", "multi-destination-status-publication"]
+    },
+    "acsAct002": "unexecuted-pending-canonical-reconciliation",
+    "productionUrl": "https://acs-command-center.onemanband87.chatgpt.site",
+    "sitesVersion": 7,
+    "productionVerification": {
+      "signalCount": 9,
+      "actionCandidateCount": 4,
+      "zapierConnectorStatus": "degraded-one-error",
+      "duplicateSuppressionVerified": true
+    },
+    "canonicalBriefRevision": "ALtnJHxz-oW9jk9HK5CpKGZn6kdoPsrnQ8ZfAsk9TPGa1N4iR8bot01T2sAKQmQEykil0Zg9diAHeLGHWGX_9s3bTTKKc-zyNRtfU7U7sA",
+    "approvedArchitectureRevision": "AIroW37Fss-O6jJl0a-QFeF9IpZbjw-1OvzYFO73kT7cmpP51JffeJwr0VGOsgbZcwf-7SqaEXU2qQeoiMULibTkMWGrD71x1r1Vycshhw"
+  },
+  "commandCenter": {
+    "status": "production-v0.4-owner-only-universal-intake-attachments-verified",
+    "productionUrl": "https://acs-command-center.onemanband87.chatgpt.site",
+    "sourceDirectory": "apps/acs-command-center",
+    "role": "adhd-friendly-central-management-interface",
+    "canonicalStorage": "google-drive",
+    "operationalIndex": "sites-d1",
+    "aiRouting": {
+      "status": "mandatory",
+      "scope": "all-substantive-ai-assisted-neuro-div-work",
+      "ccsRole": "orchestration-and-visibility-layer",
+      "coveredParticipants": "any-acs-member-or-other-ai-system",
+      "triggerConditions": [
+        "determinative",
+        "potentially-determinative",
+        "action-producing",
+        "decision-shaping",
+        "material-downstream-effect-capable"
+      ],
+      "requiredCoverage": [
+        "requests",
+        "actions",
+        "device-control-paths",
+        "approvals",
+        "state-changes",
+        "blockers",
+        "outputs",
+        "handoffs",
+        "completion-evidence"
+      ],
+      "executionTransportsAreSubordinate": [
+        "remote-control-surfaces",
+        "local-applications",
+        "shortcuts",
+        "mobile-device-management",
+        "connectors",
+        "local-tools"
+      ],
+      "transientExclusion": "only-no-retained-state-action-decision-artifact-commitment-or-reasonably-foreseeable-downstream-effect",
+      "uncertaintyRule": "route-through-ccs",
+      "missingCapabilityFallback": "record-need-and-current-state-in-ccs-without-silent-bypass",
+      "supersedesCodexOnlyRule": true,
+      "supersededProductionIntakeId": "intake-c823b88f-982d-4ee6-abd9-e476b9f84d8f",
+      "canonicalBriefRevision": "ALtnJHwByA3GYOSswljG2dxDehqzjgnVFM-3iNoRvUhC7A-zu1YJn4Pe1AkkBYsbrpGpY06fFj2k69IzBCboXrnePQwK7Lhz3bGrL66gQA",
+      "productionIntakeId": "intake-292e315f-ba35-4bc3-9a0c-a063a3538509"
+    },
+    "driveProject": {
+      "folderUrl": "https://drive.google.com/drive/folders/1Eya9De0przu_CcyvphlUuRetCPTO4u5-",
+      "projectIndex": "https://docs.google.com/document/d/1yy0OeOAsqi-qLBABiZPWPYng8mAkV0CSpUHE6sJ7fL4/edit",
+      "approvedArchitectureAndControls": "https://docs.google.com/document/d/1Fop9QaYrLrQMlnLRcEvDBsnVghm1gBK96BEzFmoFHos/edit",
+      "releaseRecord": "https://docs.google.com/document/d/1CrZ7ZVCDDflLUcfUevnquadmC2f1hBWdhLJ2XxBRP6M/edit"
+    },
+    "parentBranches": [
+      "general",
+      "neuro-div",
+      "music",
+      "personal-life-and-administration",
+      "jobs-work",
+      "communications"
+    ],
+    "recruiterSlaMinutes": {
+      "target": 120,
+      "critical": 180,
+      "hardDeadline": "same-calendar-day"
+    },
+    "linkedinIntake": {
+      "route": "individual-email-notifications-to-job-search-gmail-event-driven-processing-and-manual-share-fallback",
+      "scrapingAuthorized": false,
+      "directMessageReadVerified": false,
+      "notificationEmailReadVerified": true,
+      "messagesIngested": 2,
+      "preparedReplies": 2,
+      "pendingExactDraftApprovals": 2
+    },
+    "usageSentinel": {
+      "backgroundAiDefault": "paused",
+      "recruiterPollingEnabled": false,
+      "eventDrivenPreferred": true,
+      "tripwires": {
+        "consecutiveSystemErrors": 2,
+        "consecutiveNoOps": 3,
+        "userCostComplaint": "immediate-pause"
+      }
+    },
+    "universalIntake": {
+      "status": "production-v0.4-voice-processing-verified-automatic-trigger-permission-pending",
+      "acceptedKinds": ["screenshot", "screen-recording", "file", "url", "text", "media"],
+      "macCaptureDestinationConfigured": true,
+      "macLaunchAgentInstalled": true,
+      "macLaunchAgentEnabled": false,
+      "macLaunchAgentDisabledReason": "awaiting-narrow-shortcuts-icloud-pending-folder-authorization",
+      "macShareSheetShortcutConfigured": true,
+      "macProcessorShortcutConfigured": true,
+      "macVoiceProcessorOnDeviceVerified": true,
+      "macVoiceProcessorStableBridgeConfigured": true,
+      "macAutomaticTriggerVerified": false,
+      "macAutomaticTriggerBlocker": "shortcuts-background-run-lacks-icloud-pending-folder-enumeration-permission",
+      "macProductionCaptureVerified": true,
+      "productionMetadataReadBackVerified": true,
+      "iosShortcutSyncVerified": false,
+      "iosVoiceIntakeShortcutPresent": true,
+      "iosVoiceIntakeShortcutName": "NEURO-DIV Voice Intake",
+      "iosActionButtonAssignmentVerified": true,
+      "iosPendingQueueSyncVerified": true,
+      "iosMirroredExecutionVerified": true,
+      "iosPhysicalMicrophoneAudioVerified": false,
+      "iosIcloudSyncEnabled": true,
+      "iosShareSheetObserved": false,
+      "iosSyncBlocker": null,
+      "iosRemainingValidation": "narrow-mac-pending-folder-authorization-then-one-physical-action-button-recording-with-usable-audio-and-downstream-ccs-readback",
+      "iosActionButtonImplementationCcsIntakeId": "intake-9e324b1f-6643-449c-8a3e-1b8c11d863e0",
+      "iosActionButtonImplementationCanonicalRevisionId": "ALtnJHx4NTskisog_pnXF4KFLq4gqo0Zq_h227V9KX0Tdo7TwrrkeYnRO3MQuH06A0ggQydQv4GbSNQkAKnkuqLI69xUTZBhwEjpgiHVBg",
+      "iosActionButtonPauseResumeCorrectionCcsIntakeId": "intake-2482b02f-2568-480b-a035-3d729cc0160c",
+      "browserAttachments": {
+        "status": "production-verified",
+        "storage": "sites-r2-private",
+        "metadataIndex": "sites-d1",
+        "maximumFilesPerRequest": 5,
+        "maximumBytesPerFile": 20971520,
+        "maximumCombinedBytes": 41943040,
+        "authenticatedDownload": true,
+        "byteIdenticalRoundTripVerified": true
+      },
+      "trigger": "event-driven-filesystem-notification",
+      "defaultAiRunsPerCapture": 0,
+      "voiceInterpretationAiRunsPerCompletedCapture": 1,
+      "deduplication": "sha256-source-id",
+      "rawInputStorage": "device-synced-apple-intake-storage",
+      "routedArtifactCanonicalStorage": "google-drive",
+      "deviceSecretStorage": "macos-keychain-not-versioned",
+      "tripwires": {
+        "consecutiveSystemErrors": 2,
+        "consecutiveNoOps": 3,
+        "userCostOrTaskChurnComplaint": "immediate-pause"
+      },
+      "controlRecord": "resources/universal-intake-implementation.md"
+    },
+    "voiceCaptureBoundary": {
+      "status": "standing-project-instruction-user-amended-dual-path",
+      "activationModel": "user-choice-direct-text-dictation-or-open-line-recorder",
+      "physicalTrigger": "iphone-action-button",
+      "physicalTriggerAssignmentVerified": true,
+      "shortcutName": "NEURO-DIV Voice Intake",
+      "recordingStart": "immediately",
+      "recordingFinish": "explicit-user-tap",
+      "pauseResumeControlObserved": false,
+      "pauseResumeRequirementStatus": "unmet-requires-recorder-refinement",
+      "directTextDictation": {
+        "permitted": true,
+        "surfaces": ["ccs-quick-capture", "other-neuro-div-text-entry"],
+        "inputMechanisms": ["macos-voice-control", "iphone-voice-control", "system-dictation"],
+        "bestFor": ["fast-ordinary-prompts", "hands-free-text-entry"],
+        "sourceOfTruth": "exact-explicitly-submitted-text",
+        "originalAudioImplied": false,
+        "audioVerifiedTranscriptImplied": false,
+        "recognitionErrorsRemainVisibleAndCorrectable": true,
+        "explicitSubmissionRequired": true,
+        "silenceOrPauseSubmits": false,
+        "nearbySpeechMayBeCaptured": true
+      },
+      "semanticInterpretation": {
+        "status": "mac-on-device-processor-and-ccs-production-verified-automatic-trigger-permission-pending",
+        "originalAudioAuthoritative": true,
+        "transcriptRole": "complete-linked-derivative-aid",
+        "defaultModelRoute": "apple-intelligence-on-device",
+        "chatGptExtensionExcluded": true,
+        "outputSidecarPattern": "NEURO-DIV Voice Intake - [six-digit-capture-id].ccs-intake.json",
+        "itemKinds": ["idea", "task", "concern", "evidence"],
+        "extractsDates": true,
+        "extractsPeople": true,
+        "proposedActionsRequireReview": true,
+        "titleMinimumWords": 4,
+        "titleMaximumWords": 10,
+        "titleMaximumCharacters": 72,
+        "titleMayCopyOpeningSentence": false,
+        "genericTitlesRejected": true,
+        "unclearSubjectFallback": "Review voice capture [capture-id]",
+        "productionVerificationIntakeId": "intake-208002db-cd65-4e00-850a-d40bea79fc4b",
+        "productionVerificationTitle": "Semantic title extraction verification",
+        "finalProcessorVerificationIntakeId": "intake-4c49287f-93e0-4119-b635-35928538c3c0",
+        "finalProcessorVerificationTitle": "Confirm reliable action button voice intake into command center",
+        "finalizationBoundaryIntakeId": "intake-17de3f3e-11f8-423e-a9da-b6d13b09154a",
+        "finalSynchronizationIntakeId": "intake-e6236b53-127d-4649-9a5c-044eba855451",
+        "blockerCorrectionIntakeId": "intake-2dfc3081-f790-4363-b241-224dac6741da",
+        "canonicalBriefRevisionId": "AIroW35JP7b51Xx7udBbc-tGgiFeC8yp-Rs8PvoRR4fBDiPjQqDoIxFFaIv6gKfx2rjIogkyurrCBQ2Ym4oRj_QCMBK56Mx6Ox__y5kVuA",
+        "canonicalBriefReadBackVerified": true,
+        "iphoneTranscribeAudioActionAvailable": true,
+        "iphoneOnDeviceUseModelActionAvailable": true,
+        "iphoneRecordedAudioVariableWired": false,
+        "macStableAudioBridgeWired": true,
+        "exactTranscriptEnvelopeVerified": true,
+        "unsupportedEntityFilteringVerified": true,
+        "pendingUserDependency": "authorize-shortcuts-access-to-the-icloud-pending-folder-then-perform-one-physical-action-button-recording"
+      },
+      "appleIntelligenceContingentRouting": {
+        "status": "implemented-and-tested-in-ccs-policy-layer-device-wiring-pending",
+        "routes": ["deterministic", "apple-on-device", "ccs-reasoning", "defer-for-review"],
+        "deterministicWhen": ["routine-ccs-status", "exact-record-operation", "reminder", "non-interpretive-device-control"],
+        "appleOnDeviceWhen": ["explicitly-completed-source-preserved-voice-capture", "explicitly-requested-bounded-rewrite", "explicitly-requested-interpretive-status-summary"],
+        "ccsReasoningWhen": ["cross-record-context", "current-external-information", "connector-or-tool-use", "consequential-judgment", "action-producing-decision", "invalid-on-device-output", "low-confidence-on-device-output"],
+        "deferForReviewWhen": ["capture-not-explicitly-completed", "original-source-not-preserved", "safe-route-unverified"],
+        "allRoutesRequireCcsVisibility": true,
+        "appleIntelligenceMayExecuteActions": false,
+        "prohibitedFallbacks": ["siri", "alexa", "siri-to-chatgpt", "chatgpt-shortcut-model"],
+        "contractTestsPassed": 5,
+        "combinedVoiceAndRoutingTestsPassed": 9,
+        "fullCommandCenterTestsPassed": 20,
+        "fullBuildLintAndMcpChecksPassed": true,
+        "productionSynchronizationIntakeId": "intake-7267ed62-1160-41b5-b65b-d48ef2881707",
+        "canonicalBriefRevisionId": "ALtnJHzhMRj2rxeiuaqjSYcsq_NiGZqr_OR3Fbuy3QykqQ98IVaAPqwIqNBivpjJkH2DfW8nCff3Wp2wx0cl88SJQr4uhLcHQIye4yhyFA",
+        "canonicalBriefReadBackVerified": true
+      },
+      "filenamePattern": "NEURO-DIV Voice Intake - [six-digit-random-number].m4a",
+      "randomNumberRange": [100000, 999999],
+      "saveDestination": "icloud-drive/Shortcuts/NEURO-DIV Intake/Pending",
+      "askWhereToSave": false,
+      "overwriteExistingFiles": false,
+      "savePermission": "always-allow",
+      "mirroredPendingQueueCountBefore": 0,
+      "mirroredPendingQueueCountAfter": 1,
+      "exportSignatureRequired": false,
+      "exportSignatureRationale": "locally-created-shortcut-running-on-the-same-iphone",
+      "spokenTriggerPreferred": "on-device-vocal-shortcut-distinctive-phrase",
+      "spokenTriggerFallback": "none-disable-voice-trigger-if-siri-free-path-is-unavailable",
+      "spokenTriggerPhraseStatus": "requires-physical-iphone-vocal-shortcuts-training-and-device-test",
+      "siriTriggerRole": "prohibited",
+      "siriRole": "none",
+      "siriMayProduceUserFacingResponse": false,
+      "degradeToSiriWhenVoiceTriggerUnavailable": false,
+      "vocalShortcutsContinuousMicrophoneListening": true,
+      "vocalShortcutsRequiresPrivacyBatteryFalseTriggerInterferenceTest": true,
+      "capturePrimitive": "user-choice-direct-text-dictation-or-open-line-audio-recording",
+      "triggerStartsRecorderOnly": true,
+      "triggerAuthorizesProcessingOrSubmission": false,
+      "completionSignal": "explicit-user-stop-only",
+      "silenceEndsCapture": false,
+      "supportsPauseResume": true,
+      "preserveOriginalAudio": true,
+      "transcriptRole": "linked-derivative-aid-may-contain-errors",
+      "conversationalSiriRole": "prohibited",
+      "operatingSystemSpeechRecognitionRole": "permitted-subordinate-text-input-without-assistant-dialogue-or-independent-interpretation",
+      "siriMayInterpret": false,
+      "siriMayInterrupt": false,
+      "siriMayInferAction": false,
+      "alexaRole": "outside-neuro-div-and-ccs-ecosystem",
+      "alexaTriggerRole": "prohibited",
+      "alexaMayProduceUserFacingResponse": false,
+      "degradeToAlexaWhenVoiceTriggerUnavailable": false,
+      "alexaCompatibleHardwareRole": "none",
+      "alexaIndependentNonEcosystemUses": ["music-playback", "optional-room-light-control"],
+      "downstreamRoute": "ccs-after-explicit-text-submission-or-recording-completion",
+      "fallbackWhenGuaranteesUnavailable": "button-recorder-control-or-other-open-line-capture",
+      "dualPathPolicyCanonicalBriefRevisionId": "AIroW36I9smuxEdKDmDYXir7Sg7bRmOQM7q4-6E3b6zdeBatVWK-iBbvEhQaxxl9TKD34M-KalMxAr-dwpgwdIFZ5aDYdXk552HazBqLeg",
+      "dualPathPolicyCanonicalBriefReadBackVerified": true,
+      "controlRecord": "resources/universal-intake-implementation.md"
+    },
+    "appleIntelligenceBoundary": {
+      "status": "standing-project-instruction",
+      "adoptionModel": "selective-value-gated-not-default-scope",
+      "siriChatGPTExperience": "excluded",
+      "siriMayFrontCCS": false,
+      "fileTransferThroughSiriMeetsLowFrictionRequirement": false,
+      "shortcutUseModelCandidate": "silent-bounded-ccs-subordinate-predetermined-actions-only",
+      "chatGPTExtensionModel": "out-of-scope-unless-distinct-benefit-is-tested",
+      "permittedCandidateRoles": [
+        "notification-prioritization-or-reduce-interruptions",
+        "user-invoked-writing-tools",
+        "local-or-private-cloud-compute-preprocessing",
+        "notes-or-call-summaries",
+        "photos-search",
+        "visual-intelligence"
+      ],
+      "mayDetermineMaterialStatus": false,
+      "maySuppressRequiredAlerts": false,
+      "mayCreateCanonicalOutput": false,
+      "requiresUseCasePrivacyFailureCCSVisibilityAndADHDValueEvaluation": true,
+      "controlRecord": "resources/universal-intake-implementation.md"
+    },
+    "verification": {
+      "productionBuild": "passed",
+      "lint": "passed",
+      "contractTests": "passed",
+      "d1HealthAndState": "passed-local-runtime",
+      "mcpInitialization": "passed-local-runtime",
+      "mcpToolsDiscovered": 7,
+      "driveReadBack": "passed",
+      "privateDeployment": "succeeded-sites-version-5-owner-only",
+      "browserAttachmentRoundTrip": "passed-r2-d1-sha256-byte-identical",
+      "securityHardening": "passed-live-and-source-verification",
+      "productionDependencyAudit": "passed-zero-vulnerabilities",
+      "crossOriginMutationRejection": "passed-http-403",
+      "apiNoStoreAndSecurityHeaders": "passed-live-response",
+      "gmailLiveRead": "passed-eliekurtz01-account",
+      "secondGmailAccount": "pending",
+      "linkedinNotificationIntake": "passed-two-existing-messages",
+      "exactDraftApprovals": "passed-two-pending-items",
+      "recruiterEventDelivery": "pending",
+      "nativeRecruiterAlerts": "pending",
+      "driveWriteThrough": "pending",
+      "chatgptDeveloperConnectorRegistration": "pending"
+    }
+  },
+  "theoryBranchIntegration": {
+    "snapshot": "resources/theory-branch-integration.md",
+    "architecturalChain": [
+      "wiped-behavioral-state",
+      "adaptive-branch-parameters",
+      "branch-structured-reasoning",
+      "cbal-identity-lineage-privacy-integrity",
+      "acs-routing-and-state-synchronization",
+      "stigmergic-distributed-worker-execution",
+      "verification-and-convergence",
+      "consolidation-archival-and-garbage-collection"
+    ],
+    "canonicalSources": {
+      "quantitativeTheoryOfUnderstanding": "https://drive.google.com/file/d/1MOxQjpZ59JzOOZs9EsFEuq49DKN3TkjW",
+      "wipedModel": "https://docs.google.com/document/d/1Pi_qvpV6L3ME12W18gHl8rOZfUTc6AR6VNUYJcSAtiE",
+      "branchStructuredReasoning": "https://drive.google.com/file/d/1gDpdnOqq93A8YPmUKO8lRpNXCmPXISQr",
+      "architectureOntologyV2": "https://drive.google.com/file/d/1nOU3l02RZSxRhKisC-r7eBoRn5fFMBJG",
+      "cryptographicBranchAddressing": "https://drive.google.com/file/d/1tURDxNJgb7UFWo5sYCzbdVt0d94dHuG4"
+    },
+    "validationBoundary": "WIPED is a provisional simulation-based behavioral-adaptation model requiring independent empirical validation."
+  },
+  "qtuExecutionGate": {
+    "status": "provisional-validation-hold",
+    "repositoryControl": "resources/qtu-provisional-validation-hold.md",
+    "operationalRole": "advisory-diagnostic-design-conformance-only",
+    "independentExecutionAuthorization": false,
+    "appliesTo": "all-state-changing-directives-within-qtu-scope-by-all-participating-agents",
+    "rawFunctional": "U(M) = A_OOD(M) * A_CF(M) / L(M)",
+    "normalizedScore": "U_norm(M) = A_OOD(M) * A_CF(M) * (L_min / L(M))",
+    "interval": {
+      "type": "one-sided-lower-confidence-bound",
+      "confidenceLevel": 0.9,
+      "minimumLowerBoundForExecution": null,
+      "provisionalPolicyParameter": 0.9,
+      "scientificallyEstablishedCutoff": false,
+      "field": "QTU-LCB90"
+    },
+    "historicalAuthorizedStatus": "QTU_AUTHORIZED",
+    "historicalStatusInterpretation": "DESIGN_CONFORMANCE_ONLY — NOT EMPIRICALLY VALIDATED",
+    "activeDesignStatus": "QTU_DESIGN_CONFORMANT",
+    "empiricallyValidatedStatusAvailable": false,
+    "blockedStatuses": [
+      "QTU_UNESTABLISHED",
+      "QTU_VERIFYING",
+      "QTU_BLOCKED"
+    ],
+    "cannotIndependentlyAuthorize": [
+      "M3",
+      "M4",
+      "irreversible-or-destructive-action",
+      "security-privacy-authentication-credentials-permissions-sharing",
+      "financial-legal-regulatory-clinical-safety",
+      "external-communication-publication-deployment-production",
+      "consequential-canonical-write"
+    ],
+    "selfReportedModelConfidenceAccepted": false,
+    "administrativeLogisticalSafeHarbor": {
+      "status": "mandatory-scope-amendment",
+      "repositoryControl": "resources/qtu-administrative-logistical-safe-harbor.md",
+      "decisionRule": "project-work-product-effect-governs-then-all-safe-harbor-conditions-must-pass",
+      "primaryCriterion": "whether-the-action-affects-a-project-work-product-or-anything-used-to-define-produce-document-govern-configure-test-verify-reproduce-approve-publish-or-communicate-it",
+      "decisionStages": [
+        "determine-project-or-work-product-effect",
+        "if-none-test-all-administrative-logistical-safe-harbor-conditions-and-independent-hard-gates"
+      ],
+      "desktopBrowserSettingsRole": "illustrative-examples-not-eligibility-definition",
+      "protectedDimensions": [
+        "substantive-content",
+        "artifact-relationship",
+        "documentation-or-governance",
+        "production-behavior",
+        "security-privacy-credentials-authentication-permissions-sharing",
+        "external-state-or-communication",
+        "destructive-effect",
+        "canonical-or-published-state",
+        "evidence-provenance-verification-or-completion-status"
+      ],
+      "artifactRelatedDocumentationRemainsInScope": true,
+      "examplesAre": "illustrative-non-comprehensive-non-exhaustive-non-exclusive-and-not-representative-of-all-possible-activities-settings-purposes-dependencies-or-effects",
+      "uncertaintyRule": "qtu-applies",
+      "authorization": {
+        "directiveId": "NDV-QTU-SH-2026-07-19-C",
+        "directiveHash": "48b04bc06d2a7ee84ef9f14b41a32b1b8171d06512be8fca438e68c04f3f6784",
+        "intervalMethod": "Beta(1,1) component posteriors; conservative product of one-sided 90% lower credible bounds",
+        "oodTests": "60/60",
+        "counterfactualTests": "60/60",
+        "complexityRatio": 1.0,
+        "qtuLcb90": 0.927284744,
+        "scope": "reversible correction restoring project-work-product effect as the governing criterion while preserving desktop-browser examples; canonical-repository synchronization only; not production-effectiveness evidence",
+        "supersedes": "commit-a81174c-and-directive-B-only-on-desktop-browser-eligibility-point"
+      }
+    },
+    "preAuthorizationOperations": [
+      "read-only-retrieval",
+      "inspection",
+      "clarification",
+      "calculation",
+      "comparison",
+      "threat-analysis",
+      "simulation",
+      "validation",
+      "non-mutating-dry-run"
+    ],
+    "independentHardGates": [
+      "security",
+      "privacy",
+      "authentication",
+      "scope",
+      "external-communication-approval",
+      "platform-policy"
+    ]
+  },
+  "integrityMaterialityControl": {
+    "status": "mandatory",
+    "frameworkBoundary": "PCAOB-aligned internal AI control; not a PCAOB audit or claim of PCAOB compliance",
+    "repositoryControl": "resources/integrity-materiality-control.md",
+    "provisionalHistoryReview": {
+      "repositorySnapshot": "resources/ai-response-integrity-review-2026-07-17.md",
+      "canonicalDriveCopy": "https://docs.google.com/document/d/1_IDPhh_j5sIROhqpGFtEpEtFq03QHUdU594yTWfgJvc",
+      "status": "provisional-corpus-recovery-incomplete"
+    },
+    "materialDomains": [
+      "research",
+      "software",
+      "business-strategy",
+      "philanthropic-activity",
+      "canonical-architecture",
+      "memory-and-instruction-persistence",
+      "connector-and-capability-status",
+      "external-communication",
+      "financial-legal-regulatory-security"
+    ],
+    "requiredClaimClasses": [
+      "observed-fact",
+      "sourced-fact",
+      "inference",
+      "analogy",
+      "proposal",
+      "unknown"
+    ],
+    "completionRequires": [
+      "durable-evidence",
+      "read-back",
+      "contradiction-review",
+      "recurrence-linkage-when-applicable"
+    ],
+    "installationAuthorization": {
+      "directiveId": "NDV-INT-2026-07-17-A",
+      "intervalMethod": "Beta(1,1) component posteriors; conservative product of one-sided 90% lower credible bounds",
+      "oodTests": "60/60",
+      "counterfactualTests": "60/60",
+      "complexityRatio": 0.98,
+      "qtuLcb90": 0.908739,
+      "scope": "reversible control installation only; not empirical production-effectiveness evidence"
+    },
+    "standards": {
+      "current": [
+        "PCAOB AS 1000",
+        "PCAOB AS 1105",
+        "PCAOB AS 1201",
+        "PCAOB AS 1215",
+        "PCAOB AS 2105",
+        "PCAOB AS 2810"
+      ],
+      "futureEffective2026-12-15": [
+        "PCAOB QC 1000",
+        "PCAOB EI 1000"
+      ]
+    }
+  },
+  "maximalProgressionUserAttentionControl": {
+    "status": "mandatory",
+    "repositoryControl": "resources/maximal-progression-user-attention-control.md",
+    "taskOwner": "agent-or-designated-workflow-owner",
+    "userRoles": [
+      "approver",
+      "credential-holder",
+      "identity-confirmer",
+      "signer",
+      "purchaser",
+      "decision-maker"
+    ],
+    "requiredBehavior": [
+      "complete-all-safe-authorized-preparation",
+      "verify-current-blocker",
+      "reduce-to-one-irreducible-user-action",
+      "use-prominent-action-required-block",
+      "state-exact-steps-and-consequence",
+      "retain-agent-owned-resume-action",
+      "resume-automatically-after-user-action",
+      "close-only-after-read-back"
+    ],
+    "attentionTemplateHeader": "🚨 ACTION REQUIRED FROM YOU — [SHORT ACTION]",
+    "attentionTemplateHeaderMarkdown": "🚨 **ACTION REQUIRED FROM YOU — [SHORT ACTION]**",
+    "headingMustBeBold": true,
+    "shortActionSuffixRequired": true,
+    "standaloneVisualSeparationRequired": true,
+    "exactActionAndEssentialControlsMustBeBold": true,
+    "fontSizeRelianceProhibited": true,
+    "bareHeadingIsNoncompliant": true,
+    "controlApplicationIncident": {
+      "id": "NDV-ATTN-INC-2026-07-20-A",
+      "materiality": "M2",
+      "status": "corrective-control-installed-sustained-effectiveness-open",
+      "directiveReceived": "2026-07-20T15:35:14-04:00",
+      "globalInstructionPersistedBy": "2026-07-20T15:39:29-04:00",
+      "noncompliantTurnStarted": "2026-07-20T17:55:41-04:00",
+      "noncompliantTurnCompleted": "2026-07-20T18:49:26-04:00",
+      "chronologyConclusion": "noncompliant-response-followed-directive-and-global-persistence",
+      "concurrencyDisposition": "mechanism-not-exception",
+      "rootCause": "stale-response-format-application-after-cross-task-durable-instruction-update",
+      "recurrenceDisposition": "reopen-incident",
+      "productionCcsIntakeId": "intake-b781abc8-c1cf-42ba-9b81-8350d9ea1773",
+      "productionCcsReadBackStatus": "captured",
+      "canonicalBriefRevision": "ALtnJHwVb8eAwHbiwiu-6CNCiOPsXcj6vaZNWlxkKnGnood-PJhGqnbKGelWZXFVqJrWpcUOF5ogPpvxwLsfBePPFuN8W7XqdVtwp1HwXA"
+    },
+    "memoryBurdenRule": "user-must-not-be-required-to-remember-to-request-continuation",
+    "currentAttentionItem": {
+      "id": "ATTN-003",
+      "owner": "codex",
+      "userOnlyAction": "completed-provider-hosted-github-device-authentication",
+      "agentResumeAction": "completed-verification-push-remote-head-confirmation-and-closure",
+      "status": "resolved",
+      "account": "OneManBand87",
+      "remote": "origin/main",
+      "remoteHeadBeforePush": "ed63d9fc76e434a037025e3d8777f6561114ced3",
+      "verifiedPushHeadBeforeClosureRecord": "edf1430",
+      "intendedCommitsPushed": 8
+    },
+    "authorization": {
+      "directiveId": "NDV-ATTN-2026-07-19-A",
+      "directiveHash": "27aad3cbfe9632f42ad677d5797dcd8bab3f95bbd48d70cc8108aa9ff4895268",
+      "intervalMethod": "Beta(1,1) component posteriors; conservative product of one-sided 90% lower credible bounds",
+      "oodTests": "60/60",
+      "counterfactualTests": "60/60",
+      "complexityRatio": 1.0,
+      "qtuLcb90": 0.927284744,
+      "scope": "reversible control installation and application to pending GitHub authentication and push only; not production-effectiveness evidence"
+    }
+  },
+  "oneOffAiUsagePreflightControl": {
+    "status": "mandatory-implemented-local-verification-complete-production-deployment-pending",
+    "repositoryControl": "resources/one-off-ai-usage-preflight-control.md",
+    "platforms": [
+      "codex",
+      "claude"
+    ],
+    "executionMode": "deterministic-no-model",
+    "requiredOutputs": [
+      "p50",
+      "p80",
+      "p95",
+      "calibration-confidence",
+      "cost-rank",
+      "utility-score",
+      "utility-cost-ratio",
+      "decision",
+      "lower-cost-alternatives"
+    ],
+    "decisionRule": {
+      "blockWhenCostExceedsImportance": true,
+      "blockBelowUtilityCostRatio": 20,
+      "boundedCostDecisionBelowRatio": 40,
+      "highOrExtremeCostRequiresBoundedDecision": true,
+      "unknownOrUnboundedBlocks": true
+    },
+    "codexCreditBands": {
+      "lowMaximum": 20,
+      "mediumMaximum": 100,
+      "highMaximum": 400,
+      "aboveHigh": "extreme"
+    },
+    "claudeApiEquivalentUsdBands": {
+      "lowMaximum": 0.25,
+      "mediumMaximum": 0.75,
+      "highMaximum": 2,
+      "aboveHigh": "extreme"
+    },
+    "initialCalibration": {
+      "codexNonForkTasks": 74,
+      "claudeTasks": 4,
+      "forkedSnapshotsExcluded": true,
+      "calibratedAt": "2026-07-21"
+    },
+    "implementation": {
+      "form": "apps/acs-command-center/app/UsageEstimator.tsx",
+      "api": "apps/acs-command-center/app/api/usage/estimate/route.ts",
+      "estimator": "apps/acs-command-center/lib/usage-estimator.ts",
+      "calibration": "apps/acs-command-center/lib/usage-calibration.ts",
+      "agentTool": "estimate_task_usage",
+      "tests": "apps/acs-command-center/tests/usage-estimator.test.mjs"
+    },
+    "analysisDocumentId": "1SS04mfOXWlPKo4dv-MSOtAWLzv_h8kDzpI10xEjE7K8",
+    "analysisDocumentUrl": "https://docs.google.com/document/d/1SS04mfOXWlPKo4dv-MSOtAWLzv_h8kDzpI10xEjE7K8/edit",
+    "canonicalBriefRevision": "ALtnJHyGKA8q5qKHg2ezrOp_-59ncgbt0fYVjaIZ3wuf5VOj1H-rmPl6-oVcmS45HIkujru8iAq6hZToB10zdIk5GZ2mXFpWDQkvaUQqTg"
+  },
+  "automationCostCadenceProportionalityControl": {
+    "status": "mandatory",
+    "repositoryControl": "resources/automation-cost-cadence-proportionality-control.md",
+    "appliesTo": [
+      "recurring-automations",
+      "scheduled-work",
+      "polling",
+      "monitoring",
+      "retries",
+      "background-work",
+      "reactivation-and-material-design-changes"
+    ],
+    "decisionRule": {
+      "importanceRanks": {
+        "low": 1,
+        "normal": 2,
+        "high": 3,
+        "critical": 4
+      },
+      "costRanks": {
+        "low": 1,
+        "medium": 2,
+        "high": 3,
+        "extreme-or-unbounded": 4
+      },
+      "costAdjustments": [
+        "more-than-four-runs-per-day",
+        "new-user-visible-task-per-run",
+        "frontier-model-or-high-reasoning"
+      ],
+      "activation": "importance-must-exceed-adjusted-cost; equality-requires-explicit-cost-approval; unbounded-cost-blocks"
+    },
+    "mandatoryBounds": [
+      "maximum-run-count",
+      "expiry",
+      "terminal-success-condition",
+      "whole-window-cost-bound",
+      "cadence",
+      "model-and-reasoning-level",
+      "prompt-context-and-tool-burden",
+      "task-and-notification-churn",
+      "rollback-or-pause-path"
+    ],
+    "tripwires": {
+      "consecutiveSystemErrors": 2,
+      "consecutiveNoOpRuns": 3,
+      "userCostOrTaskChurnComplaint": "immediate-pause"
+    },
+    "affectedAutomation": {
+      "id": "neuro-div-chatgpt-export-recovery-and-gap-intake",
+      "status": "paused",
+      "reactivation": "blocked-until-compliant-redesign-and-required-approval"
+    },
+    "authorization": {
+      "directiveId": "NDV-COST-2026-07-19-A",
+      "directiveHash": "59440be80776be0f83b9b381a62ee1d46a3aec36c8dd49d25d6908d902e9183b",
+      "intervalMethod": "Beta(1,1) component posteriors; conservative product of one-sided 90% lower credible bounds",
+      "oodTests": "60/60",
+      "counterfactualTests": "60/60",
+      "complexityRatio": 1.0,
+      "qtuLcb90": 0.927284744,
+      "scope": "reversible control installation, synchronization, verification, intended commit/push, and continued pause of the affected automation; not production-effectiveness evidence"
+    }
+  },
+  "nativeReminderNotificationRoutingControl": {
+    "status": "mandatory",
+    "repositoryControl": "resources/automation-cost-cadence-proportionality-control.md",
+    "default": "cheapest-adequate-device-native-or-product-native-no-model-mechanism",
+    "preferredMechanisms": [
+      "apple-reminders",
+      "calendar-reminders",
+      "local-os-notifications",
+      "target-product-native-notification-scheduler"
+    ],
+    "prohibitedCodexUses": [
+      "waiting",
+      "polling-only",
+      "time-checking-only",
+      "simple-reminder-delivery",
+      "task-per-occurrence-reminder-churn"
+    ],
+    "codexAutomationAllowedOnlyWhen": "execution-time-work-genuinely-requires-reasoning-or-tool-actions-and-automation-cost-control-passes",
+    "recurrencePreference": "native-recurring-reminder-over-recurring-agent-run",
+    "crossDeviceFallback": "least-cost-already-authorized-reachable-native-channel-with-explicit-reachability-disclosure-and-smallest-sync-or-authentication-step",
+    "codexNativeNotificationScope": [
+      "meaningful-codex-work-completion",
+      "genuine-user-only-blocker"
+    ],
+    "taskOwnership": "agent-retains-ownership-user-not-required-to-remember-to-return",
+    "authorization": {
+      "directiveId": "NDV-NOTIFY-2026-07-19-A",
+      "directiveHash": "5b6c80324c80b0f27cd556982b275972d92ffd5b7d3658fd0cdde59d896f0b4b",
+      "intervalMethod": "Beta(1,1) component posteriors; conservative product of one-sided 90% lower credible bounds",
+      "oodTests": "60/60",
+      "counterfactualTests": "60/60",
+      "complexityRatio": 1.0,
+      "qtuLcb90": 0.927284744,
+      "scope": "durable native-first reminder and notification instruction, canonical/repository synchronization, verification, intended commit/push, and no creation or enablement of recurring automation; not production-effectiveness or cross-device-reachability evidence"
+    }
+  },
+  "mcpServers": {
+    "zapier": {
+      "transport": "http",
+      "url": "https://mcp.zapier.com/api/v1/connect",
+      "authentication": "local-oauth-not-versioned"
+    }
+  },
+  "instructionFiles": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    "GEMINI.md",
+    ".github/copilot-instructions.md",
+    ".github/instructions/agent-coordination.instructions.md"
+  ],
+  "mcpConfigurationFiles": [
+    ".mcp.json",
+    ".vscode/mcp.json"
+  ],
+  "codexProjectHooks": {
+    "status": "installed",
+    "configurationFile": ".codex/hooks.json",
+    "script": ".codex/hooks/ndv_context_hook.py",
+    "scope": "read-only project-local context reminders for the General workspace",
+    "events": [
+      "SessionStart",
+      "UserPromptSubmit",
+      "PostCompact"
+    ],
+    "nonGoals": [
+      "prompt logging",
+      "Drive writes",
+      "tool blocking",
+      "external communication",
+      "credential handling"
+    ],
+    "authorization": {
+      "directiveId": "NDV-HOOKS-2026-07-19-A",
+      "intervalMethod": "Beta(1,1) component posteriors; conservative product of one-sided 90% lower credible bounds",
+      "oodTests": "60/60",
+      "counterfactualTests": "60/60",
+      "complexityRatio": 1.0,
+      "qtuLcb90": 0.927285,
+      "scope": "reversible read-only project-local hook installation and repository/canonical synchronization only; not production-effectiveness evidence"
+    }
+  },
+  "skillResources": {
+    "lockFile": "skills-lock.json",
+    "directory": ".agents/skills",
+    "providers": [
+      "zapier/agent-skills",
+      "zapier/sdk"
+    ]
+  },
+  "clients": {
+    "codex": {
+      "context": "repository",
+      "zapier": "operational"
+    },
+    "claudeCode": {
+      "context": "repository",
+      "zapier": "operational-user-scope-project-config-present"
+    },
+    "githubCopilotVsCode": {
+      "context": "repository-configured",
+      "zapier": "operational-authenticated"
+    },
+    "geminiCli": {
+      "context": "repository-configured",
+      "zapier": "onboarding-blocked-by-provider-migration"
+    },
+    "antigravity": {
+      "context": "repository-configured",
+      "zapier": "authenticated-protocol-error"
+    },
+    "perplexity": {
+      "context": "persistent-instructions-verified",
+      "zapier": "unavailable-on-current-account"
+    }
+  },
+  "security": {
+    "credentialsCommitted": false,
+    "prohibitedPatterns": [
+      ".env",
+      "*token*",
+      "*credential*",
+      "cookies*"
+    ]
+  }
+}
