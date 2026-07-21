@@ -1,6 +1,6 @@
 # ACS Universal Intake
 
-Status: Production v0.4 verified for macOS routing and private browser attachments; iOS shortcut installation blocked by full iCloud storage
+Status: Production v0.5 verified for native Mac launch, Finder service routing, automatic Mac capture routing, and private browser attachments; iOS Share Sheet Shortcut prepared but awaiting Apple-required import confirmation and device read-back
 
 ## Objective
 
@@ -15,6 +15,16 @@ Provide one low-friction route into the ACS Command Center for screenshots, scre
 5. The router submits bounded metadata to the owner-only Command Center through Sites access plus a separate device token stored in macOS Keychain.
 6. D1 stores the operational queue, provenance, hash, type, source, device, timestamps, and routing status. SHA-256 source IDs suppress duplicate intake records.
 7. The Command Center capture box accepts optional private attachments alongside an inquiry. Browser attachment bytes are stored in the Sites R2 binding, while D1 stores their bounded metadata and intake/work-item relationship.
+
+## Native Command Center access and source sharing
+
+- `NEURO-DIV Command Center.app` is installed in the user's Applications folder with a Desktop entry. Opening it dispatches directly to the private production CCS URL in the default browser, removing the ChatGPT desktop, Codex navigation, and manual-URL steps.
+- The application declares `CCS` as its spoken and alternative app name so Siri may perform the bounded launch-only command `open CCS`. This exception does not authorize conversational Siri intake, interpretation, confirmation, or task execution.
+- The browser's existing owner session is reused. When that independent security session expires, Apple/OpenAI identity confirmation may still be required; the launcher does not store, transmit, or bypass a passkey.
+- The same native application registers a macOS service named `Send to NEURO-DIV` for file URLs, URLs, and plain text. Files are completed in a private staging directory, moved atomically into the local intake queue, and the existing LaunchAgent is explicitly kicked once; there is no polling or model use.
+- Observed macOS evidence: Launch Services read back application identifier `org.neuro-div.command-center` and service `Send to NEURO-DIV`; a service invocation returned success; the pending and staging queues emptied after acknowledgment; the source was archived; and production CCS item `intake-e21601a6-4369-4924-afa1-ba3441e38b8a` read back as `captured` with source `apple-share-and-capture` and SHA-256 provenance.
+- Contrary production evidence: the user-provided Finder and iPhone screenshots show that the previously documented `Send to NEURO-DIV` Shortcut was absent. Read-only inspection of the Mac Shortcuts database confirmed that no shortcut with that name was installed. The earlier claim that its Share Sheet configuration was observed is superseded and classified as a documentation/control failure.
+- A signed cross-device Shortcut named `Send to NEURO-DIV` has now been prepared from a versioned source. It accepts files, folders, images, audiovisual media, PDFs, URLs, text, and other common Share Sheet content and saves into the existing iCloud Shortcuts pending route. Apple still requires local `Add Shortcut` confirmation before installation; macOS and iOS Share Sheet visibility remain unverified until that confirmation, iCloud synchronization, and device read-back complete.
 
 ## Automation preflight
 
@@ -116,7 +126,7 @@ Provide one low-friction route into the ACS Command Center for screenshots, scre
 - Observed: source build, lint, MCP type-check, and five contract tests pass.
 - Observed: screenshot destination points to the managed pending folder.
 - Observed: the event-driven LaunchAgent and five-second throttle are installed and enabled. Live automatic events routed one screenshot and one screen recording; the local pending queue emptied only after successful indexing, the originals appeared in the iCloud processed archive, error and no-op counters remained zero, and production CCS read-back confirmed `intake-0343035d-398d-4e2e-b5b1-87ed8114700a` as `screenshot` and `intake-b93ca066-da5c-4861-a354-0246fd265c15` as `screen-recording`, both `captured` with Mac device and SHA-256 provenance. The canonical shared-agent brief was updated and read back at revision `AIroW36SCt_uc8APm-92XRaUB8mkGX_s3FQUuPYthepq_UEqynaLmZ8Ung5eep5wJinUggkC5txzOkdMEQpIdnjmlflUNyh2hsC3G43itw`.
-- Observed: macOS Shortcuts sharing is enabled; `Send to NEURO-DIV` is configured for the Share Sheet; and `Process NEURO-DIV Intake` provides the privacy-compatible Mac processor.
+- Superseded claim: the earlier record said macOS Shortcuts sharing was enabled and `Send to NEURO-DIV` was configured for the Share Sheet. User screenshots and database inspection prove that the named Shortcut was not installed. The native Finder service is now verified; the signed cross-device Shortcut awaits Apple-required import confirmation and device read-back.
 - Observed: owner-only Sites v0.4 (Sites version 5) is deployed in production and a live metadata write/read-back succeeded.
 - Observed: the browser capture box exposes `Add attachment`; a live Markdown file was uploaded to R2, linked to its D1 intake record, downloaded through the authenticated attachment route, and verified byte-identical by SHA-256.
 - Observed: a real screenshot was automatically archived and appeared in the production queue as `screenshot`, `captured`, with device and SHA-256 provenance.
