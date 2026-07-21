@@ -530,6 +530,7 @@
     "provisionalHistoryReview": {
       "repositorySnapshot": "resources/ai-response-integrity-review-2026-07-17.md",
       "canonicalDriveCopy": "https://docs.google.com/document/d/1_IDPhh_j5sIROhqpGFtEpEtFq03QHUdU594yTWfgJvc",
+      "canonicalDriveRevision": "AIroW34YxFD1OHklyMsqUe-27sheqAqF1zxcuT3v-KjWQbgRYBdQsVZFAIyETty_aQ5GqOA0alHXlcpO0VFHadopm8-OSr6nEdmC7craAg",
       "status": "provisional-corpus-recovery-incomplete"
     },
     "materialDomains": [
@@ -557,6 +558,45 @@
       "contradiction-review",
       "recurrence-linkage-when-applicable"
     ],
+    "deficiencySourceClassification": {
+      "required": true,
+      "allowedSources": [
+        "AI_NATIVE_EXECUTION",
+        "NEURO_DIV_ARCHITECTURE",
+        "EXTERNAL_PLATFORM_OR_ENVIRONMENT",
+        "USER_ONLY_DEPENDENCY",
+        "HYBRID",
+        "UNDETERMINED"
+      ],
+      "allowedNeuroDivControlResults": [
+        "WORKED_AS_DESIGNED",
+        "CONTROL_DEFICIENCY",
+        "ARCHITECTURE_GAP_OUTSIDE_SUPPLEMENTAL_CONTROL",
+        "NOT_APPLICABLE",
+        "UNDETERMINED"
+      ],
+      "userOnlyDependencyIsFault": false,
+      "vendorRemedyEligibilityIsCompensationPromise": false,
+      "incidentRegister": "resources/ai-response-integrity-review-2026-07-17.md",
+      "currentIncident": {
+        "id": "NDV-INC-ICLOUD-01",
+        "source": "HYBRID",
+        "primarySource": "EXTERNAL_PLATFORM_OR_ENVIRONMENT",
+        "contributingSources": [
+          "AI_NATIVE_EXECUTION",
+          "USER_ONLY_DEPENDENCY"
+        ],
+        "neuroDivControlResult": [
+          "WORKED_AS_DESIGNED",
+          "ARCHITECTURE_GAP_OUTSIDE_SUPPLEMENTAL_CONTROL"
+        ],
+        "materiality": "M2",
+        "status": "open",
+        "ccsIntakeId": "intake-f878038e-eff5-42ed-b3dc-c77939318a86",
+        "canonicalBriefRevision": "ALtnJHx1gGpxFP2_T1A9bvzEr7TqQo8nE6orhH9CXGS9-_o0ArRyHm5TY8VNK3xnLs_khVYJAGOXgWtKlVfrT13EEiPhfW6A2AXcscFt2Q",
+        "vendorRemedyEligibility": "preserve-for-provider-or-service-credit-review-no-entitlement-asserted"
+      }
+    },
     "installationAuthorization": {
       "directiveId": "NDV-INT-2026-07-17-A",
       "intervalMethod": "Beta(1,1) component posteriors; conservative product of one-sided 90% lower credible bounds",

@@ -74,3 +74,17 @@ The broad NEURO-DIV/project keyword screen over-selected 366 ChatGPT conversatio
 ## Interpretation boundary
 
 This report is a provisional baseline generated from locally accessible and Drive-indexed material. It should not be represented as a comprehensive review of all ChatGPT, Claude, Gemini, or Antigravity history until the missing exports and turn reconstruction are completed.
+
+## Supplementary adjudicated incident register
+
+### NDV-INC-ICLOUD-01 — incomplete iCloud finalization
+
+- `Deficiency_Source`: `HYBRID`.
+- Primary source: `EXTERNAL_PLATFORM_OR_ENVIRONMENT`. The iPhone was not reachable from iPhone Mirroring, and the macOS System Settings automation connection failed during the finalization attempt.
+- Contributing source: `AI_NATIVE_EXECUTION`. Codex could not complete the remaining settings verification, Messages retention check, iCloud category read-back, or final Shortcut test through its available native execution surface.
+- `USER_ONLY_DEPENDENCY`: present but not a user fault. One physical act—placing and unlocking the iPhone near the Mac—was genuinely required before local Messages retention could be verified safely. The evidence does not show that the user completed that action and Codex then failed to resume.
+- `NEURO_DIV_Control_Result`: `WORKED_AS_DESIGNED` for archive verification, irreversible-deletion restraint, CCS visibility, and the prominent user-only escalation; `ARCHITECTURE_GAP_OUTSIDE_SUPPLEMENTAL_CONTROL` for relying on an unverified remote-device/settings transport and lacking final iCloud-capacity read-back before treating the free-tier strategy as operationally adequate.
+- Observed outcome: Voice Memos and Notes were verified in Google Drive and removed from iCloud; approximately 902 MB of Messages remained pending the local-retention check; the personal iCloud account later read back with only 6,693 bytes available.
+- Materiality: M2, subject to escalation if recurrence or quantified loss becomes material.
+- Vendor remedy classification: eligible for provider/service-credit review as an AI-native execution and tooling record, without asserting that compensation is contractually owed.
+- Status: open pending category-level iCloud read-back, phone-side sync verification, and closure of the storage route.

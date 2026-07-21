@@ -2,7 +2,7 @@
 
 Status: Mandatory cross-axis control plane
 
-Last verified: 2026-07-19
+Last verified: 2026-07-21
 
 ## Standards boundary
 
@@ -91,6 +91,21 @@ The unit of analysis is an assistant response, its preceding user directive, and
 Keyword screening identifies candidates, not findings. Terms such as gross negligence, willful ignorance, or incompetence must not be asserted from keyword frequency alone. The review may identify evidence-based severe-process-failure or gross-negligence-risk indicators: high-confidence material claims without evidence; failure to verify capability; fabricated access or completion; ignored contradictions; failure to disclose limitations; or repeated unremediated disregard of durable instructions.
 
 Every report must disclose corpus source, date range, inaccessible surfaces, deduplication, screening rules, qualitative sampling, false-positive risk, and whether conclusions are provisional.
+
+## Deficiency-source classification
+
+Every adjudicated failure, dependency, or unresolved execution gap must carry both a `Deficiency_Source` and a `NEURO_DIV_Control_Result`. This prevents a provider-native or platform limitation from being misreported as a failure of a NEURO-DIV supplemental control, and prevents a legitimate user-only dependency from being treated as user fault.
+
+Allowed `Deficiency_Source` values are:
+
+- `AI_NATIVE_EXECUTION`: the provider model, agent runtime, first-party tool orchestration, or native execution surface failed or lacked an advertised or reasonably required capability;
+- `NEURO_DIV_ARCHITECTURE`: a NEURO-DIV design, implementation, routing, handoff, state, or control mechanism caused or failed to prevent the deficiency;
+- `EXTERNAL_PLATFORM_OR_ENVIRONMENT`: an operating system, application, account, network, device-state, permission, or third-party platform constraint prevented execution;
+- `USER_ONLY_DEPENDENCY`: a credential, identity, physical-device, purchase, approval, or judgment step genuinely required the user; this is a dependency and is not itself a deficiency or attribution of fault;
+- `HYBRID`: two or more of the preceding sources materially contributed; each component and its evidence must be listed; and
+- `UNDETERMINED`: evidence is presently insufficient, with the missing evidence and owner for resolution identified.
+
+Allowed `NEURO_DIV_Control_Result` values are `WORKED_AS_DESIGNED`, `CONTROL_DEFICIENCY`, `ARCHITECTURE_GAP_OUTSIDE_SUPPLEMENTAL_CONTROL`, `NOT_APPLICABLE`, and `UNDETERMINED`. Each incident must separately record primary source, contributing sources, user-dependency status, affected directive, observed evidence, inference, unknowns, materiality, loss or rework where supportable, vendor-remediation or service-credit-review eligibility, and closure evidence. Eligibility for vendor remediation or service credit is an evidence-preservation classification, not a promise that compensation is owed or will be granted.
 
 ## QTU relationship and authorization record
 
