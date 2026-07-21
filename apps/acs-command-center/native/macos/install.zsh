@@ -3,16 +3,17 @@ set -euo pipefail
 
 SCRIPT_DIR=${0:a:h}
 APP_SUPPORT="/Users/dinamargelovich/Library/Application Support/NEURO-DIV/Universal Intake"
-PENDING_DIR="/Users/dinamargelovich/Library/Mobile Documents/com~apple~CloudDocs/Shortcuts/NEURO-DIV Intake/Pending"
+PENDING_DIR="$APP_SUPPORT/Pending"
+ICLOUD_PENDING_DIR="/Users/dinamargelovich/Library/Mobile Documents/com~apple~CloudDocs/Shortcuts/NEURO-DIV Intake/Pending"
 PROCESSED_DIR="/Users/dinamargelovich/Library/Mobile Documents/com~apple~CloudDocs/Shortcuts/NEURO-DIV Intake/Processed"
 ROUTER_PATH="$APP_SUPPORT/acs-universal-intake.zsh"
 PLIST_PATH="/Users/dinamargelovich/Library/LaunchAgents/org.neuro-div.acs.universal-intake.plist"
 BACKUP_DIR="$APP_SUPPORT/Backups/$(/bin/date -u +%Y%m%dT%H%M%SZ)"
 STATE_DIR="$APP_SUPPORT/State"
 VOICE_PROCESSOR_DIR="$APP_SUPPORT/Voice Processor"
-SHORTCUT_PENDING_DIR="$PENDING_DIR/NEURO-DIV Intake"
+SHORTCUT_PENDING_DIR="$ICLOUD_PENDING_DIR/NEURO-DIV Intake"
 
-mkdir -p "$APP_SUPPORT/Logs" "$SHORTCUT_PENDING_DIR" "$PROCESSED_DIR" "$BACKUP_DIR" "$STATE_DIR" "$VOICE_PROCESSOR_DIR"
+mkdir -p "$APP_SUPPORT/Logs" "$PENDING_DIR" "$SHORTCUT_PENDING_DIR" "$PROCESSED_DIR" "$BACKUP_DIR" "$STATE_DIR" "$VOICE_PROCESSOR_DIR"
 [[ -e "$PLIST_PATH" ]] && /bin/cp -p "$PLIST_PATH" "$BACKUP_DIR/"
 defaults read com.apple.screencapture location > "$BACKUP_DIR/screenshot-location.txt" 2>/dev/null || print -r -- "/Users/dinamargelovich/Desktop" > "$BACKUP_DIR/screenshot-location.txt"
 

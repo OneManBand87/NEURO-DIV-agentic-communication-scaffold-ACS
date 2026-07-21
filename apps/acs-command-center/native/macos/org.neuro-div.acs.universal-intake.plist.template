@@ -3,8 +3,7 @@
 <plist version="1.0"><dict>
   <key>Label</key><string>org.neuro-div.acs.universal-intake</string>
   <key>ProgramArguments</key><array>
-    <string>/usr/bin/open</string>
-    <string>shortcuts://run-shortcut?name=Process%20NEURO-DIV%20Intake</string>
+    <string>__ROUTER_PATH__</string>
   </array>
   <key>WatchPaths</key><array>
     <string>__PENDING_DIR__</string>

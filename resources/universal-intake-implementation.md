@@ -9,8 +9,8 @@ Provide one low-friction route into the ACS Command Center for screenshots, scre
 ## Intake contract
 
 1. Apple Shortcuts supplies the cross-application Share Sheet entry point named `Send to NEURO-DIV`.
-2. macOS saves system screenshots and screen recordings directly into the same device-synced pending folder.
-3. A native macOS LaunchAgent reacts to folder changes and opens the dedicated `Process NEURO-DIV Intake` shortcut. Shortcuts performs the iCloud read under its existing macOS privacy authorization, then invokes the bounded router. The route does not poll and invokes no AI model.
+2. macOS saves system screenshots and screen recordings into a private local pending folder watched by the LaunchAgent. After successful CCS indexing, the original is moved into the device-synced processed archive.
+3. A native macOS LaunchAgent reacts to local folder changes and invokes the bounded router directly. The route does not poll and invokes no AI model. `Send to NEURO-DIV` and `Process NEURO-DIV Intake` remain the cross-application and iCloud recovery paths, but automatic native Mac capture routing does not depend on Shortcuts background folder enumeration or iCloud filesystem events.
 4. Raw inputs are retained in device-synced Apple intake storage. Routed work products remain canonical in the ACS Command Center Google Drive project.
 5. The router submits bounded metadata to the owner-only Command Center through Sites access plus a separate device token stored in macOS Keychain.
 6. D1 stores the operational queue, provenance, hash, type, source, device, timestamps, and routing status. SHA-256 source IDs suppress duplicate intake records.
@@ -36,7 +36,7 @@ Provide one low-friction route into the ACS Command Center for screenshots, scre
 - The production site remains owner-only.
 - The device route requires the Sites dispatch authorization and a separate application device token.
 - Both secrets are stored in macOS Keychain and are not committed or written into project artifacts.
-- Native Mac and Share Sheet routing transmits only metadata; raw native-intake bytes remain in device-synced Apple storage until governed routing determines their canonical destination.
+- Native Mac and Share Sheet routing transmits only metadata. Native Mac capture bytes remain in the private local queue only until successful indexing, then move into device-synced Apple archive storage; other raw intake bytes remain in device-synced Apple storage until governed routing determines their canonical destination.
 - Files deliberately attached in the Command Center are transmitted to its private Sites R2 storage. The route accepts no more than five files, 20 MB per file, and 40 MB combined; download responses force attachment disposition, disable caching, apply a sandbox content policy, and do not render the original MIME type inline.
 - Intake is preservation and triage, not permission to publish, send, execute, or otherwise act on captured content.
 
@@ -88,7 +88,7 @@ Provide one low-friction route into the ACS Command Center for screenshots, scre
 - The canonical shared-agent Google Doc now contains the same semantic-layer boundary and was read back at revision `ALtnJHyhbAMfJCu9Z3m2ZX3eK3nTdz2XVZfidNOvDKi-3nZ0UPpy7japiDneVlvIkAOhR4FEU1SXKoFNjAHnk3f13EZXbblp5PoWDM9lqg`.
 - Final Mac processor: `Process NEURO-DIV Voice Intake` transcribes one stable, narrowly scoped local bridge file, calls Apple Intelligence `On-Device`, and returns separate model and exact-transcript envelopes. The router normalizes each completed M4A into that bridge, validates and repairs the model JSON, filters unsupported date and person extractions, replaces placeholder capture IDs, enforces review-required proposed actions, preserves and archives the original audio plus sidecar, and falls back to raw-audio intake if interpretation fails.
 - Observed end-to-end evidence: unique synthetic capture `734828` produced both archived files and production CCS item `intake-4c49287f-93e0-4119-b635-35928538c3c0`, which read back source `apple-voice-intake-on-device`, original filename `NEURO-DIV Voice Intake - 734828.m4a`, semantic title `Confirm reliable action button voice intake into command center`, complete transcript, task and concern items, no unsupported dates or people, and review-required actions.
-- Current trigger boundary: the processing chain is verified when `Process NEURO-DIV Intake` is invoked in an authorized user context. Automatic background triggering is not yet operational because Shortcuts lacks permission to enumerate the iCloud `Pending` folder during a background run. The LaunchAgent remains installed but is not greenlit until that narrow folder authorization is granted and re-tested. Physical iPhone microphone capture, Vocal Shortcuts phrase training, and pause/resume remain unverified. The canonical brief was read back at revision `AIroW35JP7b51Xx7udBbc-tGgiFeC8yp-Rs8PvoRR4fBDiPjQqDoIxFFaIv6gKfx2rjIogkyurrCBQ2Ym4oRj_QCMBK56Mx6Ox__y5kVuA`; production CCS item `intake-17de3f3e-11f8-423e-a9da-b6d13b09154a` mirrors the verified finalization state and permission boundary.
+- Current trigger boundary: automatic native Mac capture routing uses a local event-driven LaunchAgent and direct bounded router, avoiding both the previously observed Shortcuts background-enumeration denial and unreliable iCloud-folder event delivery. `Send to NEURO-DIV` and `Process NEURO-DIV Intake` remain the cross-application and iCloud recovery paths. Physical iPhone microphone capture, Vocal Shortcuts phrase training, and pause/resume remain unverified until their separate tests complete.
 
 ## Apple Intelligence selective-adoption boundary
 
@@ -115,7 +115,7 @@ Provide one low-friction route into the ACS Command Center for screenshots, scre
 
 - Observed: source build, lint, MCP type-check, and five contract tests pass.
 - Observed: screenshot destination points to the managed pending folder.
-- Observed: the event-driven LaunchAgent and five-second throttle are installed. Automatic background enumeration is permission-blocked and is not represented as operational.
+- Observed: the event-driven LaunchAgent and five-second throttle are installed and enabled. Live automatic events routed one screenshot and one screen recording; the local pending queue emptied only after successful indexing, the originals appeared in the iCloud processed archive, error and no-op counters remained zero, and production CCS read-back confirmed `intake-0343035d-398d-4e2e-b5b1-87ed8114700a` as `screenshot` and `intake-b93ca066-da5c-4861-a354-0246fd265c15` as `screen-recording`, both `captured` with Mac device and SHA-256 provenance. The canonical shared-agent brief was updated and read back at revision `AIroW36SCt_uc8APm-92XRaUB8mkGX_s3FQUuPYthepq_UEqynaLmZ8Ung5eep5wJinUggkC5txzOkdMEQpIdnjmlflUNyh2hsC3G43itw`.
 - Observed: macOS Shortcuts sharing is enabled; `Send to NEURO-DIV` is configured for the Share Sheet; and `Process NEURO-DIV Intake` provides the privacy-compatible Mac processor.
 - Observed: owner-only Sites v0.4 (Sites version 5) is deployed in production and a live metadata write/read-back succeeded.
 - Observed: the browser capture box exposes `Add attachment`; a live Markdown file was uploaded to R2, linked to its D1 intake record, downloaded through the authenticated attachment route, and verified byte-identical by SHA-256.
