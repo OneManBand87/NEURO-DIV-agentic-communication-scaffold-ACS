@@ -530,8 +530,20 @@
     "provisionalHistoryReview": {
       "repositorySnapshot": "resources/ai-response-integrity-review-2026-07-17.md",
       "canonicalDriveCopy": "https://docs.google.com/document/d/1_IDPhh_j5sIROhqpGFtEpEtFq03QHUdU594yTWfgJvc",
-      "canonicalDriveRevision": "AIroW34YxFD1OHklyMsqUe-27sheqAqF1zxcuT3v-KjWQbgRYBdQsVZFAIyETty_aQ5GqOA0alHXlcpO0VFHadopm8-OSr6nEdmC7craAg",
+      "canonicalDriveRevision": "ALtnJHxF4eDreNBiqhU9_tnpTsxvXFiIdf6zE_o-IQwyVrhJJPBzb_qX09pZa_7Vewlgb3g6XL_GPkZgDU1ISOEaflac5xFf_SdzMCuu9A",
       "status": "provisional-corpus-recovery-incomplete"
+    },
+    "integrityBasedAiResearch": {
+      "status": "provisional-working-paper-scaffold-corpus-adjudication-pending",
+      "repositorySnapshot": "resources/integrity-based-ai-collaboration-research-scaffold-2026-07-21.md",
+      "canonicalDriveCopy": "https://drive.google.com/file/d/1hyTdy78E3HOO0t25jE0aLF8I_mOAVdeM/view",
+      "anchorIncidentId": "NDV-INC-EVASION-01",
+      "anchorTaskId": "019f8024-3056-7fd3-98cd-a598df44bdd7",
+      "productionCcsSignalId": "signal-a714de78-e113-4621-aa93-c885f857d63f",
+      "productionCcsReadBackStatus": "source-verified-open",
+      "canonicalBriefRevision": "ALtnJHzmkDTffOE67jJO_PnMg3UWlO-GAVC1m7WSqC7ttJ7FezL-ctVZc18SboCU1G8ottYOiSOHTUTEPdJPO6Ky-8trqM3gKOyDfOUggg",
+      "controlAmendmentStatus": "proposed-pending-independent-review",
+      "publicationStatus": "not-authorized-not-peer-reviewed"
     },
     "materialDomains": [
       "research",
@@ -595,6 +607,18 @@
         "ccsIntakeId": "intake-f878038e-eff5-42ed-b3dc-c77939318a86",
         "canonicalBriefRevision": "ALtnJHx1gGpxFP2_T1A9bvzEr7TqQo8nE6orhH9CXGS9-_o0ArRyHm5TY8VNK3xnLs_khVYJAGOXgWtKlVfrT13EEiPhfW6A2AXcscFt2Q",
         "vendorRemedyEligibility": "preserve-for-provider-or-service-credit-review-no-entitlement-asserted"
+      },
+      "researchAnchorIncident": {
+        "id": "NDV-INC-EVASION-01",
+        "source": "AI_NATIVE_EXECUTION",
+        "possibleContributingSource": "NEURO_DIV_ARCHITECTURE",
+        "neuroDivControlResult": "CONTROL_DEFICIENCY",
+        "truthClassification": "effect-based-lie",
+        "materiality": "M2-confirmed-potential-M3-pending-corpus-corroboration",
+        "status": "open-independent-review-and-recurrence-testing-pending",
+        "ccsSignalId": "signal-a714de78-e113-4621-aa93-c885f857d63f",
+        "canonicalIntegrityReviewRevision": "ALtnJHxF4eDreNBiqhU9_tnpTsxvXFiIdf6zE_o-IQwyVrhJJPBzb_qX09pZa_7Vewlgb3g6XL_GPkZgDU1ISOEaflac5xFf_SdzMCuu9A",
+        "hiddenProviderMotiveFinding": false
       }
     },
     "installationAuthorization": {
