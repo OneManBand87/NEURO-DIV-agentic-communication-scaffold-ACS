@@ -1,6 +1,6 @@
 # ACS Universal Intake
 
-Status: Production v0.4 verified for macOS routing and private browser attachments; iOS shortcut installation blocked by full iCloud storage
+Status: Production v0.5 with recovered iPhone voice backlog and corrected processor path; iOS Share Sheet visibility remains device-blocked
 
 ## Objective
 
@@ -66,11 +66,13 @@ Provide one low-friction route into the ACS Command Center for screenshots, scre
 - Observed configuration: `NEURO-DIV Voice Intake` is installed in the iPhone Shortcuts Library and selected in Settings > Action Button > Shortcut.
 - The Shortcut starts Record Audio immediately and stops only when the user taps to finish.
 - It renames the recording to `NEURO-DIV Voice Intake - [six-digit random number].m4a`, using the range 100000–999999.
-- It saves automatically to the Mac router's watched `iCloud Drive / Shortcuts / NEURO-DIV Intake / Pending` folder; `Ask Where To Save` is disabled, overwrite is disabled, and save access is set to `Always Allow`.
+- It saves automatically to `iCloud Drive / NEURO-DIV Intake / Pending`; `Ask Where To Save` is disabled, overwrite is disabled, and save access is set to `Always Allow`.
 - Observed verification: the Shortcuts Library and Action Button settings read back the exact shortcut name; a mirrored test produced the expected randomized filename and increased the watched Pending queue from zero to one item; the Files picker reported the queue as synced with iCloud.
 - CCS visibility: the implementation and its validation boundary were mirrored to production intake item `intake-9e324b1f-6643-449c-8a3e-1b8c11d863e0`; the pause/resume correction was mirrored to `intake-2482b02f-2568-480b-a035-3d729cc0160c`; both were read back from the production state API. The canonical brief read-back revision is `ALtnJHx4NTskisog_pnXF4KFLq4gqo0Zq_h227V9KX0Tdo7TwrrkeYnRO3MQuH06A0ggQydQv4GbSNQkAKnkuqLI69xUTZBhwEjpgiHVBg`.
 - Validation limitation: iPhone Mirroring cannot supply the iPhone microphone. The mirrored test verifies execution, naming, permission, destination, and iCloud queue routing, but it does not verify usable audio. One physical Action Button recording remains required before real-audio capture is declared validated. The observed Record Audio screen exposed an explicit finish control but no pause/resume control, so pause/resume remains unmet and the route is not yet fully conformant with the standing capture specification.
 - No exported-shortcut signature is required because the Shortcut was created locally and runs on the same iPhone. The relevant assignment control is the verified Action Button selection.
+- Repair read-back (2026-07-21): five existing M4A captures were found in the actual iCloud Pending folder while `Process NEURO-DIV Intake` still targeted the superseded `iCloud Drive / Shortcuts / ...` path. The processor now targets the actual Pending and Processed folders. One bounded replay reduced Pending from five files to zero, preserved all five originals in the dated Processed archive, and produced five production CCS intake records read back as `captured`. Four legacy filenames did not match the current six-digit contract and one semantic envelope was invalid, so all five used the designed raw-audio fallback; no usable-audio or semantic-transcription claim follows from this recovery.
+- The repair evidence is visible in production CCS item `intake-90ea3096-5630-4e77-804e-922c5bffc9fc` and in canonical shared-agent brief revision `AIroW37l52IiOQ3TZjjTLUDfcVXAFCXPE6-U-or9iHMQ7gyQHnUTymPHEOi-6sv2zXVdrvqLfm553_izw9Ki13ro1h_FJgAJHyZX3xLTfA`, both read back after writing.
 
 ## Semantic title and structured interpretation layer
 
@@ -124,5 +126,7 @@ Provide one low-friction route into the ACS Command Center for screenshots, scre
 - Sourced: Apple documents that Share Sheet shortcuts can receive content from other apps and can sync to iOS/iPadOS when iCloud Shortcuts sync is enabled.
 - Superseded observation: the earlier missing-Shortcut/zero-capacity condition no longer blocks voice intake. `NEURO-DIV Voice Intake` is now installed directly on the iPhone and assigned to the Action Button.
 - Observed: the iPhone `Pending` queue accepted the mirrored test item and reported `Synced with iCloud`; complete Photo Share Sheet operation remains a separate unverified path.
+- Observed: the processor path mismatch was corrected to `iCloud Drive / NEURO-DIV Intake / Pending`; five queued originals were archived and five raw-fallback CCS records were read back as captured.
+- Pending: iPhone installation/favoriting and end-to-end Notes, screenshot, and document Share Sheet tests. Three iPhone Mirroring retries returned `iPhone Not Found`, so no claim is made about the action's present visibility or the ChatGPT iOS remote-menu boundary.
 - Pending: make one recording from the physical iPhone Action Button, speak a short test phrase, tap to finish, and verify that the resulting file contains usable audio and continues through downstream CCS processing.
 - Unknown until tested: how each third-party app converts proprietary objects into a Shortcuts-compatible file, URL, or text representation.
