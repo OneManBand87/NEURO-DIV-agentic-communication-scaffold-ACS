@@ -110,7 +110,7 @@
     "approvedArchitectureRevision": "AIroW37Fss-O6jJl0a-QFeF9IpZbjw-1OvzYFO73kT7cmpP51JffeJwr0VGOsgbZcwf-7SqaEXU2qQeoiMULibTkMWGrD71x1r1Vycshhw"
   },
   "commandCenter": {
-    "status": "production-v0.5-owner-only-usage-preflight-deployed",
+    "status": "production-sites-v8-owner-only-usage-preflight-deployed-recruiter-policy-release-candidate-locally-verified",
     "productionUrl": "https://acs-command-center.onemanband87.chatgpt.site",
     "sourceDirectory": "apps/acs-command-center",
     "role": "adhd-friendly-central-management-interface",
@@ -159,7 +159,8 @@
       "folderUrl": "https://drive.google.com/drive/folders/1Eya9De0przu_CcyvphlUuRetCPTO4u5-",
       "projectIndex": "https://docs.google.com/document/d/1yy0OeOAsqi-qLBABiZPWPYng8mAkV0CSpUHE6sJ7fL4/edit",
       "approvedArchitectureAndControls": "https://docs.google.com/document/d/1Fop9QaYrLrQMlnLRcEvDBsnVghm1gBK96BEzFmoFHos/edit",
-      "releaseRecord": "https://docs.google.com/document/d/1CrZ7ZVCDDflLUcfUevnquadmC2f1hBWdhLJ2XxBRP6M/edit"
+      "releaseRecord": "https://docs.google.com/document/d/1CrZ7ZVCDDflLUcfUevnquadmC2f1hBWdhLJ2XxBRP6M/edit",
+      "recruiterOperatingSpecification": "https://docs.google.com/document/d/1l5PskELodnNcO5cVVOeFh8ImFG6yCCx57yJ2V6U7jfw/edit"
     },
     "parentBranches": [
       "general",
@@ -174,6 +175,18 @@
       "critical": 180,
       "hardDeadline": "same-calendar-day"
     },
+    "recruiterResponsePolicy": {
+      "bestEmail": "elie.s.kurtz@gmail.com",
+      "resumeAttachmentRequired": true,
+      "defaultResumeVersion": "General G3 final",
+      "defaultResumeFile": "E.Kurtz Resume.pdf",
+      "defaultResumeUrl": "https://drive.google.com/file/d/1Z4Oos8AFcn5RmInJ0DuG3HEAg5Jrwqh7/view?usp=drivesdk",
+      "mondayThroughThursdayAvailability": "send-time-rounded-to-nearest-hour-through-6pm-eastern",
+      "fridayAvailability": "through-3pm-eastern",
+      "weekendAvailabilityDisclosure": "none",
+      "externalSendRequiresExactApproval": true,
+      "profilePublicationRequiresExactApproval": true
+    },
     "linkedinIntake": {
       "route": "individual-email-notifications-to-job-search-gmail-event-driven-processing-and-manual-share-fallback",
       "scrapingAuthorized": false,
@@ -181,7 +194,14 @@
       "notificationEmailReadVerified": true,
       "messagesIngested": 2,
       "preparedReplies": 2,
-      "pendingExactDraftApprovals": 2
+      "pendingExactDraftApprovals": 2,
+      "gmailLabel": "NEURO-DIV/Recruiter Intake",
+      "gmailMessagesLabeled": 91,
+      "gmailArchivedByLabeling": false,
+      "zapierDeveloperWorkflowApi": "blocked-account-not-permitted",
+      "standardZapTrigger": "pending-authenticated-browser-session",
+      "releaseCandidatePolicyTests": "passed",
+      "continuousEventDelivery": "not-active"
     },
     "usageSentinel": {
       "backgroundAiDefault": "paused",
