@@ -1,6 +1,7 @@
 import { env } from "cloudflare:workers";
 import { NextResponse } from "next/server";
 import { createBrowserIntake, loadCommandCenterState } from "../../../db/command-center";
+import { parseCommandCenterState } from "../../../lib/command-center-state-schema";
 
 export const dynamic = "force-dynamic";
 
@@ -88,7 +89,7 @@ export async function POST(request: Request) {
       uploadedBy: request.headers.get("oai-authenticated-user-email"),
       attachments: attachmentMetadata,
     });
-    return json(await loadCommandCenterState(), 201);
+    return json(parseCommandCenterState(await loadCommandCenterState()), 201);
   } catch {
     if (env.ATTACHMENTS) await Promise.all(uploadedKeys.map((key) => env.ATTACHMENTS.delete(key)));
     return json({ error: "Unable to save the intake attachment" }, 400);
