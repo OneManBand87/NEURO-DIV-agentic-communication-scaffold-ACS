@@ -7,6 +7,7 @@ import {
   resolveApproval,
   setBackgroundPause,
 } from "../../../db/command-center";
+import { parseCommandCenterState } from "../../../lib/command-center-state-schema";
 
 export const dynamic = "force-dynamic";
 
@@ -56,7 +57,7 @@ function isSameOriginMutation(request: Request) {
 
 export async function GET() {
   try {
-    return json(await loadCommandCenterState());
+    return json(parseCommandCenterState(await loadCommandCenterState()));
   } catch {
     return json({ error: "Unable to load Command Center state" }, 503);
   }
@@ -92,7 +93,7 @@ export async function POST(request: Request) {
         });
         break;
     }
-    return json(await loadCommandCenterState());
+    return json(parseCommandCenterState(await loadCommandCenterState()));
   } catch (error) {
     if (error instanceof z.ZodError) return json({ error: "Invalid request", issues: error.issues.map((issue) => issue.path.join(".")) }, 400);
     return json({ error: "Unable to update Command Center state" }, 400);
