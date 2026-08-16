@@ -112,6 +112,7 @@ export const intakeItems = sqliteTable("intake_items", {
   capturedText: text("captured_text"),
   device: text("device").notNull(),
   sha256: text("sha256"),
+  imageIngestionEvidence: text("image_ingestion_evidence"),
   status: text("status").notNull(),
   occurredAt: text("occurred_at").notNull(),
   receivedAt: text("received_at").notNull(),
