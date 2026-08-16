@@ -100,3 +100,12 @@ Acceptance requires complete normalized records, correct semantic-category answe
 ## Change record
 
 - 2026-08-15: Installed as the detailed primary generalized image-ingestion control after review of the Codex Setting Explanation source conversation and the existing ACS Markdown architecture. ChatGPT persistent memory remains a supplemental/entity-level compensating layer; no memory effectiveness claim is made by this repository change.
+
+
+## Runtime enforcement boundary
+
+The semantic control is not loaded by prose alone. The active Command Center runtime uses `apps/acs-command-center/lib/image-ingestion-gate.ts` as the narrow enforcement boundary for visual intake. Visual inputs entering through `/api/intake`, browser attachments, or the native macOS intake path must carry or receive an evidence envelope containing the control ID, source availability, original preservation, normalization status, validation status, the reasoning-blocked-until-validated flag, and a source evidence reference. Missing or mismatched evidence is rejected. Pending or blocked evidence is preserved in `intake_items.image_ingestion_evidence`, marked `needs-attention`, and cannot be treated as validated reasoning input. A `passed` envelope is accepted only after complete normalization.
+
+The read-only state path is schema-checked by `command-center-state-schema.ts` at the API, MCP, and client boundaries. The widget accepts only a `schemaVersion: 1` snapshot, retains the last verified snapshot when a later update fails validation, and visibly reports stale or unavailable data. It has no background polling. `scripts/verify-image-ingestion-control.mjs` checks the active consumers, evidence field, control marker, state gate, and widget no-polling property so synchronized documentation does not stand in for runtime proof.
+
+This is source-contract and evidence-backed verification of the installed boundary. Production operating effectiveness remains open until a live bypass test proves that each active visual path rejects missing, mismatched, and invalid evidence at the deployed runtime.
