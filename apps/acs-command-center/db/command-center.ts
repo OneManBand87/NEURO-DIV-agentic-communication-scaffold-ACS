@@ -1,5 +1,6 @@
 import { env } from "cloudflare:workers";
 import { initialCommandCenterState } from "../lib/seed-state";
+import { recruiterDeadlines, recruiterPolicy, validateRecruiterDraft, type RecruiterContext } from "../lib/recruiter-policy";
 import { ageInDays, evaluateSignalPolicy, nextConnectorHealth } from "../lib/signal-policy";
 import type { CommandCenterState } from "../lib/types";
 
@@ -86,6 +87,7 @@ function database() {
 export async function ensureCommandCenterDatabase() {
   const db = database();
   await db.batch(schemaStatements.map((statement) => db.prepare(statement)));
+  await reconcileLegacyRecruiterApprovals(db);
   const existing = await db.prepare("SELECT COUNT(*) AS count FROM projects").first<{ count: number }>();
   if ((existing?.count ?? 0) > 0) return;
 
@@ -195,6 +197,49 @@ const asNullableString = (row: D1Row, key: string) => (row[key] == null ? null :
 async function sha256(value: string) {
   const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
   return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function reconcileLegacyRecruiterApprovals(db: ReturnType<typeof database>) {
+  const rows = await db.prepare(
+    `SELECT a.id, a.payload_json, c.draft_response
+     FROM approvals a JOIN communications c ON c.approval_id = a.id
+     WHERE a.project_id = 'jobs-work' AND a.status = 'pending'`,
+  ).all<{ id: string; payload_json: string; draft_response: string | null }>();
+  const statements = [];
+  for (const row of rows.results) {
+    let payload: Record<string, unknown>;
+    try { payload = JSON.parse(row.payload_json) as Record<string, unknown>; } catch { continue; }
+    if (payload.resumeAttachment) continue;
+    const currentDraft = String(payload.draftResponse ?? row.draft_response ?? "");
+    const compliantDraft = currentDraft.includes(recruiterPolicy.bestEmail)
+      ? currentDraft
+      : `${currentDraft.trim()}\n\nI’ve attached my current résumé.\nBest email: ${recruiterPolicy.bestEmail}`;
+    const nextPayload = {
+      ...payload,
+      draftResponse: compliantDraft,
+      bestEmail: recruiterPolicy.bestEmail,
+      resumeAttachment: recruiterPolicy.resume,
+      availabilityDisclosure: "not-requested",
+      roleFit: "Legacy recruiter item — re-review current fit before sending.",
+      nextStep: "Attach the approved General G3 résumé, copy the exact reply, open the LinkedIn notification, and send manually.",
+      applicationSuggestions: ["Confirm that the opportunity remains active before investing in tailoring or application work."],
+    };
+    const payloadJson = JSON.stringify(nextPayload);
+    statements.push(
+      db.prepare(
+        `UPDATE approvals SET payload_json = ?, payload_hash = ?,
+         recommended_action = ?, updated_at = ? WHERE id = ? AND status = 'pending'`,
+      ).bind(
+        payloadJson,
+        await sha256(payloadJson),
+        "Approve the exact draft, attach the listed résumé, then use Copy reply and Open notification to send it through LinkedIn.",
+        new Date().toISOString(),
+        row.id,
+      ),
+      db.prepare("UPDATE communications SET draft_response = ? WHERE approval_id = ?").bind(compliantDraft, row.id),
+    );
+  }
+  if (statements.length > 0) await db.batch(statements);
 }
 
 export async function loadCommandCenterState(): Promise<CommandCenterState> {
@@ -543,6 +588,16 @@ export async function resolveApproval(id: string, payloadHash: string, decision:
       decision === "approved" ? "approved-to-send" : decision,
       id,
     ),
+    db.prepare(
+      `UPDATE work_items SET owner = ?, status = ?, attention_lane = ?, updated_at = ?
+       WHERE id = (SELECT 'work-recruiter-' || source_id FROM communications WHERE approval_id = ?)`,
+    ).bind(
+      decision === "approved" ? "User" : "Codex",
+      decision === "approved" ? "Approved — attach résumé and send manually" : decision,
+      decision === "approved" ? "now" : "waiting",
+      now,
+      id,
+    ),
   ]);
 }
 
@@ -554,14 +609,12 @@ export async function ingestRecruiterMessage(input: {
   receivedAt: string;
   summary: string;
   draftResponse?: string;
+  recruiterContext?: RecruiterContext;
 }) {
   await ensureCommandCenterDatabase();
   const db = database();
   const received = new Date(input.receivedAt);
-  const target = new Date(received.getTime() + 120 * 60_000);
-  const critical = new Date(received.getTime() + 180 * 60_000);
-  const hard = new Date(received);
-  hard.setHours(23, 59, 59, 999);
+  const { target, critical, hard } = recruiterDeadlines(input.receivedAt);
   const current = await db.prepare("SELECT id, approval_id FROM communications WHERE source_id = ?")
     .bind(input.sourceId)
     .first<{ id: string; approval_id: string | null }>();
@@ -569,6 +622,8 @@ export async function ingestRecruiterMessage(input: {
   let approvalId = current?.approval_id ?? null;
 
   if (input.draftResponse && !approvalId) {
+    const validationIssues = validateRecruiterDraft(input.draftResponse, input.recruiterContext?.availabilityDisclosure);
+    if (validationIssues.length > 0) throw new Error(`Recruiter draft failed policy validation: ${validationIssues.join(", ")}`);
     approvalId = `approval-${crypto.randomUUID()}`;
     const now = new Date().toISOString();
     const payloadJson = JSON.stringify({
@@ -578,6 +633,12 @@ export async function ingestRecruiterMessage(input: {
       subject: input.subject,
       draftResponse: input.draftResponse,
       sourceId: input.sourceId,
+      bestEmail: recruiterPolicy.bestEmail,
+      resumeAttachment: recruiterPolicy.resume,
+      availabilityDisclosure: input.recruiterContext?.availabilityDisclosure ?? "not-requested",
+      roleFit: input.recruiterContext?.roleFit ?? "Review against current résumé before sending.",
+      nextStep: input.recruiterContext?.nextStep ?? "Attach the approved General G3 résumé, copy the exact reply, open the LinkedIn notification, and send manually.",
+      applicationSuggestions: input.recruiterContext?.applicationSuggestions ?? [],
     });
     const payloadHash = await sha256(payloadJson);
     await db.prepare(
@@ -594,7 +655,7 @@ export async function ingestRecruiterMessage(input: {
       payloadHash,
       "An external message will represent you. Approve only this exact draft; approval does not send it automatically.",
       "medium",
-      "Approve the draft, then use Copy reply and Open notification to send it through LinkedIn.",
+      "Approve the exact draft, attach the listed résumé, then use Copy reply and Open notification to send it through LinkedIn.",
       hard.toISOString(),
       "pending",
       now,
@@ -612,5 +673,29 @@ export async function ingestRecruiterMessage(input: {
     id, input.sourceId, "jobs-work", input.channel, input.sender, input.subject, received.toISOString(),
     target.toISOString(), critical.toISOString(), hard.toISOString(), "response-needed", input.summary,
     input.draftResponse ?? null, approvalId,
+  ).run();
+
+  const now = new Date().toISOString();
+  await db.prepare(
+    `INSERT INTO work_items
+      (id,project_id,title,owner,status,priority,attention_lane,due_at,blocker,source_label,source_url,updated_at)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+     ON CONFLICT(id) DO UPDATE SET
+       title=excluded.title, status=excluded.status, priority=excluded.priority, attention_lane=excluded.attention_lane,
+       due_at=excluded.due_at, blocker=excluded.blocker, source_label=excluded.source_label,
+       source_url=excluded.source_url, updated_at=excluded.updated_at`,
+  ).bind(
+    `work-recruiter-${input.sourceId}`,
+    "jobs-work",
+    `Respond to recruiter — ${input.sender}`,
+    "Codex",
+    input.draftResponse ? "Draft awaiting exact approval" : "Response preparation needed",
+    hard.getTime() < Date.now() ? "critical" : "high",
+    "now",
+    hard.toISOString(),
+    input.recruiterContext?.nextStep ?? "Review the message and prepare a compliant response.",
+    input.channel,
+    `https://mail.google.com/mail/#all/${input.sourceId}`,
+    now,
   ).run();
 }

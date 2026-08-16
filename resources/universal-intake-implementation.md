@@ -15,6 +15,7 @@ Provide one low-friction route into the ACS Command Center for screenshots, scre
 5. The router submits bounded metadata to the owner-only Command Center through Sites access plus a separate device token stored in macOS Keychain.
 6. D1 stores the operational queue, provenance, hash, type, source, device, timestamps, and routing status. SHA-256 source IDs suppress duplicate intake records.
 7. The Command Center capture box accepts optional private attachments alongside an inquiry. Browser attachment bytes are stored in the Sites R2 binding, while D1 stores their bounded metadata and intake/work-item relationship.
+8. Universal intake owns transport, preservation, provenance, deduplication, routing, and triage; it does not semantically interpret image contents. Any image supplied to agent reasoning invokes [image-ingestion-control.md](image-ingestion-control.md), and the original source remains authoritative over any normalized derivative.
 
 ## Automation preflight
 
@@ -39,6 +40,7 @@ Provide one low-friction route into the ACS Command Center for screenshots, scre
 - Native Mac and Share Sheet routing transmits only metadata; raw native-intake bytes remain in device-synced Apple storage until governed routing determines their canonical destination.
 - Files deliberately attached in the Command Center are transmitted to its private Sites R2 storage. The route accepts no more than five files, 20 MB per file, and 40 MB combined; download responses force attachment disposition, disable caching, apply a sandbox content policy, and do not render the original MIME type inline.
 - Intake is preservation and triage, not permission to publish, send, execute, or otherwise act on captured content.
+- Image availability, extraction, and semantic validation are separate downstream gates; successful transport or attachment storage must not be represented as successful image ingestion.
 
 ## Voice-assistant and spoken-word capture boundary
 

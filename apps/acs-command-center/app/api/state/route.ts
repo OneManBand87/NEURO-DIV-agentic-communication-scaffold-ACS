@@ -28,6 +28,12 @@ const actionSchema = z.discriminatedUnion("action", [
     receivedAt: z.string().datetime(),
     summary: z.string().max(2000),
     draftResponse: z.string().max(5000).optional(),
+    recruiterContext: z.object({
+      nextStep: z.string().max(2000).optional(),
+      applicationSuggestions: z.array(z.string().max(1000)).max(10).optional(),
+      availabilityDisclosure: z.enum(["none-weekend", "weekday-through-6pm-et", "friday-through-3pm-et", "not-requested"]).optional(),
+      roleFit: z.string().max(2000).optional(),
+    }).strict().optional(),
   }).strict(),
 ]);
 
@@ -82,6 +88,7 @@ export async function POST(request: Request) {
           receivedAt: body.receivedAt,
           summary: body.summary,
           draftResponse: body.draftResponse,
+          recruiterContext: body.recruiterContext,
         });
         break;
     }
