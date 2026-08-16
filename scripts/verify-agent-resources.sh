@@ -15,6 +15,8 @@ GEMINI.md
 .github/instructions/agent-coordination.instructions.md
 resources/agent-coordination.md
 resources/agent-resources.json
+resources/image-ingestion-control.md
+scripts/verify-image-ingestion-control.mjs
 resources/theory-branch-integration.md
 resources/qtu-provisional-validation-hold.md
 resources/qtu-administrative-logistical-safe-harbor.md
@@ -234,4 +236,11 @@ if [ -n "$tracked_sensitive" ]; then
   exit 1
 fi
 
+
+if ! jq -e '.imageIngestionControl.runtimeGate | (.status == "installed") and (.controlId == "NEURO-DIV-IMAGE-INGESTION-2026-08-15") and (.evidenceField == "intake_items.image_ingestion_evidence") and (.missingEvidenceDisposition == "reject-visual-intake") and (.pendingEvidenceDisposition == "persist-needs-attention-and-block-reasoning") and (.validatedEvidenceRequirement == "complete-normalization-before-passed")' resources/agent-resources.json >/dev/null; then
+  printf 'Image-ingestion runtime gate metadata mismatch\n' >&2
+  exit 1
+fi
+
+node scripts/verify-image-ingestion-control.mjs >/dev/null
 printf 'agent resources verified\n'
