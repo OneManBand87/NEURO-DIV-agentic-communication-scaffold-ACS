@@ -110,3 +110,25 @@ test("keeps state mutations bounded and widget rendering injection-safe", async 
   assert.match(widget, /replaceChildren/);
   assert.match(widget, /event\.origin !== parentOrigin/);
 });
+
+
+test("widget accepts only verified state snapshots and exposes stale fallback without polling", async () => {
+  const [widget, stateRoute, intakeRoute, database, nativeRouter] = await Promise.all([
+    readFile(new URL("../public/command-center-widget.html", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/state/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/intake/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../db/command-center.ts", import.meta.url), "utf8"),
+    readFile(new URL("../native/macos/acs-universal-intake.zsh", import.meta.url), "utf8"),
+  ]);
+  assert.match(widget, /schemaVersion !== 1/);
+  assert.match(widget, /lastVerifiedState/);
+  assert.match(widget, /failed schema validation/);
+  assert.match(widget, /no background refresh is running/);
+  assert.doesNotMatch(widget, /\\bfetch\\s*\\(/);
+  assert.doesNotMatch(widget, /setInterval|setTimeout/);
+  assert.match(stateRoute, /parseCommandCenterState/);
+  assert.match(intakeRoute, /imageIngestionEvidenceSchema/);
+  assert.match(database, /requireImageIngestionGate/);
+  assert.match(database, /image_ingestion_evidence/);
+  assert.match(nativeRouter, /imageIngestion/);
+});
