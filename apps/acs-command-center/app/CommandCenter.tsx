@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { ApprovalRecord, CommandCenterState, CommunicationRecord, IntakeItemRecord, SignalRecord, WorkItemRecord } from "../lib/types";
+import { safeParseCommandCenterState } from "../lib/command-center-state-schema";
 import { UsageEstimator } from "./UsageEstimator";
 
 type SpeechRecognitionEventLike = { results: ArrayLike<{ 0: { transcript: string } }> };
@@ -47,6 +48,12 @@ function recruiterUrgency(message: CommunicationRecord) {
   return "on-track";
 }
 
+function parseStatePayload(payload: unknown) {
+  const parsed = safeParseCommandCenterState(payload);
+  if (!parsed.success) throw new Error("The read-only state failed its schema check.");
+  return parsed.data;
+}
+
 export function CommandCenter({ initialState }: { initialState: CommandCenterState }) {
   const [state, setState] = useState(initialState);
   const [capture, setCapture] = useState("");
@@ -61,7 +68,7 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
     fetch("/api/state", { cache: "no-store" })
       .then(async (response) => {
         if (!response.ok) throw new Error("Live state is not available");
-        return response.json() as Promise<CommandCenterState>;
+        return parseStatePayload(await response.json());
       })
       .then((next) => {
         if (!cancelled) {
@@ -99,8 +106,9 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
         headers: { "content-type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const next = await response.json() as CommandCenterState & { error?: string };
-      if (!response.ok) throw new Error(next.error ?? "Update failed");
+      const payload = await response.json() as CommandCenterState & { error?: string };
+      if (!response.ok) throw new Error(payload.error ?? "Update failed");
+      const next = parseStatePayload(payload);
       setState(next);
       setNotice(`${label} completed.`);
     } catch (error) {
@@ -143,8 +151,9 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
         body.append("text", text);
         for (const file of captureAttachments) body.append("attachments", file, file.name);
         const response = await fetch("/api/attachments", { method: "POST", body });
-        const next = await response.json() as CommandCenterState & { error?: string };
-        if (!response.ok) throw new Error(next.error ?? "Attachment intake failed");
+        const payload = await response.json() as CommandCenterState & { error?: string };
+        if (!response.ok) throw new Error(payload.error ?? "Attachment intake failed");
+        const next = parseStatePayload(payload);
         setState(next);
         setCapture("");
         setCaptureAttachments([]);
