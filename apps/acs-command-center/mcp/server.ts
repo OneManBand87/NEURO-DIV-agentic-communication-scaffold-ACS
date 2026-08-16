@@ -7,6 +7,7 @@ import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/
 import { registerAppResource, registerAppTool, RESOURCE_MIME_TYPE } from "@modelcontextprotocol/ext-apps/server";
 import { z } from "zod";
 import { initialCommandCenterState } from "../lib/seed-state";
+import { parseCommandCenterState } from "../lib/command-center-state-schema";
 import { evaluateUsagePreflight } from "../lib/usage-policy";
 import { estimateTaskUsage } from "../lib/usage-estimator";
 import type { CommandCenterState } from "../lib/types";
@@ -19,7 +20,7 @@ const apiBase = process.env.COMMAND_CENTER_BASE_URL ?? "http://127.0.0.1:3000";
 async function liveState(): Promise<CommandCenterState> {
   try {
     const response = await fetch(`${apiBase}/api/state`, { headers: { accept: "application/json" } });
-    if (response.ok) return await response.json() as CommandCenterState;
+    if (response.ok) return parseCommandCenterState(await response.json());
   } catch {
     // A verified local snapshot keeps read-only tools available during local setup.
   }
@@ -34,7 +35,7 @@ async function mutate(payload: Record<string, unknown>): Promise<CommandCenterSt
   });
   const result = await response.json() as CommandCenterState & { error?: string };
   if (!response.ok) throw new Error(result.error ?? "Command Center update failed");
-  return result;
+  return parseCommandCenterState(result);
 }
 
 async function ingestSignal(payload: Record<string, unknown>) {
