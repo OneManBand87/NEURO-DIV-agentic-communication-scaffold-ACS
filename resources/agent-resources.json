@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastVerified": "2026-07-21",
+  "lastVerified": "2026-08-15",
   "canonicalBrief": {
     "name": "NEURO-DIV - Agentic Communication Scaffold (ACS) - Shared Agent Brief - Current",
     "url": "https://docs.google.com/document/d/1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q/edit",
@@ -93,9 +93,18 @@
     "claudeRoutine": {
       "status": "paused",
       "operationalOutputs": false,
-      "historicalOutputs": ["notion", "github", "excluded-slack-provenance"],
+      "historicalOutputs": [
+        "notion",
+        "github",
+        "excluded-slack-provenance"
+      ],
       "allowedRole": "explicit-high-value-coding-and-deep-design",
-      "prohibitedRoles": ["recurring-monitoring", "broad-connector-sweeps", "routine-ccs-orchestration", "multi-destination-status-publication"]
+      "prohibitedRoles": [
+        "recurring-monitoring",
+        "broad-connector-sweeps",
+        "routine-ccs-orchestration",
+        "multi-destination-status-publication"
+      ]
     },
     "acsAct002": "unexecuted-pending-canonical-reconciliation",
     "productionUrl": "https://acs-command-center.onemanband87.chatgpt.site",
@@ -217,7 +226,14 @@
     },
     "universalIntake": {
       "status": "production-v0.5-voice-backlog-recovered-share-sheet-device-validation-pending",
-      "acceptedKinds": ["screenshot", "screen-recording", "file", "url", "text", "media"],
+      "acceptedKinds": [
+        "screenshot",
+        "screen-recording",
+        "file",
+        "url",
+        "text",
+        "media"
+      ],
       "macCaptureDestinationConfigured": true,
       "macLaunchAgentInstalled": true,
       "macLaunchAgentEnabled": false,
@@ -290,9 +306,19 @@
       "pauseResumeRequirementStatus": "unmet-requires-recorder-refinement",
       "directTextDictation": {
         "permitted": true,
-        "surfaces": ["ccs-quick-capture", "other-neuro-div-text-entry"],
-        "inputMechanisms": ["macos-voice-control", "iphone-voice-control", "system-dictation"],
-        "bestFor": ["fast-ordinary-prompts", "hands-free-text-entry"],
+        "surfaces": [
+          "ccs-quick-capture",
+          "other-neuro-div-text-entry"
+        ],
+        "inputMechanisms": [
+          "macos-voice-control",
+          "iphone-voice-control",
+          "system-dictation"
+        ],
+        "bestFor": [
+          "fast-ordinary-prompts",
+          "hands-free-text-entry"
+        ],
         "sourceOfTruth": "exact-explicitly-submitted-text",
         "originalAudioImplied": false,
         "audioVerifiedTranscriptImplied": false,
@@ -308,7 +334,12 @@
         "defaultModelRoute": "apple-intelligence-on-device",
         "chatGptExtensionExcluded": true,
         "outputSidecarPattern": "NEURO-DIV Voice Intake - [six-digit-capture-id].ccs-intake.json",
-        "itemKinds": ["idea", "task", "concern", "evidence"],
+        "itemKinds": [
+          "idea",
+          "task",
+          "concern",
+          "evidence"
+        ],
         "extractsDates": true,
         "extractsPeople": true,
         "proposedActionsRequireReview": true,
@@ -337,14 +368,45 @@
       },
       "appleIntelligenceContingentRouting": {
         "status": "implemented-and-tested-in-ccs-policy-layer-device-wiring-pending",
-        "routes": ["deterministic", "apple-on-device", "ccs-reasoning", "defer-for-review"],
-        "deterministicWhen": ["routine-ccs-status", "exact-record-operation", "reminder", "non-interpretive-device-control"],
-        "appleOnDeviceWhen": ["explicitly-completed-source-preserved-voice-capture", "explicitly-requested-bounded-rewrite", "explicitly-requested-interpretive-status-summary"],
-        "ccsReasoningWhen": ["cross-record-context", "current-external-information", "connector-or-tool-use", "consequential-judgment", "action-producing-decision", "invalid-on-device-output", "low-confidence-on-device-output"],
-        "deferForReviewWhen": ["capture-not-explicitly-completed", "original-source-not-preserved", "safe-route-unverified"],
+        "routes": [
+          "deterministic",
+          "apple-on-device",
+          "ccs-reasoning",
+          "defer-for-review"
+        ],
+        "deterministicWhen": [
+          "routine-ccs-status",
+          "exact-record-operation",
+          "reminder",
+          "non-interpretive-device-control"
+        ],
+        "appleOnDeviceWhen": [
+          "explicitly-completed-source-preserved-voice-capture",
+          "explicitly-requested-bounded-rewrite",
+          "explicitly-requested-interpretive-status-summary"
+        ],
+        "ccsReasoningWhen": [
+          "cross-record-context",
+          "current-external-information",
+          "connector-or-tool-use",
+          "consequential-judgment",
+          "action-producing-decision",
+          "invalid-on-device-output",
+          "low-confidence-on-device-output"
+        ],
+        "deferForReviewWhen": [
+          "capture-not-explicitly-completed",
+          "original-source-not-preserved",
+          "safe-route-unverified"
+        ],
         "allRoutesRequireCcsVisibility": true,
         "appleIntelligenceMayExecuteActions": false,
-        "prohibitedFallbacks": ["siri", "alexa", "siri-to-chatgpt", "chatgpt-shortcut-model"],
+        "prohibitedFallbacks": [
+          "siri",
+          "alexa",
+          "siri-to-chatgpt",
+          "chatgpt-shortcut-model"
+        ],
         "contractTestsPassed": 5,
         "combinedVoiceAndRoutingTestsPassed": 9,
         "fullCommandCenterTestsPassed": 20,
@@ -354,7 +416,10 @@
         "canonicalBriefReadBackVerified": true
       },
       "filenamePattern": "NEURO-DIV Voice Intake - [six-digit-random-number].m4a",
-      "randomNumberRange": [100000, 999999],
+      "randomNumberRange": [
+        100000,
+        999999
+      ],
       "saveDestination": "icloud-drive/NEURO-DIV Intake/Pending",
       "askWhereToSave": false,
       "overwriteExistingFiles": false,
@@ -390,7 +455,10 @@
       "alexaMayProduceUserFacingResponse": false,
       "degradeToAlexaWhenVoiceTriggerUnavailable": false,
       "alexaCompatibleHardwareRole": "none",
-      "alexaIndependentNonEcosystemUses": ["music-playback", "optional-room-light-control"],
+      "alexaIndependentNonEcosystemUses": [
+        "music-playback",
+        "optional-room-light-control"
+      ],
       "downstreamRoute": "ccs-after-explicit-text-submission-or-recording-completion",
       "fallbackWhenGuaranteesUnavailable": "button-recorder-control-or-other-open-line-capture",
       "dualPathPolicyCanonicalBriefRevisionId": "AIroW36I9smuxEdKDmDYXir7Sg7bRmOQM7q4-6E3b6zdeBatVWK-iBbvEhQaxxl9TKD34M-KalMxAr-dwpgwdIFZ5aDYdXk552HazBqLeg",
@@ -529,7 +597,7 @@
         "intervalMethod": "Beta(1,1) component posteriors; conservative product of one-sided 90% lower credible bounds",
         "oodTests": "60/60",
         "counterfactualTests": "60/60",
-        "complexityRatio": 1.0,
+        "complexityRatio": 1,
         "qtuLcb90": 0.927284744,
         "scope": "reversible correction restoring project-work-product effect as the governing criterion while preserving desktop-browser examples; canonical-repository synchronization only; not production-effectiveness evidence",
         "supersedes": "commit-a81174c-and-directive-B-only-on-desktop-browser-eligibility-point"
@@ -613,6 +681,66 @@
       ]
     }
   },
+  "imageIngestionControl": {
+    "status": "mandatory-primary-installed-operating-effectiveness-pending",
+    "repositoryControl": "resources/image-ingestion-control.md",
+    "canonicalBriefSection": "GENERALIZED IMAGE AND VISUAL-INPUT INGESTION CONTROL",
+    "scope": "all-user-supplied-images-and-visual-inputs-in-neuro-div-acs-work",
+    "presumption": "substantive-and-relevant-to-one-or-more-active-projects-unless-current-user-scope-clearly-narrows-the-item",
+    "requiredSequence": [
+      "access-and-source-check",
+      "complete-content-and-visual-relationship-inventory",
+      "structured-normalization",
+      "question-alignment",
+      "evidence-and-uncertainty-labeling",
+      "pre-reasoning-validation-gate",
+      "image-dependent-reasoning-or-action"
+    ],
+    "validationGate": [
+      "source-availability",
+      "coverage-of-legible-content-and-visual-relationships",
+      "semantic-category-alignment",
+      "paste-equivalence",
+      "uncertainty-and-contradiction-bounding",
+      "project-context-integration",
+      "downstream-action-boundary"
+    ],
+    "failureDisposition": [
+      "stop-image-dependent-reasoning-and-action",
+      "state-the-exact-boundary",
+      "preserve-source-and-partial-normalization",
+      "complete-safe-text-only-preparation",
+      "request-smallest-bounded-recovery",
+      "rerun-full-sequence-and-gate",
+      "classify-and-retest-recurrence"
+    ],
+    "ownershipBoundaries": {
+      "universalIntake": "transport-preservation-provenance-deduplication-routing-and-triage",
+      "imageIngestion": "semantic-image-access-inventory-normalization-alignment-and-pre-reasoning-validation",
+      "ccs": "orchestration-visibility-routing-handoffs-and-state-synchronization",
+      "integrityMateriality": "claim-classification-contradictory-evidence-materiality-commitment-readback-and-recurrence",
+      "qtu": "advisory-diagnostic-and-design-conformance-only"
+    },
+    "compensatingControl": {
+      "mechanism": "ChatGPT persistent memory",
+      "role": "supplemental-entity-level-broad-presumption-and-conservative-recovery-floor",
+      "limits": [
+        "not-source-of-truth",
+        "not-an-alternate-procedure",
+        "not-runtime-enforcement-proof",
+        "does-not-weaken-or-replace-the-primary-control"
+      ]
+    },
+    "precedence": [
+      "system-developer-safety-privacy-security-authentication-platform-and-other-independent-hard-gates",
+      "explicit-current-user-scope-compatible-with-higher-priority-rules",
+      "canonical-brief-and-AGENTS-global-minimum",
+      "image-ingestion-primary-control",
+      "specialized-controls-that-may-strengthen-but-not-weaken",
+      "client-defaults-and-visual-salience-never-override"
+    ],
+    "effectivenessState": "implemented-not-yet-tested-in-operation"
+  },
   "maximalProgressionUserAttentionControl": {
     "status": "mandatory",
     "repositoryControl": "resources/maximal-progression-user-attention-control.md",
@@ -678,7 +806,7 @@
       "intervalMethod": "Beta(1,1) component posteriors; conservative product of one-sided 90% lower credible bounds",
       "oodTests": "60/60",
       "counterfactualTests": "60/60",
-      "complexityRatio": 1.0,
+      "complexityRatio": 1,
       "qtuLcb90": 0.927284744,
       "scope": "reversible control installation and application to pending GitHub authentication and push only; not production-effectiveness evidence"
     }
@@ -801,7 +929,7 @@
       "intervalMethod": "Beta(1,1) component posteriors; conservative product of one-sided 90% lower credible bounds",
       "oodTests": "60/60",
       "counterfactualTests": "60/60",
-      "complexityRatio": 1.0,
+      "complexityRatio": 1,
       "qtuLcb90": 0.927284744,
       "scope": "reversible control installation, synchronization, verification, intended commit/push, and continued pause of the affected automation; not production-effectiveness evidence"
     }
@@ -837,7 +965,7 @@
       "intervalMethod": "Beta(1,1) component posteriors; conservative product of one-sided 90% lower credible bounds",
       "oodTests": "60/60",
       "counterfactualTests": "60/60",
-      "complexityRatio": 1.0,
+      "complexityRatio": 1,
       "qtuLcb90": 0.927284744,
       "scope": "durable native-first reminder and notification instruction, canonical/repository synchronization, verification, intended commit/push, and no creation or enablement of recurring automation; not production-effectiveness or cross-device-reachability evidence"
     }
@@ -882,7 +1010,7 @@
       "intervalMethod": "Beta(1,1) component posteriors; conservative product of one-sided 90% lower credible bounds",
       "oodTests": "60/60",
       "counterfactualTests": "60/60",
-      "complexityRatio": 1.0,
+      "complexityRatio": 1,
       "qtuLcb90": 0.927285,
       "scope": "reversible read-only project-local hook installation and repository/canonical synchronization only; not production-effectiveness evidence"
     }
