@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ACS Command Orchestration Center (COC)</title>
   <style>
-    :root { color-scheme: light dark; font-family: ui-sans-serif, system-ui, sans-serif; --ink:#183128; --paper:#fffdf7; --muted:#68766f; --green:#1e5b46; --soft:#dcebe2; --line:#d9ddd5; }
+    :root { color-scheme: light dark; font-family: ui-sans-serif, system-ui, sans-serif; --ink:#183128; --paper:#fffdf7; --muted:#68766f; --green:#1e5b46; --soft:#dcebe2; --line:#d9ddd5; --warn:#795400; --warn-soft:#fff2c7; --bad:#8a2c2c; --bad-soft:#ffe5e5; }
     * { box-sizing: border-box; }
     body { margin:0; padding:12px; background:transparent; color:var(--ink); }
     main { border:1px solid var(--line); border-radius:18px; padding:16px; background:var(--paper); }
@@ -20,46 +20,114 @@
     .card strong { display:block; margin:7px 0 5px; font-size:1.15rem; }
     .card p { font-size:.72rem; }
     .focus { margin-top:9px; padding:11px; border-left:4px solid var(--green); border-radius:10px; background:#f4f2eb; }
+    .state-notice { margin-top:12px; padding:9px 10px; border:1px solid var(--line); border-radius:10px; color:var(--muted); font-size:.75rem; line-height:1.35; }
+    .state-notice.stale { border-color:#d9b44a; color:var(--warn); background:var(--warn-soft); }
+    .state-notice.unavailable { border-color:#db9b9b; color:var(--bad); background:var(--bad-soft); }
     @media (max-width:520px) { .grid { grid-template-columns:1fr; } }
-    @media (prefers-color-scheme:dark) { :root { --ink:#e8f3ed; --paper:#183128; --muted:#b8c8c0; --soft:#284c3f; --line:#466458; } .card,.focus { background:#203d33; } }
+    @media (prefers-color-scheme:dark) { :root { --ink:#e8f3ed; --paper:#183128; --muted:#b8c8c0; --soft:#284c3f; --line:#466458; --warn:#f3d27d; --warn-soft:#493d20; --bad:#ffb4b4; --bad-soft:#492b2b; } .card,.focus { background:#203d33; } }
   </style>
 </head>
 <body>
   <main>
-    <header><div><small>ACS COMMAND ORCHESTRATION CENTER · COC</small><h1>Today, without the noise.</h1><p>Focus, approvals, recruiter timing, and usage safety.</p></div><div class="count" id="status">Loading</div></header>
+    <header><div><small>ACS COMMAND ORCHESTRATION CENTER · COC</small><h1>Today, without the noise.</h1><p>Focus, approvals, recruiter timing, and usage safety.</p></div><div class="count" id="status">Unavailable</div></header>
     <div class="grid"><div class="card"><span>Now</span><strong id="focus-count">—</strong><p>Maximum three active focus items.</p></div><div class="card"><span>Approvals</span><strong id="approval-count">—</strong><p>Only decisions that require the user.</p></div><div class="card"><span>Recruiters</span><strong id="recruiter-count">—</strong><p>2h target · 3h critical · same day.</p></div></div>
+    <div id="state-notice" class="state-notice" role="status" aria-live="polite">No verified read-only state is available.</div>
     <div id="focus-list"></div>
   </main>
   <script type="module">
-    const render = (state) => {
-      if (!state) return;
-      const focus = (state.workItems || []).filter((item) => item.attentionLane === "now").slice(0, 3);
-      const approvals = (state.approvals || []).filter((item) => item.status === "pending");
-      const recruiters = (state.communications || []).filter((item) => item.status === "response-needed");
+    const STALE_AFTER_MS = 15 * 60 * 1000;
+    let lastVerifiedState = null;
+
+    const isPlainObject = (value) => value !== null && typeof value === "object" && !Array.isArray(value);
+    const isValidDate = (value) => typeof value === "string" && !Number.isNaN(new Date(value).getTime());
+    const unwrapState = (candidate) => {
+      if (typeof candidate === "string") {
+        try { return unwrapState(JSON.parse(candidate)); } catch { return null; }
+      }
+      if (isPlainObject(candidate) && "structuredContent" in candidate) return unwrapState(candidate.structuredContent);
+      return candidate;
+    };
+    const isCommandCenterState = (candidate) => {
+      const state = unwrapState(candidate);
+      const arrays = ["projects", "workItems", "approvals", "communications", "usagePreflights", "agentStatuses", "intakeItems", "signals", "connectorHealth"];
+      if (!isPlainObject(state) || state.schemaVersion !== 1 || !isValidDate(state.generatedAt)) return null;
+      if (!arrays.every((key) => Array.isArray(state[key]))) return null;
+      if (!isPlainObject(state.settings) || Object.values(state.settings).some((value) => typeof value !== "string")) return null;
+      if (state.workItems.some((item) => !isPlainObject(item) || typeof item.id !== "string" || typeof item.title !== "string" || typeof item.owner !== "string" || typeof item.status !== "string" || typeof item.attentionLane !== "string")) return null;
+      if (state.approvals.some((item) => !isPlainObject(item) || typeof item.id !== "string" || typeof item.status !== "string")) return null;
+      if (state.communications.some((item) => !isPlainObject(item) || typeof item.id !== "string" || typeof item.status !== "string")) return null;
+      if (state.intakeItems.some((item) => !isPlainObject(item) || typeof item.id !== "string" || !(item.imageIngestionEvidence === null || isPlainObject(item.imageIngestionEvidence)))) return null;
+      return state;
+    };
+    const formatAge = (value) => {
+      const age = Math.max(0, Date.now() - new Date(value).getTime());
+      if (age < 60_000) return "less than a minute ago";
+      const minutes = Math.floor(age / 60_000);
+      if (minutes < 60) return `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
+      const hours = Math.floor(minutes / 60);
+      return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+    };
+    const setNotice = (message, tone = "") => {
+      const notice = document.querySelector("#state-notice");
+      notice.textContent = message;
+      notice.className = `state-notice ${tone}`.trim();
+    };
+    const renderUnavailable = () => {
+      document.querySelector("#focus-count").textContent = "—";
+      document.querySelector("#approval-count").textContent = "—";
+      document.querySelector("#recruiter-count").textContent = "—";
+      document.querySelector("#status").textContent = "Unavailable";
+      document.querySelector("#focus-list").replaceChildren();
+    };
+    const renderState = (state, stale = false) => {
+      const focus = state.workItems.filter((item) => item.attentionLane === "now").slice(0, 3);
+      const approvals = state.approvals.filter((item) => item.status === "pending");
+      const recruiters = state.communications.filter((item) => item.status === "response-needed");
       document.querySelector("#focus-count").textContent = String(focus.length);
       document.querySelector("#approval-count").textContent = String(approvals.length);
       document.querySelector("#recruiter-count").textContent = String(recruiters.length);
-      document.querySelector("#status").textContent = state.settings?.background_ai_paused === "false" ? "Guarded" : "AI paused";
+      document.querySelector("#status").textContent = stale ? "Stale" : "Live";
       const focusNodes = focus.map((item) => {
         const container = document.createElement("div");
         container.className = "focus";
         const title = document.createElement("strong");
-        title.textContent = String(item.title ?? "Untitled item");
+        title.textContent = item.title;
         const detail = document.createElement("p");
-        detail.textContent = `${String(item.owner ?? "Unassigned")} · ${String(item.status ?? "Unknown")}`;
+        detail.textContent = `${item.owner} · ${item.status}`;
         container.append(title, detail);
         return container;
       });
       document.querySelector("#focus-list").replaceChildren(...focusNodes);
     };
-    render(window.openai?.toolOutput);
+    const acceptState = (candidate) => {
+      const state = isCommandCenterState(candidate);
+      if (!state) {
+        if (lastVerifiedState) {
+          renderState(lastVerifiedState, true);
+          setNotice("Showing the last verified snapshot; the latest read-only update failed schema validation.", "stale");
+        } else {
+          renderUnavailable();
+          setNotice("No verified read-only state is available. Open the full Command Center to request a fresh snapshot.", "unavailable");
+        }
+        return;
+      }
+      lastVerifiedState = state;
+      const stale = Date.now() - new Date(state.generatedAt).getTime() > STALE_AFTER_MS;
+      renderState(state, stale);
+      setNotice(stale
+        ? `Showing a stale snapshot from ${formatAge(state.generatedAt)}; no background refresh is running.`
+        : `Last verified ${formatAge(state.generatedAt)} via read-only tool output.`
+      , stale ? "stale" : "");
+    };
+
+    acceptState(window.openai?.toolOutput);
     const parentOrigin = (() => { try { return new URL(document.referrer).origin; } catch { return null; } })();
     window.addEventListener("message", (event) => {
       if (event.source !== window.parent || !parentOrigin || event.origin !== parentOrigin) return;
       const message = event.data;
-      if (message?.jsonrpc === "2.0" && message.method === "ui/notifications/tool-result") render(message.params?.structuredContent);
+      if (message?.jsonrpc === "2.0" && message.method === "ui/notifications/tool-result") acceptState(message.params?.structuredContent);
     }, { passive:true });
-    window.addEventListener("openai:set_globals", (event) => render(event.detail?.globals?.toolOutput ?? window.openai?.toolOutput), { passive:true });
+    window.addEventListener("openai:set_globals", (event) => acceptState(event.detail?.globals?.toolOutput ?? window.openai?.toolOutput), { passive:true });
   </script>
 </body>
 </html>
