@@ -1,5 +1,11 @@
 import { env } from "cloudflare:workers";
 import { initialCommandCenterState } from "../lib/seed-state";
+import {
+  buildPendingImageIngestionEvidence,
+  isVisualInput,
+  parseStoredImageIngestionEvidence,
+  requireImageIngestionGate,
+} from "../lib/image-ingestion-gate";
 import { recruiterDeadlines, recruiterPolicy, validateRecruiterDraft, type RecruiterContext } from "../lib/recruiter-policy";
 import { ageInDays, evaluateSignalPolicy, nextConnectorHealth } from "../lib/signal-policy";
 import type { CommandCenterState } from "../lib/types";
@@ -50,6 +56,7 @@ const schemaStatements = [
     kind TEXT NOT NULL, source TEXT NOT NULL, title TEXT NOT NULL,
     original_filename TEXT, content_type TEXT, size_bytes INTEGER, drive_path TEXT,
     source_url TEXT, captured_text TEXT, device TEXT NOT NULL, sha256 TEXT,
+    image_ingestion_evidence TEXT,
     status TEXT NOT NULL, occurred_at TEXT NOT NULL, received_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
   )`,
@@ -87,6 +94,11 @@ function database() {
 export async function ensureCommandCenterDatabase() {
   const db = database();
   await db.batch(schemaStatements.map((statement) => db.prepare(statement)));
+  try {
+    await db.prepare("ALTER TABLE intake_items ADD COLUMN image_ingestion_evidence TEXT").run();
+  } catch (error) {
+    if (!String(error).toLowerCase().includes("duplicate column")) throw error;
+  }
   await reconcileLegacyRecruiterApprovals(db);
   const existing = await db.prepare("SELECT COUNT(*) AS count FROM projects").first<{ count: number }>();
   if ((existing?.count ?? 0) > 0) return;
@@ -276,6 +288,7 @@ export async function loadCommandCenterState(): Promise<CommandCenterState> {
     attachmentsByItem.set(intakeItemId, attachments);
   }
   return {
+    schemaVersion: 1 as const,
     generatedAt: new Date().toISOString(),
     settings,
     projects: projectRows.results.map((row) => ({
@@ -334,6 +347,7 @@ export async function loadCommandCenterState(): Promise<CommandCenterState> {
       sizeBytes: row.size_bytes == null ? null : Number(row.size_bytes), drivePath: asNullableString(row, "drive_path"),
       sourceUrl: asNullableString(row, "source_url"), capturedText: asNullableString(row, "captured_text"),
       device: asString(row, "device"), sha256: asNullableString(row, "sha256"),
+      imageIngestionEvidence: parseStoredImageIngestionEvidence(row.image_ingestion_evidence),
       status: asString(row, "status") as CommandCenterState["intakeItems"][number]["status"],
       occurredAt: asString(row, "occurred_at"), receivedAt: asString(row, "received_at"), updatedAt: asString(row, "updated_at"),
       attachments: attachmentsByItem.get(id) ?? [],
@@ -452,9 +466,17 @@ export async function ingestUniversalItem(input: {
   sourceId: string; projectId: string; kind: string; source: string; title: string;
   originalFilename?: string; contentType?: string; sizeBytes?: number; drivePath?: string;
   sourceUrl?: string; capturedText?: string; device: string; sha256?: string; occurredAt: string;
+  imageIngestion?: unknown;
 }) {
   await ensureCommandCenterDatabase();
   const db = database();
+  const gate = requireImageIngestionGate({
+    kind: input.kind,
+    contentType: input.contentType,
+    originalFilename: input.originalFilename,
+    sourceId: input.sourceId,
+    imageIngestion: input.imageIngestion,
+  });
   const existing = await db.prepare("SELECT id FROM intake_items WHERE source_id = ?").bind(input.sourceId).first<{ id: string }>();
   if (existing) return { id: existing.id, duplicate: true };
   const id = `intake-${crypto.randomUUID()}`;
@@ -462,13 +484,14 @@ export async function ingestUniversalItem(input: {
   await db.prepare(
     `INSERT INTO intake_items
       (id,source_id,project_id,kind,source,title,original_filename,content_type,size_bytes,drive_path,
-       source_url,captured_text,device,sha256,status,occurred_at,received_at,updated_at)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+       source_url,captured_text,device,sha256,image_ingestion_evidence,status,occurred_at,received_at,updated_at)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
   ).bind(
     id, input.sourceId, input.projectId, input.kind, input.source, input.title,
     input.originalFilename ?? null, input.contentType ?? null, input.sizeBytes ?? null,
     input.drivePath ?? null, input.sourceUrl ?? null, input.capturedText ?? null,
-    input.device, input.sha256 ?? null, "captured", input.occurredAt, now, now,
+    input.device, input.sha256 ?? null, gate.evidence ? JSON.stringify(gate.evidence) : null,
+    gate.disposition === "held" ? "needs-attention" : "captured", input.occurredAt, now, now,
   ).run();
   return { id, duplicate: false };
 }
@@ -502,16 +525,30 @@ export async function createBrowserIntake(input: {
       ? input.attachments[0].contentType
       : "multipart/mixed";
   const originalFilename = input.attachments.length === 1 ? input.attachments[0].originalFilename : null;
+  const visualAttachment = input.attachments.find((attachment) => isVisualInput({
+    kind: "file",
+    contentType: attachment.contentType,
+    originalFilename: attachment.originalFilename,
+  }));
+  const kind = visualAttachment ? "media" : input.attachments.length ? "file" : "text";
+  const gate = requireImageIngestionGate({
+    kind,
+    contentType: visualAttachment?.contentType ?? contentType ?? undefined,
+    originalFilename: visualAttachment?.originalFilename ?? originalFilename ?? undefined,
+    sourceId,
+    imageIngestion: visualAttachment ? buildPendingImageIngestionEvidence(sourceId) : undefined,
+  });
+  const intakeStatus = gate.disposition === "held" ? "needs-attention" : "captured";
   const statements = [
     db.prepare(
       `INSERT INTO intake_items
         (id,source_id,project_id,kind,source,title,original_filename,content_type,size_bytes,drive_path,
-         source_url,captured_text,device,sha256,status,occurred_at,received_at,updated_at)
-       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+         source_url,captured_text,device,sha256,image_ingestion_evidence,status,occurred_at,received_at,updated_at)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
     ).bind(
-      intakeId, sourceId, "general", input.attachments.length ? "file" : "text", "command-center-web",
+      intakeId, sourceId, "general", kind, "command-center-web",
       title, originalFilename, contentType, totalBytes, null, null, input.text.trim() || null,
-      "Command Center web", null, "captured", now, now, now,
+      "Command Center web", null, gate.evidence ? JSON.stringify(gate.evidence) : null, intakeStatus, now, now, now,
     ),
     db.prepare(
       `INSERT INTO work_items
@@ -519,7 +556,9 @@ export async function createBrowserIntake(input: {
        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
     ).bind(
       workId, "general", title, "Codex",
-      input.attachments.length ? `Captured with ${input.attachments.length} attachment${input.attachments.length === 1 ? "" : "s"} — routing needed` : "Captured — routing needed",
+      intakeStatus === "needs-attention"
+        ? "Visual capture preserved — image normalization and validation required before reasoning"
+        : input.attachments.length ? `Captured with ${input.attachments.length} attachment${input.attachments.length === 1 ? "" : "s"} — routing needed` : "Captured — routing needed",
       "normal", "next", null, null, "Command Center intake", null, now,
     ),
   ];
