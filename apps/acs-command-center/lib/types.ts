@@ -106,6 +106,7 @@ export type IntakeItemRecord = {
   capturedText: string | null;
   device: string;
   sha256: string | null;
+  imageIngestionEvidence: import("./image-ingestion-gate").ImageIngestionEvidence | null;
   status: "captured" | "processing" | "routed" | "needs-attention";
   occurredAt: string;
   receivedAt: string;
@@ -158,6 +159,7 @@ export type ConnectorHealthRecord = {
 };
 
 export type CommandCenterState = {
+  schemaVersion: 1;
   generatedAt: string;
   projects: ProjectRecord[];
   workItems: WorkItemRecord[];
