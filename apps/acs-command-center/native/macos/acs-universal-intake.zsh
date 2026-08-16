@@ -267,7 +267,56 @@ for SOURCE_FILE in "${FILES[@]}"; do
     CAPTURED_TEXT=$(/usr/bin/jq -c '.' -- "$VOICE_SIDECAR" 2>/dev/null | /usr/bin/head -c 20000 || true)
   elif [[ "$KIND" == "url" || "$KIND" == "text" ]]; then
     CAPTURED_TEXT=$(/usr/bin/head -c 20000 -- "$SOURCE_FILE" 2>/dev/null || true)
-    [[ "$CAPTURED_TEXT" == http* ]] && SOURCE_URL=${CAPTURED_TEXT%%$'\n'*}
+    [[ "$CAPTURED_TEXT" == http* ]] && SOURCE_URL=${CAPTURED_TEXT%%
+    --arg sourceId "sha256:$SHA256" --arg kind "$KIND" --arg source "$ROUTING_SOURCE" \
+    --arg title "$ROUTING_TITLE" --arg originalFilename "$FILE_NAME" --arg contentType "$MIME_TYPE" \
+    --arg sourceUrl "$SOURCE_URL" --arg capturedText "$CAPTURED_TEXT" \
+    --arg device "$DEVICE_NAME" --arg sha256 "$SHA256" --arg occurredAt "$OCCURRED_AT" --arg imageIngestion "$IMAGE_INGESTION_EVIDENCE" --argjson sizeBytes "$FILE_SIZE" \
+    '{sourceId:$sourceId,projectId:"general",kind:$kind,source:$source,title:$title,originalFilename:$originalFilename,contentType:$contentType,sizeBytes:$sizeBytes,device:$device,sha256:$sha256,occurredAt:$occurredAt} + (if $sourceUrl == "" then {} else {sourceUrl:$sourceUrl} end) + (if $capturedText == "" then {} else {capturedText:$capturedText} end) + (if $imageIngestion == "" then {} else {imageIngestion:($imageIngestion | fromjson)} end)') || continue
+
+  HTTP_STATUS=$(/usr/bin/curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
+    --connect-timeout 10 --max-time 30 \
+    --request POST "$API_URL" \
+    --header "OAI-Sites-Authorization: Bearer $SITE_TOKEN" \
+    --header "x-acs-device-token: $DEVICE_TOKEN" \
+    --header "content-type: application/json" \
+    --data-binary "$PAYLOAD" 2>/dev/null || print -r -- "000")
+
+  if [[ "$HTTP_STATUS" == "200" || "$HTTP_STATUS" == "201" ]]; then
+    /bin/mv -- "$SOURCE_FILE" "$DEST_FILE" || print -r -- "$(/bin/date -u +%FT%TZ) indexed but archive move failed: $FILE_NAME" >&2
+    if [[ "$VOICE_SIDECAR_VALID" == true && "$VOICE_SIDECAR" != "$SOURCE_FILE" && -f "$VOICE_SIDECAR" ]]; then
+      SIDECAR_NAME=${VOICE_SIDECAR:t}
+      SIDECAR_DEST="$DEST_DIR/$SIDECAR_NAME"
+      [[ -e "$SIDECAR_DEST" ]] && SIDECAR_DEST="$DEST_DIR/${SIDECAR_NAME:r}-$SHA256[1,10].json"
+      /bin/mv -- "$VOICE_SIDECAR" "$SIDECAR_DEST" || print -r -- "$(/bin/date -u +%FT%TZ) interpretation indexed but archive move failed: $SIDECAR_NAME" >&2
+    fi
+    print -r -- 0 > "$ERROR_FILE"
+  else
+    print -r -- "$(/bin/date -u +%FT%TZ) intake index failed HTTP $HTTP_STATUS: $FILE_NAME" >&2
+    ERRORS=$(( $(<"$ERROR_FILE" 2>/dev/null || print 0) + 1 ))
+    print -r -- "$ERRORS" > "$ERROR_FILE"
+    if (( ERRORS >= 2 )); then
+      : > "$PAUSE_FILE"
+      /bin/launchctl disable "gui/$(/usr/bin/id -u)/org.neuro-div.acs.universal-intake" 2>/dev/null || true
+      exit 71
+    fi
+  fi
+done
+
+# Remove only empty subfolders created beneath Pending. The watched Pending
+# directory itself and every non-empty directory are preserved.
+for EMPTY_DIR in "$PENDING_DIR"/**/*(N/); do
+  /bin/rmdir -- "$EMPTY_DIR" 2>/dev/null || true
+done
+\n'*}
+  fi
+
+  IMAGE_INGESTION_EVIDENCE=""
+  if [[ "$KIND" == "screenshot" || "$KIND" == "screen-recording" || "$MIME_TYPE" == image/* || "$MIME_TYPE" == video/* ]]; then
+    IMAGE_INGESTION_EVIDENCE=$(/usr/bin/jq -cn \
+      --arg controlId "NEURO-DIV-IMAGE-INGESTION-2026-08-15" \
+      --arg evidenceRef "sha256:$SHA256" \
+      '{controlId:$controlId,sourceAvailable:true,originalPreserved:true,normalizationStatus:"pending",validationStatus:"pending",reasoningBlockedUntilValidated:true,evidenceRef:$evidenceRef}') || continue
   fi
 
   PAYLOAD=$(/usr/bin/jq -n \
