@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastVerified": "2026-08-15",
+  "lastVerified": "2026-08-16",
   "canonicalBrief": {
     "name": "NEURO-DIV - Agentic Communication Scaffold (ACS) - Shared Agent Brief - Current",
     "url": "https://docs.google.com/document/d/1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q/edit",
@@ -739,7 +739,38 @@
       "specialized-controls-that-may-strengthen-but-not-weaken",
       "client-defaults-and-visual-salience-never-override"
     ],
-    "effectivenessState": "implemented-not-yet-tested-in-operation"
+    "effectivenessState": "implemented-not-yet-tested-in-operation",
+    "runtimeGate": {
+      "status": "installed",
+      "controlId": "NEURO-DIV-IMAGE-INGESTION-2026-08-15",
+      "module": "apps/acs-command-center/lib/image-ingestion-gate.ts",
+      "evidenceField": "intake_items.image_ingestion_evidence",
+      "consumers": [
+        "apps/acs-command-center/app/api/intake/route.ts",
+        "apps/acs-command-center/db/command-center.ts",
+        "apps/acs-command-center/app/api/attachments/route.ts",
+        "apps/acs-command-center/native/macos/acs-universal-intake.zsh"
+      ],
+      "missingEvidenceDisposition": "reject-visual-intake",
+      "pendingEvidenceDisposition": "persist-needs-attention-and-block-reasoning",
+      "validatedEvidenceRequirement": "complete-normalization-before-passed"
+    },
+    "verification": {
+      "status": "source-contract-verified",
+      "script": "scripts/verify-image-ingestion-control.mjs",
+      "tests": [
+        "apps/acs-command-center/tests/image-ingestion-gate.test.mjs",
+        "apps/acs-command-center/tests/rendered-html.test.mjs"
+      ],
+      "bypassCases": [
+        "missing-evidence",
+        "wrong-control-id",
+        "wrong-source-reference",
+        "widget-invalid-state",
+        "widget-background-polling"
+      ],
+      "productionOperatingEffectiveness": "not-yet-tested"
+    }
   },
   "maximalProgressionUserAttentionControl": {
     "status": "mandatory",
