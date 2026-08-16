@@ -3,6 +3,7 @@ import type { CommandCenterState } from "./types";
 const snapshotTime = "2026-07-20T14:30:00-04:00";
 
 export const initialCommandCenterState: CommandCenterState = {
+  schemaVersion: 1,
   generatedAt: snapshotTime,
   settings: {
     background_ai_paused: "true",
