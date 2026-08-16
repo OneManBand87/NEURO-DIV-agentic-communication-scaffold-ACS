@@ -1,0 +1,1 @@
+ALTER TABLE `intake_items` ADD `image_ingestion_evidence` text;
