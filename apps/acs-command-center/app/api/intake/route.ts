@@ -2,6 +2,7 @@ import { env } from "cloudflare:workers";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { ingestUniversalItem } from "../../../db/command-center";
+import { imageIngestionEvidenceSchema } from "../../../lib/image-ingestion-gate";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +20,7 @@ const intakeSchema = z.object({
   capturedText: z.string().max(20_000).optional(),
   device: z.string().min(1).max(200),
   sha256: z.string().regex(/^[a-f0-9]{64}$/).optional(),
+  imageIngestion: imageIngestionEvidenceSchema.optional(),
   occurredAt: z.string().datetime(),
 }).strict();
 
