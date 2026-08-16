@@ -29,6 +29,13 @@
       "when": 1784580992111,
       "tag": "0003_lean_romulus",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1786906747782,
+      "tag": "0004_messy_johnny_blaze",
+      "breakpoints": true
     }
   ]
 }
