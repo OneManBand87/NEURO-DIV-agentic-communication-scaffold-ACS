@@ -12,7 +12,7 @@ Before creating, enabling, reactivating, or materially changing recurring, sched
 
 Slack is completely excluded from NEURO-DIV architecture and workflows. Do not use or propose it for intake, routing, monitoring, notifications, handoffs, coordination, storage, publication, or user-facing interaction; historical Slack content is provenance only.
 
-Codex and deterministic connector infrastructure own CCS intake, deduplication, reconciliation, calculated aging, connector-health tracking, and action-candidate routing. Claude is reserved for explicitly assigned high-value coding and deep design work and must not operate recurring monitoring, broad connector sweeps, routine CCS orchestration, or multi-destination status publication. The retired monitor's Notion and GitHub outputs are historical provenance only; `ACS-ACT-002` remains unexecuted pending canonical reconciliation.
+Codex and deterministic connector infrastructure own COC intake, deduplication, reconciliation, calculated aging, connector-health tracking, and action-candidate routing. Claude is reserved for explicitly assigned high-value coding and deep design work and must not operate recurring monitoring, broad connector sweeps, routine COC orchestration, or multi-destination status publication. The retired monitor's Notion and GitHub outputs are historical provenance only; `ACS-ACT-002` remains unexecuted pending canonical reconciliation.
 
 Use [resources/agent-coordination.md](resources/agent-coordination.md) as the repository snapshot and the canonical Google Doc linked there as the source of truth.
 

@@ -196,7 +196,7 @@ function buildServer() {
   server.registerTool(
     "ingest_signal",
     {
-      title: "Ingest governed CCS signal",
+      title: "Ingest governed COC signal",
       description: "Use this for a materially new cross-source finding, connector result, status change, or action candidate. Duplicate and no-change events do not invoke synthesis. Slack is excluded.",
       inputSchema: {
         sourceId: z.string().min(8).max(300), projectId: z.string().min(1).max(100).default("general"),
@@ -213,7 +213,7 @@ function buildServer() {
     },
     async (signal) => {
       const result = await ingestSignal(signal);
-      return { content: [{ type: "text", text: result.duplicate ? "Duplicate signal suppressed; no task or model run was created." : `Signal recorded in CCS. Action candidate: ${result.actionCandidateCreated ? "created" : "not needed"}. Model run: ${result.modelRunSuppressed ? "suppressed" : "eligible for a bounded low-cost synthesis"}.` }], structuredContent: result };
+      return { content: [{ type: "text", text: result.duplicate ? "Duplicate signal suppressed; no task or model run was created." : `Signal recorded in COC. Action candidate: ${result.actionCandidateCreated ? "created" : "not needed"}. Model run: ${result.modelRunSuppressed ? "suppressed" : "eligible for a bounded low-cost synthesis"}.` }], structuredContent: result };
     },
   );
 

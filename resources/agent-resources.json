@@ -60,7 +60,7 @@
     "historicalContentDisposition": "provenance-only-not-current-state-or-source-of-truth",
     "replacementControlPlane": "central-command-center",
     "replacementMechanisms": [
-      "approved-ccs-transports",
+      "approved-coc-transports",
       "stable-identifiers",
       "bounded-event-triggers",
       "zapier-or-other-approved-connectors",
@@ -72,9 +72,9 @@
     "approvedArchitectureDocumentId": "1Fop9QaYrLrQMlnLRcEvDBsnVghm1gBK96BEzFmoFHos",
     "approvedArchitectureRevision": "ALtnJHxai1_St4aMGqiKrs_bdNN1Vz3AcY9YgPCIld7vtootjq_-9k6_4RfBlG05LNnt3e-20KRen-rIcNAbXi5o1TmeUVtBhbEgQn_1Fw"
   },
-  "ccsSignalIngestionControl": {
+  "cocSignalIngestionControl": {
     "status": "production-verified",
-    "architecture": "event-driven-single-ccs-ledger",
+    "architecture": "event-driven-single-coc-ledger",
     "capabilities": [
       "cross-source-discovery",
       "deduplication",
@@ -95,7 +95,7 @@
       "operationalOutputs": false,
       "historicalOutputs": ["notion", "github", "excluded-slack-provenance"],
       "allowedRole": "explicit-high-value-coding-and-deep-design",
-      "prohibitedRoles": ["recurring-monitoring", "broad-connector-sweeps", "routine-ccs-orchestration", "multi-destination-status-publication"]
+      "prohibitedRoles": ["recurring-monitoring", "broad-connector-sweeps", "routine-coc-orchestration", "multi-destination-status-publication"]
     },
     "acsAct002": "unexecuted-pending-canonical-reconciliation",
     "productionUrl": "https://acs-command-center.onemanband87.chatgpt.site",
@@ -119,7 +119,7 @@
     "aiRouting": {
       "status": "mandatory",
       "scope": "all-substantive-ai-assisted-neuro-div-work",
-      "ccsRole": "orchestration-and-visibility-layer",
+      "cocRole": "orchestration-and-visibility-layer",
       "coveredParticipants": "any-acs-member-or-other-ai-system",
       "triggerConditions": [
         "determinative",
@@ -148,8 +148,8 @@
         "local-tools"
       ],
       "transientExclusion": "only-no-retained-state-action-decision-artifact-commitment-or-reasonably-foreseeable-downstream-effect",
-      "uncertaintyRule": "route-through-ccs",
-      "missingCapabilityFallback": "record-need-and-current-state-in-ccs-without-silent-bypass",
+      "uncertaintyRule": "route-through-coc",
+      "missingCapabilityFallback": "record-need-and-current-state-in-coc-without-silent-bypass",
       "supersedesCodexOnlyRule": true,
       "supersededProductionIntakeId": "intake-c823b88f-982d-4ee6-abd9-e476b9f84d8f",
       "canonicalBriefRevision": "ALtnJHwByA3GYOSswljG2dxDehqzjgnVFM-3iNoRvUhC7A-zu1YJn4Pe1AkkBYsbrpGpY06fFj2k69IzBCboXrnePQwK7Lhz3bGrL66gQA",
@@ -224,14 +224,14 @@
       "iosVoiceProcessorPathCorrected": true,
       "iosVoiceBacklogProcessedCount": 5,
       "iosVoiceBacklogOriginalsArchivedCount": 5,
-      "iosVoiceBacklogCcsReadBackVerified": true,
+      "iosVoiceBacklogCocReadBackVerified": true,
       "iosVoiceBacklogProcessingMode": "raw-audio-fallback-no-semantic-transcription-claim",
-      "iosUniversalIntakeRepairCcsIntakeId": "intake-90ea3096-5630-4e77-804e-922c5bffc9fc",
+      "iosUniversalIntakeRepairCocIntakeId": "intake-90ea3096-5630-4e77-804e-922c5bffc9fc",
       "iosUniversalIntakeRepairCanonicalRevisionId": "AIroW37l52IiOQ3TZjjTLUDfcVXAFCXPE6-U-or9iHMQ7gyQHnUTymPHEOi-6sv2zXVdrvqLfm553_izw9Ki13ro1h_FJgAJHyZX3xLTfA",
       "iosRemainingValidation": "restore-iphone-mirroring-then-install-or-verify-and-favorite-share-sheet-action-test-notes-screenshot-document-and-chatgpt-remote-menu-boundary-and-run-one-physical-usable-audio-test",
-      "iosActionButtonImplementationCcsIntakeId": "intake-9e324b1f-6643-449c-8a3e-1b8c11d863e0",
+      "iosActionButtonImplementationCocIntakeId": "intake-9e324b1f-6643-449c-8a3e-1b8c11d863e0",
       "iosActionButtonImplementationCanonicalRevisionId": "ALtnJHx4NTskisog_pnXF4KFLq4gqo0Zq_h227V9KX0Tdo7TwrrkeYnRO3MQuH06A0ggQydQv4GbSNQkAKnkuqLI69xUTZBhwEjpgiHVBg",
-      "iosActionButtonPauseResumeCorrectionCcsIntakeId": "intake-2482b02f-2568-480b-a035-3d729cc0160c",
+      "iosActionButtonPauseResumeCorrectionCocIntakeId": "intake-2482b02f-2568-480b-a035-3d729cc0160c",
       "browserAttachments": {
         "status": "production-verified",
         "storage": "sites-r2-private",
@@ -268,7 +268,7 @@
       "pauseResumeRequirementStatus": "unmet-requires-recorder-refinement",
       "directTextDictation": {
         "permitted": true,
-        "surfaces": ["ccs-quick-capture", "other-neuro-div-text-entry"],
+        "surfaces": ["coc-quick-capture", "other-neuro-div-text-entry"],
         "inputMechanisms": ["macos-voice-control", "iphone-voice-control", "system-dictation"],
         "bestFor": ["fast-ordinary-prompts", "hands-free-text-entry"],
         "sourceOfTruth": "exact-explicitly-submitted-text",
@@ -280,12 +280,12 @@
         "nearbySpeechMayBeCaptured": true
       },
       "semanticInterpretation": {
-        "status": "mac-on-device-processor-and-ccs-production-verified-automatic-trigger-permission-pending",
+        "status": "mac-on-device-processor-and-coc-production-verified-automatic-trigger-permission-pending",
         "originalAudioAuthoritative": true,
         "transcriptRole": "complete-linked-derivative-aid",
         "defaultModelRoute": "apple-intelligence-on-device",
         "chatGptExtensionExcluded": true,
-        "outputSidecarPattern": "NEURO-DIV Voice Intake - [six-digit-capture-id].ccs-intake.json",
+        "outputSidecarPattern": "NEURO-DIV Voice Intake - [six-digit-capture-id].coc-intake.json",
         "itemKinds": ["idea", "task", "concern", "evidence"],
         "extractsDates": true,
         "extractsPeople": true,
@@ -314,13 +314,13 @@
         "pendingUserDependency": "authorize-shortcuts-access-to-the-icloud-pending-folder-then-perform-one-physical-action-button-recording"
       },
       "appleIntelligenceContingentRouting": {
-        "status": "implemented-and-tested-in-ccs-policy-layer-device-wiring-pending",
-        "routes": ["deterministic", "apple-on-device", "ccs-reasoning", "defer-for-review"],
-        "deterministicWhen": ["routine-ccs-status", "exact-record-operation", "reminder", "non-interpretive-device-control"],
+        "status": "implemented-and-tested-in-coc-policy-layer-device-wiring-pending",
+        "routes": ["deterministic", "apple-on-device", "coc-reasoning", "defer-for-review"],
+        "deterministicWhen": ["routine-coc-status", "exact-record-operation", "reminder", "non-interpretive-device-control"],
         "appleOnDeviceWhen": ["explicitly-completed-source-preserved-voice-capture", "explicitly-requested-bounded-rewrite", "explicitly-requested-interpretive-status-summary"],
-        "ccsReasoningWhen": ["cross-record-context", "current-external-information", "connector-or-tool-use", "consequential-judgment", "action-producing-decision", "invalid-on-device-output", "low-confidence-on-device-output"],
+        "cocReasoningWhen": ["cross-record-context", "current-external-information", "connector-or-tool-use", "consequential-judgment", "action-producing-decision", "invalid-on-device-output", "low-confidence-on-device-output"],
         "deferForReviewWhen": ["capture-not-explicitly-completed", "original-source-not-preserved", "safe-route-unverified"],
-        "allRoutesRequireCcsVisibility": true,
+        "allRoutesRequireCocVisibility": true,
         "appleIntelligenceMayExecuteActions": false,
         "prohibitedFallbacks": ["siri", "alexa", "siri-to-chatgpt", "chatgpt-shortcut-model"],
         "contractTestsPassed": 5,
@@ -363,13 +363,13 @@
       "siriMayInterpret": false,
       "siriMayInterrupt": false,
       "siriMayInferAction": false,
-      "alexaRole": "outside-neuro-div-and-ccs-ecosystem",
+      "alexaRole": "outside-neuro-div-and-coc-ecosystem",
       "alexaTriggerRole": "prohibited",
       "alexaMayProduceUserFacingResponse": false,
       "degradeToAlexaWhenVoiceTriggerUnavailable": false,
       "alexaCompatibleHardwareRole": "none",
       "alexaIndependentNonEcosystemUses": ["music-playback", "optional-room-light-control"],
-      "downstreamRoute": "ccs-after-explicit-text-submission-or-recording-completion",
+      "downstreamRoute": "coc-after-explicit-text-submission-or-recording-completion",
       "fallbackWhenGuaranteesUnavailable": "button-recorder-control-or-other-open-line-capture",
       "dualPathPolicyCanonicalBriefRevisionId": "AIroW36I9smuxEdKDmDYXir7Sg7bRmOQM7q4-6E3b6zdeBatVWK-iBbvEhQaxxl9TKD34M-KalMxAr-dwpgwdIFZ5aDYdXk552HazBqLeg",
       "dualPathPolicyCanonicalBriefReadBackVerified": true,
@@ -379,9 +379,9 @@
       "status": "standing-project-instruction",
       "adoptionModel": "selective-value-gated-not-default-scope",
       "siriChatGPTExperience": "excluded",
-      "siriMayFrontCCS": false,
+      "siriMayFrontCOC": false,
       "fileTransferThroughSiriMeetsLowFrictionRequirement": false,
-      "shortcutUseModelCandidate": "silent-bounded-ccs-subordinate-predetermined-actions-only",
+      "shortcutUseModelCandidate": "silent-bounded-coc-subordinate-predetermined-actions-only",
       "chatGPTExtensionModel": "out-of-scope-unless-distinct-benefit-is-tested",
       "permittedCandidateRoles": [
         "notification-prioritization-or-reduce-interruptions",
@@ -394,7 +394,7 @@
       "mayDetermineMaterialStatus": false,
       "maySuppressRequiredAlerts": false,
       "mayCreateCanonicalOutput": false,
-      "requiresUseCasePrivacyFailureCCSVisibilityAndADHDValueEvaluation": true,
+      "requiresUseCasePrivacyFailureCOCVisibilityAndADHDValueEvaluation": true,
       "controlRecord": "resources/universal-intake-implementation.md"
     },
     "verification": {
@@ -633,8 +633,8 @@
       "concurrencyDisposition": "mechanism-not-exception",
       "rootCause": "stale-response-format-application-after-cross-task-durable-instruction-update",
       "recurrenceDisposition": "reopen-incident",
-      "productionCcsIntakeId": "intake-b781abc8-c1cf-42ba-9b81-8350d9ea1773",
-      "productionCcsReadBackStatus": "captured",
+      "productionCocIntakeId": "intake-b781abc8-c1cf-42ba-9b81-8350d9ea1773",
+      "productionCocReadBackStatus": "captured",
       "canonicalBriefRevision": "ALtnJHwVb8eAwHbiwiu-6CNCiOPsXcj6vaZNWlxkKnGnood-PJhGqnbKGelWZXFVqJrWpcUOF5ogPpvxwLsfBePPFuN8W7XqdVtwp1HwXA"
     },
     "memoryBurdenRule": "user-must-not-be-required-to-remember-to-request-continuation",

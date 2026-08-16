@@ -91,7 +91,7 @@ export const initialCommandCenterState: CommandCenterState = {
     {
       id: "work-acs-v01",
       projectId: "neuro-div",
-      title: "Build ACS Command Center v0.1",
+      title: "Build ACS Command Orchestration Center (COC) v0.1",
       owner: "Codex",
       status: "In progress",
       priority: "critical",
@@ -153,7 +153,7 @@ export const initialCommandCenterState: CommandCenterState = {
   usagePreflights: [
     {
       id: "usage-command-center-build",
-      activity: "ACS Command Center initial implementation",
+      activity: "ACS Command Orchestration Center (COC) initial implementation",
       importanceRank: 3,
       baseCostRank: 2,
       adjustedCostRank: 2,
@@ -190,7 +190,7 @@ export const initialCommandCenterState: CommandCenterState = {
       agent: "Codex",
       platform: "Codex desktop",
       projectId: "neuro-div",
-      task: "Build ACS Command Center",
+      task: "Build ACS Command Orchestration Center (COC)",
       status: "Active",
       lastSeenAt: snapshotTime,
       nextAction: "Complete the first usable dashboard, persistence, MCP surface, and canonical Drive copy.",
@@ -205,7 +205,7 @@ export const initialCommandCenterState: CommandCenterState = {
       task: "Reserved for bounded high-value coding and deep design review",
       status: "Available for deliberate assignment",
       lastSeenAt: "2026-07-19T12:00:00-04:00",
-      nextAction: "Use for work such as TapDAT initial architecture review; do not use for recurring monitoring or CCS orchestration.",
+      nextAction: "Use for work such as TapDAT initial architecture review; do not use for recurring monitoring or COC orchestration.",
       blockedReason: null,
       evidence: "Repository capability snapshot; no live status call was made.",
     },

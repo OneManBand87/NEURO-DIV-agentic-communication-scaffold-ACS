@@ -1,8 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { pathToFileURL } from "node:url";
-
-const moduleUrl = pathToFileURL(new URL("../lib/voice-intake-interpretation.ts", import.meta.url).pathname).href;
+const moduleUrl = new URL("../lib/voice-intake-interpretation.ts", import.meta.url).href;
 const { isVoiceIntakeInterpretation, semanticVoiceTitle } = await import(moduleUrl);
 
 test("semantic title rejects a copied opening sentence", () => {

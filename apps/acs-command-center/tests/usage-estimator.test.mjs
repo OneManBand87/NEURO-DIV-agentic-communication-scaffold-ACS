@@ -1,8 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { pathToFileURL } from "node:url";
-
-const moduleUrl = pathToFileURL(new URL("../lib/usage-estimator.ts", import.meta.url).pathname).href;
+const moduleUrl = new URL("../lib/usage-estimator.ts", import.meta.url).href;
 const { estimateTaskUsage, tokenUsageCost } = await import(moduleUrl);
 
 test("reproduces the GPT-5.6 Sol token rate card", () => {
@@ -64,4 +62,3 @@ test("recent task usage creates a conservative estimate floor", () => {
   });
   assert.ok(estimate.p80 >= 78.1);
 });
-

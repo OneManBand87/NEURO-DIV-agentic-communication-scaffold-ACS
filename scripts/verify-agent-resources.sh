@@ -33,16 +33,16 @@ for file in $required_files; do
   fi
 done
 
-for ai_ccs_file in AGENTS.md resources/agent-coordination.md; do
-  if ! rg -Fq 'Mandatory AI routing through CCS' "$ai_ccs_file" &&
-     ! rg -Fq 'mandatory orchestration and visibility layer for all substantive AI-assisted work across NEURO-DIV' "$ai_ccs_file"; then
-    printf 'Mandatory AI-to-CCS routing rule missing: %s\n' "$ai_ccs_file" >&2
+for ai_coc_file in AGENTS.md resources/agent-coordination.md; do
+  if ! rg -Fq 'Mandatory AI routing through COC' "$ai_coc_file" &&
+     ! rg -Fq 'mandatory orchestration and visibility layer for all substantive AI-assisted work across NEURO-DIV' "$ai_coc_file"; then
+    printf 'Mandatory AI-to-COC routing rule missing: %s\n' "$ai_coc_file" >&2
     exit 1
   fi
 done
 
-if ! jq -e '.commandCenter.aiRouting | (.status == "mandatory") and (.scope == "all-substantive-ai-assisted-neuro-div-work") and (.ccsRole == "orchestration-and-visibility-layer") and (.coveredParticipants == "any-acs-member-or-other-ai-system") and (.triggerConditions | index("potentially-determinative") != null) and (.requiredCoverage | index("device-control-paths") != null) and (.requiredCoverage | index("handoffs") != null) and (.uncertaintyRule == "route-through-ccs") and (.supersedesCodexOnlyRule == true) and (.productionIntakeId | startswith("intake-"))' resources/agent-resources.json >/dev/null; then
-  printf 'Mandatory AI-to-CCS routing metadata mismatch\n' >&2
+if ! jq -e '.commandCenter.aiRouting | (.status == "mandatory") and (.scope == "all-substantive-ai-assisted-neuro-div-work") and (.cocRole == "orchestration-and-visibility-layer") and (.coveredParticipants == "any-acs-member-or-other-ai-system") and (.triggerConditions | index("potentially-determinative") != null) and (.requiredCoverage | index("device-control-paths") != null) and (.requiredCoverage | index("handoffs") != null) and (.uncertaintyRule == "route-through-coc") and (.supersedesCodexOnlyRule == true) and (.productionIntakeId | startswith("intake-"))' resources/agent-resources.json >/dev/null; then
+  printf 'Mandatory AI-to-COC routing metadata mismatch\n' >&2
   exit 1
 fi
 
@@ -66,8 +66,8 @@ for labor_boundary_file in AGENTS.md CLAUDE.md GEMINI.md .github/copilot-instruc
   fi
 done
 
-if ! jq -e '.ccsSignalIngestionControl | (.architecture == "event-driven-single-ccs-ledger") and (.duplicateDisposition == "suppress-task-and-model-run") and (.noChangeDisposition == "suppress-task-and-model-run") and (.connectorTripwires.consecutiveErrors == 2) and (.connectorTripwires.consecutiveNoChangeEvents == 3) and (.claudeRoutine.status == "paused") and (.claudeRoutine.allowedRole == "explicit-high-value-coding-and-deep-design") and (.acsAct002 == "unexecuted-pending-canonical-reconciliation")' resources/agent-resources.json >/dev/null; then
-  printf 'CCS signal ingestion or Claude labor boundary metadata mismatch\n' >&2
+if ! jq -e '.cocSignalIngestionControl | (.architecture == "event-driven-single-coc-ledger") and (.duplicateDisposition == "suppress-task-and-model-run") and (.noChangeDisposition == "suppress-task-and-model-run") and (.connectorTripwires.consecutiveErrors == 2) and (.connectorTripwires.consecutiveNoChangeEvents == 3) and (.claudeRoutine.status == "paused") and (.claudeRoutine.allowedRole == "explicit-high-value-coding-and-deep-design") and (.acsAct002 == "unexecuted-pending-canonical-reconciliation")' resources/agent-resources.json >/dev/null; then
+  printf 'COC signal ingestion or Claude labor boundary metadata mismatch\n' >&2
   exit 1
 fi
 
@@ -139,7 +139,7 @@ if ! rg -Fq '🚨 **ACTION REQUIRED FROM YOU — [ONE SHORT ACTION]**' resources
   exit 1
 fi
 
-if ! jq -e '.maximalProgressionUserAttentionControl | (.attentionTemplateHeader == "🚨 ACTION REQUIRED FROM YOU — [SHORT ACTION]") and (.attentionTemplateHeaderMarkdown == "🚨 **ACTION REQUIRED FROM YOU — [SHORT ACTION]**") and (.headingMustBeBold == true) and (.shortActionSuffixRequired == true) and (.standaloneVisualSeparationRequired == true) and (.exactActionAndEssentialControlsMustBeBold == true) and (.fontSizeRelianceProhibited == true) and (.bareHeadingIsNoncompliant == true) and (.controlApplicationIncident.id == "NDV-ATTN-INC-2026-07-20-A") and (.controlApplicationIncident.materiality == "M2") and (.controlApplicationIncident.chronologyConclusion == "noncompliant-response-followed-directive-and-global-persistence") and (.controlApplicationIncident.concurrencyDisposition == "mechanism-not-exception") and (.controlApplicationIncident.status == "corrective-control-installed-sustained-effectiveness-open") and (.controlApplicationIncident.productionCcsIntakeId | startswith("intake-")) and (.controlApplicationIncident.productionCcsReadBackStatus == "captured") and (.controlApplicationIncident.canonicalBriefRevision | length > 20)' resources/agent-resources.json >/dev/null; then
+if ! jq -e '.maximalProgressionUserAttentionControl | (.attentionTemplateHeader == "🚨 ACTION REQUIRED FROM YOU — [SHORT ACTION]") and (.attentionTemplateHeaderMarkdown == "🚨 **ACTION REQUIRED FROM YOU — [SHORT ACTION]**") and (.headingMustBeBold == true) and (.shortActionSuffixRequired == true) and (.standaloneVisualSeparationRequired == true) and (.exactActionAndEssentialControlsMustBeBold == true) and (.fontSizeRelianceProhibited == true) and (.bareHeadingIsNoncompliant == true) and (.controlApplicationIncident.id == "NDV-ATTN-INC-2026-07-20-A") and (.controlApplicationIncident.materiality == "M2") and (.controlApplicationIncident.chronologyConclusion == "noncompliant-response-followed-directive-and-global-persistence") and (.controlApplicationIncident.concurrencyDisposition == "mechanism-not-exception") and (.controlApplicationIncident.status == "corrective-control-installed-sustained-effectiveness-open") and (.controlApplicationIncident.productionCocIntakeId | startswith("intake-")) and (.controlApplicationIncident.productionCocReadBackStatus == "captured") and (.controlApplicationIncident.canonicalBriefRevision | length > 20)' resources/agent-resources.json >/dev/null; then
   printf 'ADHD-salient user-action presentation control mismatch\n' >&2
   exit 1
 fi

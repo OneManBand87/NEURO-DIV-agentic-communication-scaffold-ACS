@@ -12,7 +12,7 @@ export type VoiceIntakeInterpretation = {
   confidence: "high" | "medium" | "low";
   needsHumanReview: true;
   originalAudioPreserved: true;
-  modelRoute: "on-device" | "private-cloud-compute" | "ccs" | "manual";
+  modelRoute: "on-device" | "private-cloud-compute" | "coc" | "manual";
   transcript: string;
 };
 
@@ -75,7 +75,7 @@ export function isVoiceIntakeInterpretation(value: unknown): value is VoiceIntak
     && ["high", "medium", "low"].includes(String(record.confidence ?? ""))
     && record.needsHumanReview === true
     && record.originalAudioPreserved === true
-    && ["on-device", "private-cloud-compute", "ccs", "manual"].includes(String(record.modelRoute ?? ""))
+    && ["on-device", "private-cloud-compute", "coc", "manual"].includes(String(record.modelRoute ?? ""))
     && items.every((item) => Boolean(item) && typeof item === "object" && voiceIntakeKinds.includes(String((item as Record<string, unknown>).type) as VoiceIntakeKind) && typeof (item as Record<string, unknown>).text === "string")
     && actions.every((action) => Boolean(action) && typeof action === "object" && typeof (action as Record<string, unknown>).text === "string" && (action as Record<string, unknown>).reviewRequired === true);
 }

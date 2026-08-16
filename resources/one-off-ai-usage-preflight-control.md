@@ -12,7 +12,7 @@ Decision analysis: [NEURO-DIV - AI Usage Preflight and Utility-Cost Analysis - v
 
 Before substantive one-off Codex or Claude execution could materially consume a hard plan allowance or paid overage, estimate the bounded completion cost and compare it with production utility. This control complements the recurring-automation cost control; it does not replace it.
 
-The preflight is deterministic and invokes no model. It controls substantive execution after intake. A prompt already submitted directly to an AI platform necessarily incurs at least the platform's intake and interpretation cost; running the CCS preflight before dispatch avoids that start cost.
+The preflight is deterministic and invokes no model. It controls substantive execution after intake. A prompt already submitted directly to an AI platform necessarily incurs at least the platform's intake and interpretation cost; running the COC preflight before dispatch avoids that start cost.
 
 ## Required inputs
 
@@ -74,7 +74,7 @@ Post-run actual token and cost evidence must update calibration by platform, mod
 
 ## Implementation
 
-- CCS form: `apps/acs-command-center/app/UsageEstimator.tsx`
+- COC form: `apps/acs-command-center/app/UsageEstimator.tsx`
 - deterministic API: `apps/acs-command-center/app/api/usage/estimate/route.ts`
 - estimator: `apps/acs-command-center/lib/usage-estimator.ts`
 - calibration: `apps/acs-command-center/lib/usage-calibration.ts`

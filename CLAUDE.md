@@ -12,7 +12,7 @@ Before creating, enabling, reactivating, or materially changing recurring, sched
 
 Slack is completely excluded from NEURO-DIV architecture and workflows. Do not use or propose it for intake, routing, monitoring, notifications, handoffs, coordination, storage, publication, or user-facing interaction; historical Slack content is provenance only.
 
-Claude is reserved for explicitly assigned high-value coding and deep design work, such as a focused TapDAT architecture review. Do not run recurring monitoring, broad connector sweeps, routine CCS orchestration, or multi-destination status publication. Codex and deterministic connector infrastructure own CCS intake, deduplication, reconciliation, calculated aging, connector-health tracking, and action-candidate routing. The retired monitor's Notion and GitHub outputs are historical provenance only; do not execute `ACS-ACT-002` unless it is reconciled against the canonical architecture.
+Claude is reserved for explicitly assigned high-value coding and deep design work, such as a focused TapDAT architecture review. Do not run recurring monitoring, broad connector sweeps, routine COC orchestration, or multi-destination status publication. Codex and deterministic connector infrastructure own COC intake, deduplication, reconciliation, calculated aging, connector-health tracking, and action-candidate routing. The retired monitor's Notion and GitHub outputs are historical provenance only; do not execute `ACS-ACT-002` unless it is reconciled against the canonical architecture.
 
 The shared Zapier MCP server is declared in [.mcp.json](.mcp.json). Use `/mcp` to authenticate locally if needed. Never add authentication material to the repository.
 

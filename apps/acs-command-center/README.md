@@ -1,4 +1,4 @@
-# ACS Command Center
+# ACS Command Orchestration Center (COC)
 
 A mobile-first, ADHD-friendly operating interface for the NEURO-DIV Agentic
 Communication Scaffold. It consolidates focus, approvals, recruiter response

@@ -135,7 +135,7 @@ After the user completes the requested step, the agent must:
 - **Root-cause inference:** the active execution task applied stale response-format behavior after a cross-task durable-instruction update.
 - **Corrective action:** make the exact bold heading pattern, short-action suffix, block separation, bold action/control requirements, and negative bare-heading rule machine-readable and test them in the repository verifier.
 - **Effectiveness boundary:** durable text and deterministic repository checks prove installation, not universal client rendering or sustained behavioral effectiveness. Any recurrence reopens this incident.
-- **CCS evidence:** production intake item `intake-b781abc8-c1cf-42ba-9b81-8350d9ea1773` was created and read back with status `captured`.
+- **COC evidence:** production intake item `intake-b781abc8-c1cf-42ba-9b81-8350d9ea1773` was created and read back with status `captured`.
 
 ## Current application — GitHub synchronization
 

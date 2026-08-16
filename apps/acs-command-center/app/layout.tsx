@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ACS Command Center",
-  description: "A calm, ADHD-friendly control center for projects, approvals, recruiter communications, agents, and AI usage.",
+  title: "ACS Command Orchestration Center (COC)",
+  description: "A calm, ADHD-friendly Command Orchestration Center for projects, approvals, recruiter communications, agents, and AI usage.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

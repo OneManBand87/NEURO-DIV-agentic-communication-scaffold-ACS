@@ -2,21 +2,26 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-test("build output and source contain the ACS Command Center", async () => {
-  const [component, layout] = await Promise.all([
+test("build output and source contain the ACS Command Orchestration Center", async () => {
+  const [component, layout, seed, widget, mcp] = await Promise.all([
     readFile(new URL("../app/CommandCenter.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../lib/seed-state.ts", import.meta.url), "utf8"),
+    readFile(new URL("../public/command-center-widget.html", import.meta.url), "utf8"),
+    readFile(new URL("../mcp/server.ts", import.meta.url), "utf8"),
   ]);
-  assert.match(layout, /title:\s*"ACS Command Center"/i);
-  assert.match(component, /ACS COMMAND CENTER/);
+  assert.match(layout, /title:\s*"ACS Command Orchestration Center \(COC\)"/i);
+  assert.match(component, /ACS COMMAND ORCHESTRATION CENTER · COC/);
   assert.match(component, /Today, without the noise\./);
   assert.match(component, /ONE APPROVAL QUEUE/);
   assert.match(component, /RECRUITER SLA/);
   assert.match(component, /USAGE SENTINEL/);
-  assert.match(component, /UNIVERSAL INTAKE/);
+  assert.match(component, /COC UNIVERSAL INTAKE/);
+  assert.doesNotMatch(component, /\bCCS\b/);
   assert.match(component, /QUIET SIGNAL LEDGER/);
   assert.match(component, /role="status"/);
   assert.doesNotMatch(component, /codex-preview/);
+  for (const currentSurface of [component, layout, seed, widget, mcp]) assert.doesNotMatch(currentSurface, /\bCCS\b/);
 });
 
 test("signal intake is authenticated, deduplicated, cost-bounded, and excludes Slack", async () => {
@@ -90,7 +95,7 @@ test("keeps the product and safety controls explicit", async () => {
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.match(css, /prefers-contrast:\s*more/);
   assert.match(page, /<CommandCenter/);
-  assert.match(layout, /title:\s*"ACS Command Center"/);
+  assert.match(layout, /title:\s*"ACS Command Orchestration Center \(COC\)"/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
 });
 

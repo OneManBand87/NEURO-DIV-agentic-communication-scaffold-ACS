@@ -1,8 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { pathToFileURL } from "node:url";
-
-const moduleUrl = pathToFileURL(new URL("../lib/signal-policy.ts", import.meta.url).pathname).href;
+const moduleUrl = new URL("../lib/signal-policy.ts", import.meta.url).href;
 const { ageInDays, evaluateSignalPolicy, nextConnectorHealth } = await import(moduleUrl);
 
 test("non-material and no-op signals suppress synthesis", () => {

@@ -11,6 +11,8 @@ NOOP_FILE="$STATE_DIR/consecutive-noops"
 PAUSE_FILE="$STATE_DIR/paused"
 VOICE_PROCESSOR_SHORTCUT="Process NEURO-DIV Voice Intake"
 VOICE_PROCESSOR_INPUT="${STATE_DIR:h}/Voice Processor/Input.aiff"
+COC_SIDECAR_SUFFIX=".coc-intake.json"
+LEGACY_SIDECAR_SUFFIX=".ccs-intake.json"
 
 generate_voice_sidecar() {
   local SOURCE_AUDIO="$1"
@@ -166,11 +168,15 @@ for SOURCE_FILE in "${FILES[@]}"; do
   /usr/sbin/lsof -- "$SOURCE_FILE" >/dev/null 2>&1 && continue
 
   FILE_NAME=${SOURCE_FILE:t}
-  # A voice interpretation sidecar is processed with its matching audio so CCS
+  # A voice interpretation sidecar is processed with its matching audio so COC
   # receives one semantically titled intake item while the original audio stays
   # authoritative. If the audio is present, defer the sidecar to that iteration.
-  if [[ "$FILE_NAME" == *.ccs-intake.json ]]; then
-    VOICE_BASE_PATH="${SOURCE_FILE%.ccs-intake.json}"
+  if [[ "$FILE_NAME" == *.coc-intake.json || "$FILE_NAME" == *.ccs-intake.json ]]; then
+    if [[ "$FILE_NAME" == *.coc-intake.json ]]; then
+      VOICE_BASE_PATH="${SOURCE_FILE%.coc-intake.json}"
+    else
+      VOICE_BASE_PATH="${SOURCE_FILE%.ccs-intake.json}"
+    fi
     VOICE_AUDIO_PRESENT=false
     for VOICE_EXTENSION in m4a caf wav mp3; do
       [[ -f "$VOICE_BASE_PATH.$VOICE_EXTENSION" ]] && VOICE_AUDIO_PRESENT=true
@@ -191,11 +197,14 @@ for SOURCE_FILE in "${FILES[@]}"; do
   CAPTURE_ID=""
   if [[ "$FILE_NAME" =~ '^NEURO-DIV Voice Intake - ([0-9]{6})\.(m4a|caf|wav|mp3)$' ]]; then
     CAPTURE_ID="$match[1]"
-    VOICE_SIDECAR="${SOURCE_FILE:r}.ccs-intake.json"
+    VOICE_SIDECAR="${SOURCE_FILE:r}${COC_SIDECAR_SUFFIX}"
+    if [[ ! -f "$VOICE_SIDECAR" && -f "${SOURCE_FILE:r}${LEGACY_SIDECAR_SUFFIX}" ]]; then
+      VOICE_SIDECAR="${SOURCE_FILE:r}${LEGACY_SIDECAR_SUFFIX}"
+    fi
     if [[ ! -f "$VOICE_SIDECAR" ]]; then
       generate_voice_sidecar "$SOURCE_FILE" "$VOICE_SIDECAR" "$CAPTURE_ID" || true
     fi
-  elif [[ "$FILE_NAME" == *.ccs-intake.json ]]; then
+  elif [[ "$FILE_NAME" == *.coc-intake.json || "$FILE_NAME" == *.ccs-intake.json ]]; then
     VOICE_SIDECAR="$SOURCE_FILE"
     CAPTURE_ID=$(/usr/bin/jq -r '.captureId // empty' -- "$VOICE_SIDECAR" 2>/dev/null || true)
   fi
@@ -210,7 +219,7 @@ for SOURCE_FILE in "${FILES[@]}"; do
        (.proposedActions | type == "array" and all(.[]; .reviewRequired == true)) and
        (.needsHumanReview == true) and
        (.originalAudioPreserved == true) and
-       (.modelRoute == "on-device" or .modelRoute == "private-cloud-compute" or .modelRoute == "ccs" or .modelRoute == "manual")
+       (.modelRoute == "on-device" or .modelRoute == "private-cloud-compute" or .modelRoute == "coc" or .modelRoute == "manual" or .modelRoute == "ccs")
      ' -- "$VOICE_SIDECAR" >/dev/null 2>&1; then
     VOICE_SIDECAR_VALID=true
     CAPTURE_ID=$(/usr/bin/jq -r '.captureId' -- "$VOICE_SIDECAR")

@@ -187,17 +187,17 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
     <main className="command-center">
       <header className="topbar">
         <div>
-          <p className="eyebrow">ACS COMMAND CENTER</p>
+          <p className="eyebrow">ACS COMMAND ORCHESTRATION CENTER · COC</p>
           <h1>Today, without the noise.</h1>
           <p className="subtitle">One place for priorities, approvals, recruiter timing, agents, projects, and usage protection.</p>
         </div>
         <div className="topbar-status" aria-label="System status">
           <span className="status-dot" />
-          <div><strong>Control center active</strong><span>{formatDate(state.generatedAt, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}</span></div>
+          <div><strong>COC active</strong><span>{formatDate(state.generatedAt, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}</span></div>
         </div>
       </header>
 
-      <nav className="section-nav" aria-label="Command Center sections">
+      <nav className="section-nav" aria-label="Command Orchestration Center sections">
         <a href="#today">Today</a>
         <a href="#intake">Intake <span>{intakeWaiting.length}</span></a>
         <a href="#signals">Signals <span>{openSignals.length}</span></a>
@@ -212,7 +212,7 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
 
       <section className="capture-card" aria-labelledby="capture-title">
         <div className="capture-copy">
-          <span className="section-kicker">VOICE INBOX</span>
+          <span className="section-kicker">COC QUICK INTAKE</span>
           <h2 id="capture-title">Say it now. Routing comes later.</h2>
           <p>Your exact thought and supporting files stay together so Codex has the context needed to respond and route the request.</p>
         </div>
@@ -237,7 +237,7 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
 
       <section id="intake" className="section-block intake-block" aria-labelledby="intake-title">
         <div className="section-heading">
-          <div><span className="section-kicker">UNIVERSAL INTAKE</span><h2 id="intake-title">Everything you send, ready for routing</h2></div>
+          <div><span className="section-kicker">COC UNIVERSAL INTAKE</span><h2 id="intake-title">Everything you send, ready for routing</h2></div>
           <span className={`count-badge ${intakeWaiting.length ? "attention" : "clear"}`}>{intakeWaiting.length} captured</span>
         </div>
         <p className="section-intro">Screenshots, recordings, files, links, and selected text arrive through the same governed queue. Originals remain preserved in device-synced intake storage; routed work products remain canonical in Google Drive.</p>
@@ -253,7 +253,7 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
           <div><span className="section-kicker">QUIET SIGNAL LEDGER</span><h2 id="signals-title">New evidence without another feed</h2></div>
           <span className={`count-badge ${openSignals.length ? "attention" : "clear"}`}>{openSignals.length} open</span>
         </div>
-        <p className="section-intro">Cross-source findings are deduplicated here. Age is calculated when you open CCS; no AI process polls merely to watch time pass. Claude-sourced imports remain visibly unverified until checked.</p>
+        <p className="section-intro">Cross-source findings are deduplicated here. Age is calculated when you open COC; no AI process polls merely to watch time pass. Claude-sourced imports remain visibly unverified until checked.</p>
         {state.connectorHealth.length > 0 ? <div className="connector-strip" aria-label="Connector health">
           {state.connectorHealth.map((connector) => <div className={`connector-pill ${connector.status}`} key={connector.source}><strong>{connector.source}</strong><span>{connector.status}</span>{connector.pausedReason ? <small>{connector.pausedReason}</small> : null}</div>)}
         </div> : null}
@@ -371,7 +371,7 @@ export function CommandCenter({ initialState }: { initialState: CommandCenterSta
         </button>
       </section>
 
-      <footer className="page-footer"><strong>ACS Command Center v0.4</strong><span>Observed facts, sourced facts, proposals, and unknowns remain explicitly separated.</span></footer>
+      <footer className="page-footer"><strong>ACS Command Orchestration Center (COC) v0.4</strong><span>Observed facts, sourced facts, proposals, and unknowns remain explicitly separated.</span></footer>
     </main>
   );
 }

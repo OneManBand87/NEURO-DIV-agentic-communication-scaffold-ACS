@@ -1,4 +1,4 @@
-export type AppleIntelligenceRoute = "deterministic" | "apple-on-device" | "ccs-reasoning" | "defer-for-review";
+export type AppleIntelligenceRoute = "deterministic" | "apple-on-device" | "coc-reasoning" | "defer-for-review";
 
 export type AppleIntelligenceRoutingInput = {
   taskType: "voice-intake" | "status-summary" | "exact-record-operation" | "reminder" | "device-control" | "rewrite" | "cross-record-analysis";
@@ -17,24 +17,24 @@ export type AppleIntelligenceRoutingDecision = {
   route: AppleIntelligenceRoute;
   reason: string;
   mayExecuteAction: false;
-  ccsVisibilityRequired: boolean;
+  cocVisibilityRequired: boolean;
 };
 
-/** Apple Intelligence is a bounded clerical processor beneath CCS. */
+/** Apple Intelligence is a bounded clerical processor beneath COC. */
 export function selectAppleIntelligenceRoute(input: AppleIntelligenceRoutingInput): AppleIntelligenceRoutingDecision {
-  const base = { mayExecuteAction: false as const, ccsVisibilityRequired: true };
+  const base = { mayExecuteAction: false as const, cocVisibilityRequired: true };
 
   if (input.taskType === "voice-intake" && (!input.explicitlyCompleted || !input.originalSourcePreserved)) {
     return { ...base, route: "defer-for-review", reason: "voice-capture-not-finalized-or-source-not-preserved" };
   }
   if (input.consequentialActionPossible) {
-    return { ...base, route: "ccs-reasoning", reason: "consequential-work-requires-ccs-controls" };
+    return { ...base, route: "coc-reasoning", reason: "consequential-work-requires-coc-controls" };
   }
   if (input.crossRecordContextRequired || input.currentExternalInformationRequired || input.taskType === "cross-record-analysis") {
-    return { ...base, route: "ccs-reasoning", reason: "task-requires-context-or-tools-beyond-on-device-processing" };
+    return { ...base, route: "coc-reasoning", reason: "task-requires-context-or-tools-beyond-on-device-processing" };
   }
   if (input.onDeviceOutputValid === false || input.onDeviceConfidence === "low") {
-    return { ...base, route: "ccs-reasoning", reason: "on-device-result-failed-validation-or-confidence" };
+    return { ...base, route: "coc-reasoning", reason: "on-device-result-failed-validation-or-confidence" };
   }
   if (input.taskType === "voice-intake") {
     return { ...base, route: "apple-on-device", reason: "completed-voice-capture-needs-private-semantic-structuring" };
