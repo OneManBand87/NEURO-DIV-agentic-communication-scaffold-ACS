@@ -23,8 +23,10 @@ resources/qtu-administrative-logistical-safe-harbor.md
 resources/integrity-materiality-control.md
 resources/maximal-progression-user-attention-control.md
 resources/automation-cost-cadence-proportionality-control.md
+resources/source-acquisition-completion-recognition-control.md
 resources/ai-response-integrity-review-2026-07-17.md
 scripts/verify-automation-cost-control.mjs
+scripts/verify-source-acquisition-recognition-control.mjs
 skills-lock.json'
 
 missing=0
@@ -102,6 +104,7 @@ if ! rg -Fq 'automation-cost-cadence-proportionality-control.md' .codex/hooks/nd
 fi
 
 node scripts/verify-automation-cost-control.mjs >/dev/null
+node scripts/verify-source-acquisition-recognition-control.mjs >/dev/null
 
 for native_reminder_file in AGENTS.md resources/agent-coordination.md resources/automation-cost-cadence-proportionality-control.md; do
   if ! rg -Fq 'cheapest adequate device-native or product-native mechanism' "$native_reminder_file" ||

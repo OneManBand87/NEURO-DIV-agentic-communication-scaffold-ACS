@@ -1,6 +1,6 @@
 # NEURO-DIV - agentic communication scaffold (ACS) - Repository Snapshot
 
-Last verified: 2026-08-15
+Last verified: 2026-09-15
 
 Canonical source: [NEURO-DIV - Agentic Communication Scaffold (ACS) - Shared Agent Brief - Current](https://docs.google.com/document/d/1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q/edit)
 
@@ -33,6 +33,8 @@ The mandatory [Maximal Progression and User-Attention Escalation Control](maxima
 The 2026-07-20 action-salience incident is classified M2. Task-history evidence shows the user directive at 3:35:14 PM EDT, global persistence by 3:39:29 PM EDT, and the noncompliant voice-integration turn beginning at 5:55:41 PM EDT and ending at 6:49:26 PM EDT. The response therefore did not precede the directive; cross-task concurrency explains the stale-control mechanism but does not excuse it. The exact format is now a repository invariant, recurrence reopens the incident, and sustained effectiveness remains observational because clients may render Markdown differently. Production COC item `intake-b781abc8-c1cf-42ba-9b81-8350d9ea1773` was created and read back with status `captured`; canonical brief revision `ALtnJHwVb8eAwHbiwiu-6CNCiOPsXcj6vaZNWlxkKnGnood-PJhGqnbKGelWZXFVqJrWpcUOF5ogPpvxwLsfBePPFuN8W7XqdVtwp1HwXA` was written for final read-back.
 
 The mandatory [Automation Cost, Cadence, and Proportionality Control](automation-cost-cadence-proportionality-control.md) governs recurring, scheduled, polling, monitoring, retry, and background work. It requires a whole-window cost-versus-importance preflight; event-driven and least-cost adequate execution; bounded runs, expiry, cost, model/reasoning level, task creation, and tripwires; and automatic pause after two consecutive system errors, three consecutive no-op runs, or a user cost complaint. Unknown, unbounded, or disproportionate cost blocks activation.
+
+The mandatory [Source Acquisition Completion Recognition Control](source-acquisition-completion-recognition-control.md), `ND-INGEST-RECOG-001`, applies after every browser, connector, app, or command-based retrieval attempt and before any failure conclusion or change to an authentication, credential, copied-profile, or alternate-delivery route. Agents must inspect the actual configured destination and correlate temporally relevant files by time, MIME/type, provenance URL, size/hash, and safe content markers. An unexpected filename, extension, or format cannot negate positive evidence. The 2026-09-15 Claude HTML event passed current-invocation correction and regression; cross-runtime operating effectiveness remains open.
 
 The mandatory [One-Off AI Usage Preflight and Utility-Cost Gate](one-off-ai-usage-preflight-control.md) governs substantive one-off Codex/OpenAI and Claude work that could materially consume a hard plan allowance or paid overage. The deterministic COC estimator invokes no model and returns p50, p80, and p95 completion-cost ranges, calibration confidence, cost rank, utility score, utility-to-usage ratio, lower-cost alternatives, and an allow, bounded-cost-decision, or block result. Cost rank above importance or a ratio below 20 blocks execution; equality, high/extreme cost, or a ratio below 40 requires a bounded cost decision after the cheaper viable design is attempted. Codex reports provider-rate credits; Claude reports API-equivalent overage, not a plan-percentage claim. Initial calibration uses 74 non-fork Codex task records and four Claude task records. The canonical analysis is stored in the NEURO-DIV Drive project's `04 Deliverables` folder.
 
@@ -93,6 +95,7 @@ Active context should be compacted after substantive conclusions or state-changi
 - Mandatory PCAOB-aligned integrity, materiality, evidence, capability-awareness, and commitment controls, plus a [provisional cross-platform response-integrity baseline](https://docs.google.com/document/d/1_IDPhh_j5sIROhqpGFtEpEtFq03QHUdU594yTWfgJvc).
 - Mandatory maximal-progression, agent-ownership, and prominent user-attention escalation control.
 - Mandatory automation cost, cadence, task-churn, budget, and proportionality control.
+- Mandatory source-acquisition completion recognition control with post-download correlation before failure or authentication escalation.
 - Mandatory native, no-model-first reminder and notification routing with Codex automation prohibited for simple waiting, polling, time checks, or reminder delivery.
 - Project-scoped MCP configuration for VS Code and Claude Code.
 - Project-local Codex context reminder hooks in `.codex/hooks.json` and `.codex/hooks/ndv_context_hook.py`.

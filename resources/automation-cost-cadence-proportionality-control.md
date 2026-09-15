@@ -35,6 +35,16 @@ If native cross-device delivery is unavailable because sync or authentication is
 
 ## Mandatory decision record
 
+## `ND-AUTO-DUR-001` — Durable unattended-work and scheduler reliability
+
+Before an agent represents that work, monitoring, follow-up, renewal, notification, or progress reporting will continue while the user is absent, the preflight must verify and preserve: scheduler persistence scope; whether the mechanism executes work or only creates a prompt/wakeup; maximum lifetime; actual run visibility; an independent liveness signal; missed-run or mechanism-death detection; user-visible failure notification; owner; expiry; recovery route; and completion evidence.
+
+A mechanism whose survival depends on the current conversation, process memory, context window, session, or agent runtime may not be the primary path for work that must not fail silently. A creation or configuration receipt proves only that a schedule was requested or stored; it does not prove later execution, continued existence, work performed, notification, or operating effectiveness. Silence is never evidence of progress.
+
+If independent liveness and missed-run alerting are unavailable, label the mechanism only as an unverified best-effort aid, keep primary execution in a live verified workflow or an external durable scheduler, and do not tell the user that monitoring is unnecessary. A future renewal or follow-up may be stated as committed only when its trigger and failure path are independently durable and read back.
+
+Remediation requires evidence from a comparable successful run, a missed-run or mechanism-death test, a failure alert, and recovery. Recreating the same ephemeral mechanism as a “safety net” does not close the reliability defect. Post-incident reports must separate observed fact, sourced fact, inference, hypothesis, and unknown; an agent may not certify its own good faith, intent, root cause, or remediation effectiveness without independent evidence.
+
 The preflight record must state:
 
 1. task importance;

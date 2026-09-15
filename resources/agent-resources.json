@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastVerified": "2026-08-16",
+  "lastVerified": "2026-09-15",
   "canonicalBrief": {
     "name": "NEURO-DIV - Agentic Communication Scaffold (ACS) - Shared Agent Brief - Current",
     "url": "https://docs.google.com/document/d/1luvRe6aZBdCIuJYC6PlGQjBe_u1yxiAWUS5y5EpfQ_Q/edit",
@@ -964,6 +964,31 @@
       "qtuLcb90": 0.927284744,
       "scope": "reversible control installation, synchronization, verification, intended commit/push, and continued pause of the affected automation; not production-effectiveness evidence"
     }
+  },
+  "sourceAcquisitionRecognitionControl": {
+    "status": "mandatory",
+    "controlId": "ND-INGEST-RECOG-001",
+    "repositoryControl": "resources/source-acquisition-completion-recognition-control.md",
+    "appliesAfter": [
+      "browser-download-attempt",
+      "connector-retrieval-attempt",
+      "app-download-attempt",
+      "command-download-attempt"
+    ],
+    "requiredCorrelation": [
+      "actual-configured-destination",
+      "relevant-time-window",
+      "mime-or-file-type",
+      "provenance-or-wherefroms-url",
+      "byte-count-and-sha256",
+      "safe-title-or-content-markers"
+    ],
+    "filenameMismatchRule": "cannot-negate-positive-temporal-provenance-and-content-evidence",
+    "alternateRouteGate": "one-bounded-authorized-route-only-after-complete-negative-correlation-record",
+    "originDeficiency": "ND-DEF-2026-09-15-002",
+    "currentEventRegression": "pass",
+    "canonicalBriefRevision": "ANLCKQkZEKnohOwHdrJlY5djZAfOWrVdpArCcsxyrJbFrihIhKMQ_3VeiDUhgc8m_doFUCPh2h5o5H0uyp1bfInO-WBBinAJ949QRmX7nA",
+    "crossRuntimeOperatingEffectiveness": "not-established"
   },
   "nativeReminderNotificationRoutingControl": {
     "status": "mandatory",
