@@ -119,3 +119,8 @@ The canonical brief is authoritative. After a verified state change, update it f
 
 
 The generalized image and visual-input control now has a narrow runtime boundary in the ACS Command Center. `image-ingestion-gate.ts` is loaded by the device intake, browser-attachment, and database sink paths; evidence is persisted with each visual intake and exposed through the schema-checked read-only state. The widget retains a verified snapshot and reports stale or unavailable data without polling. The image-control document, machine-readable manifest, deterministic verifier, and source tests are synchronized as supporting evidence, but their read-back alone is not operating-effectiveness proof; a deployed live bypass test remains required.
+
+
+## ND-SYNC-001 compatibility-checkout reconciliation
+
+See [repository-reconciliation.md](repository-reconciliation.md). The biweekly native pilot is paused after a verified macOS background Drive-access denial. Source integration and unattended operating effectiveness are separate assertions.

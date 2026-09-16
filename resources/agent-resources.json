@@ -549,7 +549,7 @@
       "field": "QTU-LCB90"
     },
     "historicalAuthorizedStatus": "QTU_AUTHORIZED",
-    "historicalStatusInterpretation": "DESIGN_CONFORMANCE_ONLY — NOT EMPIRICALLY VALIDATED",
+    "historicalStatusInterpretation": "DESIGN_CONFORMANCE_ONLY \u2014 NOT EMPIRICALLY VALIDATED",
     "activeDesignStatus": "QTU_DESIGN_CONFORMANT",
     "empiricallyValidatedStatusAvailable": false,
     "blockedStatuses": [
@@ -794,8 +794,8 @@
       "resume-automatically-after-user-action",
       "close-only-after-read-back"
     ],
-    "attentionTemplateHeader": "🚨 ACTION REQUIRED FROM YOU — [SHORT ACTION]",
-    "attentionTemplateHeaderMarkdown": "🚨 **ACTION REQUIRED FROM YOU — [SHORT ACTION]**",
+    "attentionTemplateHeader": "\ud83d\udea8 ACTION REQUIRED FROM YOU \u2014 [SHORT ACTION]",
+    "attentionTemplateHeaderMarkdown": "\ud83d\udea8 **ACTION REQUIRED FROM YOU \u2014 [SHORT ACTION]**",
     "headingMustBeBold": true,
     "shortActionSuffixRequired": true,
     "standaloneVisualSeparationRequired": true,
@@ -1113,5 +1113,18 @@
       "*credential*",
       "cookies*"
     ]
+  },
+  "repositoryReconciliation": {
+    "controlId": "ND-SYNC-001",
+    "protocol": "resources/repository-reconciliation.md",
+    "scopedVerifiedDate": "2026-09-15",
+    "publishedSourceCommit": "72c84d553e14a316472a7af58158957932dd1faa",
+    "globalFreshnessClaim": false,
+    "scheduleStatus": "paused-background-permission-blocked",
+    "scheduleIntervalDays": 14,
+    "maxRuns": 6,
+    "aiCallsPerRun": 0,
+    "worker": "scripts/reconcile-canonical-controls.py",
+    "liveSuccessfulWorkRuns": 0
   }
 }
